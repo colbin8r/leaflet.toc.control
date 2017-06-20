@@ -1,0 +1,22 @@
+{
+  "name": "leaflet.control.nestedlayers",
+  "version": "0.1.0",
+  "description": "A variant of the built-in L.control.layers that accepts layers in a hierarchy",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://colbin8r@bitbucket.org/worldviewsolutions/leaflet.control.nestedlayers.git"
+  },
+  "keywords": [
+    "leaflet",
+    "gis",
+    "layer",
+    "map"
+  ],
+  "author": "Colby Rogness",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/worldviewsolutions/leaflet.control.nestedlayers#readme"
+}
