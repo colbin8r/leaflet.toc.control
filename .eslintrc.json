@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "quotes": [2, "single"],
+    "no-console": 0,
+    "one-var": ["error", "never"],
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+  },
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": "idiomatic"
+}
