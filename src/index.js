@@ -1,1 +1,9 @@
-module.export = require( './PersonIndex' );
+/* global L */
+
+exports = {
+  NestedLayers: require('./Leaflet.Control.NestedLayers')
+}
+
+L.Control.NestedLayers = exports.NestedLayers;
+
+module.exports = exports;

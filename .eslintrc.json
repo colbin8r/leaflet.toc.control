@@ -3,7 +3,12 @@
     "quotes": [2, "single"],
     "no-console": 0,
     "one-var": ["error", "never"],
-    "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "space-in-parens": ["error", "never"],
+    "computed-property-spacing": ["error", "never"],
+    "vars-on-top": "off",
+    "func-names": ["warn", "as-needed"],
+    "no-unused-vars": "warn"
   },
   "env": {
     "browser": false,
