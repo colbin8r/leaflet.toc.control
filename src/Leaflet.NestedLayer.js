@@ -1,13 +1,14 @@
-/* global L, window */
-export class NestedLayer {
+import L from 'leaflet-headless';
+
+export default class NestedLayer {
 
   // options include:
   // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
-  // 'enabled' boolean (optional), 'selected' boolean (optional),
+  // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
   // 'children' array (optional)
   constructor(options) {
     // set default props for optional options
-    this._props = { children: [], enabled: true, selected: false }
+    this._props = { children: [], enabled: true, selected: false, swatch: '' };
     this._isAttached = false;
 
     if (typeof options.id == 'undefined') {
@@ -40,6 +41,10 @@ export class NestedLayer {
 
   get map() {
     return this._props.map;
+  }
+
+  get swatch() {
+    return this._props.swatch;
   }
 
   get children() {
@@ -132,8 +137,4 @@ export class NestedLayer {
   }
 }
 
-if (typeof window != 'undefined') {
-  L.nestedLayer = function nestedLayer(options) {
-    return new NestedLayer(options);
-  };
-}
+

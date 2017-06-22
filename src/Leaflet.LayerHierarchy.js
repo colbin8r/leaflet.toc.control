@@ -1,12 +1,13 @@
-/* global L, window */
-import { NestedLayer } from './Leaflet.NestedLayer';
+import L from 'leaflet-headless';
+import NestedLayer from './Leaflet.NestedLayer';
 
-export class LayerHierarchy {
+export default class LayerHierarchy {
   constructor(options) {
-    // Object.assign(this, options);
-
     // for the layers parameter, ensure that we are at least passed an array
     // otherwise, default to empty array
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     this._layers = (Array.isArray(options.layers) ? options.layers : []);
   }
 
@@ -65,17 +66,8 @@ export class LayerHierarchy {
     return null;
   }
 
-  // addToMapOverlays(map) {
+  getRootLayers() {
+    return this._layers;
+  }
 
-  // }
-
-  // get person() {
-  //   return this.props.person;
-  // }
-}
-
-if (typeof window != 'undefined') {
-  L.layerHierarchy = function layerHierarchy(options) {
-    return new L.LayerHierarchy(options);
-  };
 }

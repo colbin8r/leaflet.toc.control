@@ -1,5 +1,5 @@
 /*global describe, expect, it, beforeEach*/
-import { NestedLayer } from './../../src/Leaflet.NestedLayer';
+import NestedLayer from './../../src/Leaflet.NestedLayer';
 
 import sinon from 'sinon';
 

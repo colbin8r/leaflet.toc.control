@@ -3,23 +3,30 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LayerHierarchy = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global L, window */
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _leafletHeadless = require('leaflet-headless');
+
+var _leafletHeadless2 = _interopRequireDefault(_leafletHeadless);
 
 var _Leaflet = require('./Leaflet.NestedLayer');
 
+var _Leaflet2 = _interopRequireDefault(_Leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var LayerHierarchy = exports.LayerHierarchy = function () {
+var LayerHierarchy = function () {
   function LayerHierarchy(options) {
     _classCallCheck(this, LayerHierarchy);
 
-    // Object.assign(this, options);
-
     // for the layers parameter, ensure that we are at least passed an array
     // otherwise, default to empty array
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     this._layers = Array.isArray(options.layers) ? options.layers : [];
   }
 
@@ -34,7 +41,7 @@ var LayerHierarchy = exports.LayerHierarchy = function () {
       // id, name, layer, defaultVisibility, minScale, maxScale, children
       // layer should be a NestedLayer
 
-      if (!(layer instanceof _Leaflet.NestedLayer)) {
+      if (!(layer instanceof _Leaflet2.default)) {
         throw new TypeError('layer is not a NestedLayer');
       }
 
@@ -81,23 +88,15 @@ var LayerHierarchy = exports.LayerHierarchy = function () {
       // if execution reaches here, no layers in this subtree have the requested id
       return null;
     }
-
-    // addToMapOverlays(map) {
-
-    // }
-
-    // get person() {
-    //   return this.props.person;
-    // }
-
+  }, {
+    key: 'getRootLayers',
+    value: function getRootLayers() {
+      return this._layers;
+    }
   }]);
 
   return LayerHierarchy;
 }();
 
-if (typeof window != 'undefined') {
-  L.layerHierarchy = function layerHierarchy(options) {
-    return new L.LayerHierarchy(options);
-  };
-}
+exports.default = LayerHierarchy;
 //# sourceMappingURL=Leaflet.LayerHierarchy.js.map

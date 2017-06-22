@@ -1,6 +1,6 @@
 /*global describe, expect, it, beforeEach*/
-import { NestedLayer } from './../../src/Leaflet.NestedLayer';
-import { LayerHierarchy } from './../../src/Leaflet.LayerHierarchy';
+import NestedLayer from './../../src/Leaflet.NestedLayer';
+import LayerHierarchy from './../../src/Leaflet.LayerHierarchy';
 
 describe( 'LayerHierarchy', () => {
 

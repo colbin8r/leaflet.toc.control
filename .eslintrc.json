@@ -1,4 +1,10 @@
 {
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
   "rules": {
     "quotes": [2, "single"],
     "no-console": 0,
@@ -8,15 +14,21 @@
     "computed-property-spacing": ["error", "never"],
     "vars-on-top": "off",
     "func-names": ["warn", "as-needed"],
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "mocha/no-exclusive-tests": "error"
   },
-  "env": {
-    "browser": false,
-    "node": true,
-    "es6": true
-  },
+  "parser": "babel-eslint",
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
   },
-  "extends": "idiomatic"
+  "plugins": [
+    "react",
+    "mocha"
+  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "idiomatic"]
 }

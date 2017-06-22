@@ -1,0 +1,101 @@
+<html>
+
+<head>
+<title>Leaflet.Control.NestedLayers plugin demo &mdash; Simple</title>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
+<!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script> -->
+
+<!-- Plugin -->
+<script src="./bundle.js"></script>
+
+<!-- Esri Leaflet -->
+<script src="https://unpkg.com/esri-leaflet@2.0.8"></script>
+
+<style>
+#map {
+  height: 50vh;
+}
+</style>
+
+</head>
+<body>
+
+<div id="map">
+
+</div>
+
+<div id="toc">
+
+</div>
+
+<script>
+
+var map = L.map('map').setView([51.505, -0.09], 13);
+
+// sample layer
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiY29sYmluOHIiLCJhIjoiY2o0OHA1a3EyMGhqaTJ3cDJpZ3V3bWtwYyJ9.EVWPRmgB_cDROLCbCAEr7Q'
+}).addTo(map);
+
+// manually assemble a small layer hierarchy
+var mapserverURL = 'http://gis.vdot.virginia.gov/arcgis/rest/services/varoads/VARoads/MapServer';
+
+var leafletLayers = {
+  parent: L.esri.dynamicMapLayer({
+    url: mapserverURL,
+    opacity : 0.25,
+    layers: [0]
+  }),
+  child1: L.esri.dynamicMapLayer({
+    url: mapserverURL,
+    opacity : 0.25,
+    layers: [1]
+  }),
+  child2: L.esri.dynamicMapLayer({
+    url: mapserverURL,
+    opacity : 0.25,
+    layers: [3]
+  })
+}
+
+var layers = [
+  L.nestedLayer({
+    id: leafletLayers.parent.getLayers()[0],
+    name: "Sample Layer 1",
+    layer: leafletLayers.parent,
+    map: map,
+    children: [
+      L.nestedLayer({
+        id: leafletLayers.parent.getLayers()[0],
+        name: "Sample Layer 1.A",
+        layer: leafletLayers.child1,
+        map: map,
+        children: []
+      }),
+      L.nestedLayer({
+        id: leafletLayers.parent.getLayers()[0],
+        name: "Sample Layer 1.B",
+        layer: leafletLayers.child2,
+        map: map,
+        children: []
+      })
+    ]
+  })
+]
+
+var hierarchy = L.layerHierarchy({ layers: layers });
+
+// put together the Table of Contents (TOC) control
+var tocEl = document.getElementById('toc');
+
+var toc = L.control.nestedLayers(hierarchy, tocEl);
+debugger;
+</script>
+</body>
+
+</html>

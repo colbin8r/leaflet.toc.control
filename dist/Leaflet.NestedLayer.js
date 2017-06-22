@@ -6,20 +6,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _leafletHeadless = require('leaflet-headless');
+
+var _leafletHeadless2 = _interopRequireDefault(_leafletHeadless);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* global L, window */
-var NestedLayer = exports.NestedLayer = function () {
+var NestedLayer = function () {
 
   // options include:
   // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
-  // 'enabled' boolean (optional), 'selected' boolean (optional),
+  // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
   // 'children' array (optional)
   function NestedLayer(options) {
     _classCallCheck(this, NestedLayer);
 
     // set default props for optional options
-    this._props = { children: [], enabled: true, selected: false };
+    this._props = { children: [], enabled: true, selected: false, swatch: '' };
     this._isAttached = false;
 
     if (typeof options.id == 'undefined') {
@@ -128,6 +133,11 @@ var NestedLayer = exports.NestedLayer = function () {
       return this._props.map;
     }
   }, {
+    key: 'swatch',
+    get: function get() {
+      return this._props.swatch;
+    }
+  }, {
     key: 'children',
     get: function get() {
       return this._props.children;
@@ -186,9 +196,5 @@ var NestedLayer = exports.NestedLayer = function () {
   return NestedLayer;
 }();
 
-if (typeof window != 'undefined') {
-  L.nestedLayer = function nestedLayer(options) {
-    return new NestedLayer(options);
-  };
-}
+exports.default = NestedLayer;
 //# sourceMappingURL=Leaflet.NestedLayer.js.map
