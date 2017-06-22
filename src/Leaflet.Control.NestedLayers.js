@@ -9,13 +9,46 @@ import NestedLayer from './Leaflet.NestedLayer';
 export class NestedLayersComponent extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {date: new Date()};
+    // primary prop is 'hierarchy', an instance of Leaflet.LayerHierarchy
+  }
+
+  makeComponentFromLayer(layer) {
+    // recursive function
+    // 'leaf' is the base case
+
+    // branch: this layer has children
+    if (layer.children.length < 0) {
+      // recursively calls this function on each child (leaf)
+      // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
+      const leaves = layer.children.map(this.makeComponentFromLayer);
+
+      return (
+        <NestedLayerComponent l={layer}>
+          <ul className="branch">
+            {leaves}
+          </ul>
+        </NestedLayerComponent>
+      );
+    } else {
+    // leaf: this layer is just a leaf
+      return (
+        <NestedLayerComponent l={layer} key={layer.id} />
+      )
+    }
   }
 
   render() {
-    return (
-      <div>
+    let roots = this.props.hierarchy.getRootLayers();
+    let components = [];
 
+    for (let i = 0; i < roots.length; i++) {
+      components.push(this.makeComponentFromLayer(roots[i]));
+    }
+
+    return (
+      <div className="nested-layer-control-container">
+        TOC CONTROL
+        {components}
       </div>
     );
   }
@@ -27,22 +60,29 @@ export class NestedLayerComponent extends React.Component {
     // this.state = {date: new Date()};
   }
 
+  static propTypes = {
+    l: PropTypes.instanceOf(NestedLayer).isRequired
+  }
+
+  toggleSelected = () => {
+    debugger;
+    this.props.l.toggleSelected();
+  }
+
   render() {
     return (
-      <li className="leaf" onClick={this.props.l.toggleSelected}>
-        <input type="checkbox" />
+      <li className="leaf" onClick={this.toggleSelected}>
+        <input type="checkbox" value={this.props.l.selected} />
         {this.props.l.swatch.length > 0 &&
           <img src="data:{this.props.l.swatch}" className="swatch" />
         }
         <span className="layer-name">{this.props.l.name}</span>
+
+        {this.props.children}
       </li>
     );
   }
 }
-
-NestedLayerComponent.propTypes = {
-  l: PropTypes.instanceOf(NestedLayer).isRequired
-};
 
 export default class NestedLayers {
 

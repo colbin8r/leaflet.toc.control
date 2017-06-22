@@ -14,8 +14,13 @@
 <script src="https://unpkg.com/esri-leaflet@2.0.8"></script>
 
 <style>
-#map {
+body {
+  padding: 0;
+  margin: 0;
+}
+#map, #toc {
   height: 50vh;
+  width: 100%;
 }
 </style>
 
@@ -92,9 +97,8 @@ var hierarchy = L.layerHierarchy({ layers: layers });
 
 // put together the Table of Contents (TOC) control
 var tocEl = document.getElementById('toc');
-
 var toc = L.control.nestedLayers(hierarchy, tocEl);
-debugger;
+
 </script>
 </body>
 

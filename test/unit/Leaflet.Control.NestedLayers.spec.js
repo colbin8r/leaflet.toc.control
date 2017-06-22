@@ -6,9 +6,9 @@ import jsdom from 'jsdom';
 
 describe( 'NestedLayers', () => {
 
-  let control,
-      h, el;
+  let control, h, el;
   const { JSDOM } = jsdom;
+
   beforeEach(() => {
     h = new LayerHierarchy();
     el = JSDOM.fragment('<div id="test-element"></div>');

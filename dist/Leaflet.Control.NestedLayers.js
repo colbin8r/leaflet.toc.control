@@ -46,13 +46,51 @@ var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Com
     _classCallCheck(this, NestedLayersComponent);
 
     return _possibleConstructorReturn(this, (NestedLayersComponent.__proto__ || Object.getPrototypeOf(NestedLayersComponent)).call(this, props));
-    // this.state = {date: new Date()};
+    // primary prop is 'hierarchy', an instance of Leaflet.LayerHierarchy
   }
 
   _createClass(NestedLayersComponent, [{
+    key: 'makeComponentFromLayer',
+    value: function makeComponentFromLayer(layer) {
+      // recursive function
+      // 'leaf' is the base case
+
+      // branch: this layer has children
+      if (layer.children.length < 0) {
+        // recursively calls this function on each child (leaf)
+        // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
+        var leaves = layer.children.map(this.makeComponentFromLayer);
+
+        return _react2.default.createElement(
+          NestedLayerComponent,
+          { l: layer },
+          _react2.default.createElement(
+            'ul',
+            { className: 'branch' },
+            leaves
+          )
+        );
+      } else {
+        // leaf: this layer is just a leaf
+        return _react2.default.createElement(NestedLayerComponent, { l: layer, key: layer.id });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', null);
+      var roots = this.props.hierarchy.getRootLayers();
+      var components = [];
+
+      for (var i = 0; i < roots.length; i++) {
+        components.push(this.makeComponentFromLayer(roots[i]));
+      }
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'nested-layer-control-container' },
+        'TOC CONTROL',
+        components
+      );
     }
   }]);
 
@@ -65,8 +103,15 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
   function NestedLayerComponent(props) {
     _classCallCheck(this, NestedLayerComponent);
 
-    return _possibleConstructorReturn(this, (NestedLayerComponent.__proto__ || Object.getPrototypeOf(NestedLayerComponent)).call(this, props));
     // this.state = {date: new Date()};
+    var _this2 = _possibleConstructorReturn(this, (NestedLayerComponent.__proto__ || Object.getPrototypeOf(NestedLayerComponent)).call(this, props));
+
+    _this2.toggleSelected = function () {
+      debugger;
+      _this2.props.l.toggleSelected();
+    };
+
+    return _this2;
   }
 
   _createClass(NestedLayerComponent, [{
@@ -74,14 +119,15 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
     value: function render() {
       return _react2.default.createElement(
         'li',
-        { className: 'leaf', onClick: this.props.l.toggleSelected },
-        _react2.default.createElement('input', { type: 'checkbox' }),
+        { className: 'leaf', onClick: this.toggleSelected },
+        _react2.default.createElement('input', { type: 'checkbox', value: this.props.l.selected }),
         this.props.l.swatch.length > 0 && _react2.default.createElement('img', { src: 'data:{this.props.l.swatch}', className: 'swatch' }),
         _react2.default.createElement(
           'span',
           { className: 'layer-name' },
           this.props.l.name
-        )
+        ),
+        this.props.children
       );
     }
   }]);

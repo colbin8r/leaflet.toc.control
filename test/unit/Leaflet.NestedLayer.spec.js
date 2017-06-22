@@ -18,6 +18,7 @@ describe( 'NestedLayer', () => {
   // l is for testing other non-nested layer features
   let l, l0, l1, l2, layer0, layer1, layer2,
       layerAddSpy, layerRemoveSpy;
+
   beforeEach(() => {
     l = new NestedLayer({
       id: 999,

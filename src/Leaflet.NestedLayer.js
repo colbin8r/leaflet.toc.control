@@ -101,6 +101,7 @@ export default class NestedLayer {
     this.selected = false;
   }
   toggleSelected() {
+    debugger;
     this.selected = !this.selected;
   }
 

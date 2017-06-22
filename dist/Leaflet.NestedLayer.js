@@ -74,6 +74,7 @@ var NestedLayer = function () {
   }, {
     key: 'toggleSelected',
     value: function toggleSelected() {
+      debugger;
       this.selected = !this.selected;
     }
 
