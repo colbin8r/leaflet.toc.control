@@ -22,7 +22,7 @@ gulp.task( 'build', [ 'clean:dist', 'copy:nonJs' ], () => {
   return gulp.src( paths.es6 )
     .pipe( sourceMaps.init() )
     .pipe( babel( {
-      presets: [ 'es2015' ]
+      presets: [ 'es2015', 'stage-0', 'react' ]
     } ) )
     .pipe( sourceMaps.write( '.', { sourceRoot: paths.sourceRoot } ) )
     .pipe( gulp.dest( paths.es5 ) );
