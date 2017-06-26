@@ -1,44 +1,85 @@
 import L from 'leaflet-headless';
 
+// import colors from 'colors';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import LayerHierarchy from './Leaflet.LayerHierarchy';
 import NestedLayer from './Leaflet.NestedLayer';
+import classnames from 'classnames';
 
 export class NestedLayersComponent extends React.Component {
   constructor(props) {
     super(props);
-    // primary prop is 'hierarchy', an instance of Leaflet.LayerHierarchy
-  }
-
-  makeComponentFromLayer(layer) {
-    // recursive function
-    // 'leaf' is the base case
-
-    // branch: this layer has children
-    if (layer.children.length < 0) {
-      // recursively calls this function on each child (leaf)
-      // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
-      const leaves = layer.children.map(this.makeComponentFromLayer);
-
-      return (
-        <NestedLayerComponent l={layer}>
-          <ul className="branch">
-            {leaves}
-          </ul>
-        </NestedLayerComponent>
-      );
-    } else {
-    // leaf: this layer is just a leaf
-      return (
-        <NestedLayerComponent l={layer} key={layer.id} />
-      )
+    this.state = {
+      hierarchy: this.props.hierarchy
     }
   }
 
+  static propTypes = {
+    hierarchy: PropTypes.instanceOf(LayerHierarchy).isRequired
+  }
+
+  makeLayerKey(layer) {
+    return (layer.id.toString + layer.name);
+  }
+
+  handleToggleSelected = (layer) => {
+    const id = layer.id;
+    const newHierarchy = this.state.hierarchy;
+    newHierarchy.getLayerByID(id).toggleSelected();
+    this.setState({
+      hierarchy: newHierarchy
+    });
+  }
+
+  makeComponentFromLayer = (layer) => {
+    // recursive function
+    // 'leaf' is the base case
+    // property initializer syntax + arrow function keeps the scope of 'this' through recursive calls
+    let componentChildren;
+
+    // branch: this layer has children
+    if (layer.children.length > 0) {
+      // leaves = layer.children.map(this.makeComponentFromLayer)
+      componentChildren = (
+        <ul className="branch">
+          {layer.children.map(this.makeComponentFromLayer)}
+        </ul>
+      );
+    }
+
+    return (
+      <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>
+        {componentChildren}
+      </NestedLayerComponent>
+    );
+
+    // // branch: this layer has children
+    // if (layer.children.length > 0) {
+    //   // recursively calls this function on each child (leaf)
+    //   // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
+    //   const leaves = layer.children.map(this.makeComponentFromLayer);
+
+    //   return (
+    //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>
+    //       <ul className="branch">
+    //         {leaves}
+    //       </ul>
+    //     </NestedLayerComponent>
+    //   );
+    // } else {
+    // // leaf: this layer is just a leaf
+
+    //   return (
+    //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)} />
+    //   )
+    // }
+  }
+
   render() {
-    let roots = this.props.hierarchy.getRootLayers();
+    const roots = this.state.hierarchy.getRootLayers();
     let components = [];
 
     for (let i = 0; i < roots.length; i++) {
@@ -47,8 +88,10 @@ export class NestedLayersComponent extends React.Component {
 
     return (
       <div className="nested-layer-control-container">
-        TOC CONTROL
-        {components}
+        <h2>TOC CONTROL</h2>
+        <ul className="branch nested-layer-control">
+          {components}
+        </ul>
       </div>
     );
   }
@@ -57,26 +100,54 @@ export class NestedLayersComponent extends React.Component {
 export class NestedLayerComponent extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {date: new Date()};
+    // this.state = {...this.props};
+    this.state = {};
   }
 
   static propTypes = {
-    l: PropTypes.instanceOf(NestedLayer).isRequired
+    layer: PropTypes.instanceOf(NestedLayer).isRequired,
+    // selected: PropTypes.bool.isRequired,
+    // enabled: PropTypes.bool.isRequired,
+    // name: PropTypes.string.isRequired,
+    // swatch: PropTypes.string
+    onToggleSelected: PropTypes.func.isRequired
   }
 
   toggleSelected = () => {
-    debugger;
-    this.props.l.toggleSelected();
+    // updates both the component state and the LayerHierarchy structure
+    this.props.onToggleSelected(this.props.layer);
+
+    // this.props.layer.toggleSelected();
+
+    // if (this.props.layer.deselected || this.props.layer.disabled) {
+    //   this.props.layer.disableChildren()
+    // } else if (this.props.layer.enabled) {
+    //   this.props.layer.enableChildren()
+    // }
+
+    // this.setState({
+    //   selected: this.props.layer.selected,
+    //   enabled: this.props.layer.enabled
+    // });
+  }
+
+  getSwatch = () => {
+    return "data:image/png;base64," + this.props.layer.swatch;
   }
 
   render() {
+    const itemClassNames = classnames({
+      leaf: true,
+      enabled: this.props.layer.enabled,
+      disabled: this.props.layer.disabled
+    });
     return (
-      <li className="leaf" onClick={this.toggleSelected}>
-        <input type="checkbox" value={this.props.l.selected} />
-        {this.props.l.swatch.length > 0 &&
-          <img src="data:{this.props.l.swatch}" className="swatch" />
+      <li className={itemClassNames}>
+        <input type="checkbox" checked={this.props.layer.selected} />
+        {this.props.layer.swatch.length > 0 &&
+          <img src={this.getSwatch()} className="swatch" />
         }
-        <span className="layer-name">{this.props.l.name}</span>
+        <span className="layer-name" onClick={this.toggleSelected}>{this.props.layer.name}</span>
 
         {this.props.children}
       </li>

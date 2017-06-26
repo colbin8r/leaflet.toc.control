@@ -1,5 +1,5 @@
 /*global describe, expect, it, beforeEach*/
-import NestedLayer from './../../src/Leaflet.NestedLayer';
+import NestedLayer from './../src/Leaflet.NestedLayer';
 
 import sinon from 'sinon';
 
@@ -10,7 +10,8 @@ describe( 'NestedLayer', () => {
       id,
       addTo: function() {},
       removeFrom: function() {},
-      remove: function() {}
+      remove: function() {},
+      on: function() {}
     }
   }
 
@@ -209,6 +210,51 @@ describe( 'NestedLayer', () => {
     }).to.throw(TypeError);
   });
 
+  it('should know if it has children', () => {
+    expect(layer0.hasChildren).to.be.true;
+    expect(layer1.hasChildren).to.be.false;
+  })
+
+  it('should be able to enable its children', () => {
+    layer2.addChild(l);
+
+    layer1.disable();
+    layer2.disable();
+    l.disable();
+
+    layer0.enableChildren();
+
+    expect(layer1.enabled).to.be.true;
+    expect(layer2.enabled).to.be.true;
+
+    layer1.enable();
+    layer2.enable();
+
+    expect(() => {
+      layer0.enableChildren()
+    }).to.not.throw();
+  })
+
+  it('should be able to disable its children', () => {
+    layer2.addChild(l);
+
+    layer1.enable();
+    layer2.enable();
+    l.enable();
+
+    layer0.disableChildren();
+
+    expect(layer1.disabled).to.be.true;
+    expect(layer2.disabled).to.be.true;
+
+    layer1.disable();
+    layer2.disable();
+
+    expect(() => {
+      layer0.disableChildren()
+    }).to.not.throw();
+  })
+
   it('should attach to the map when selected', () => {
     l.select();
     expect(layerAddSpy.called).to.be.true;
@@ -227,6 +273,19 @@ describe( 'NestedLayer', () => {
     l.deselect();
     expect(layerRemoveSpy.called).to.be.true;
   });
+
+  it('should detach from the map when disabled', () => {
+    l.select();
+    l.disable();
+    expect(layerRemoveSpy.called).to.be.true;
+  })
+
+  it('should re-attach to the map after being re-enabled (if selected)', () => {
+    l.select(); // mark layer as "selected"
+    l.disable(); // layer should persist selected state even when disabled
+    l.enable(); // layer should remember that it was selected before it was disabled
+    expect(layerAddSpy.callCount).to.equal(2); // layer should re-attach to the map
+  })
 
   it('should not detach from the map if it is already detached', () => {
     l.select();

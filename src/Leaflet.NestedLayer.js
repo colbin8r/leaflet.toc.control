@@ -24,7 +24,19 @@ export default class NestedLayer {
       throw new Error('Missing map object when creating NestedLayer');
     }
 
+
     Object.assign(this._props, options);
+
+    // if this is an Esri layer, we need to handle the case where the user zooms to a level where our
+    // layer should be disabled according to the minZoom/maxZoom contained in the layer object
+    console.log(this.layer);
+    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
+      this.map.on('zoomend', this._handleMapZoom());
+    }
+
+    // this.layer.on('remove', (ev) => {
+    //   console.log('remove event fired:', this.name.toUpperCase(), ev);
+    // })
   }
 
   get id() {
@@ -62,6 +74,15 @@ export default class NestedLayer {
   }
   set enabled(val) {
     this._props.enabled = val;
+
+    // if disabling, detach from map
+    if (!val) {
+      this._detach();
+
+    // if enabling, and marked selected (i.e. "re-enabling"), attach to map
+    } else if (this._props.selected) {
+      this._attach();
+    }
   }
 
   // selected = layer present on the map
@@ -77,10 +98,13 @@ export default class NestedLayer {
     this._props.selected = val;
 
     // attach/detach from map when needed
+    // disable children from selection when unselected
     if (this.selected) {
       this._attach();
+      this.enableChildren();
     } else {
       this._detach();
+      this.disableChildren();
     }
   }
 
@@ -112,12 +136,40 @@ export default class NestedLayer {
     return !this.selected;
   }
 
+  // true if the layer has children
+  get hasChildren() {
+    return this.children.length > 0;
+  }
+
   // add a child NestedLayer object
   addChild(child) {
     if (!(child instanceof NestedLayer)) {
       throw new TypeError('child is not a NestedLayer');
     }
     this._props.children.push(child);
+  }
+
+  enableChildren() {
+    this._setChildrenEnabledState(true, this.children);
+  }
+
+  disableChildren() {
+    this._setChildrenEnabledState(false, this.children);
+  }
+
+  _setChildrenEnabledState(state, children) {
+    // recursively loops through children (and their children, etc.) to
+    // either enable or disable
+    for (let i = 0; i < children.length; i++) {
+      children[i].enabled = state;
+      if (children[i].hasChildren) {
+        this._setChildrenEnabledState(state, children[i].children);
+      }
+    }
+  }
+
+  _handleMapZoom = (event) => {
+    console.log('Zoom ended', this, event);
   }
 
   // display on map

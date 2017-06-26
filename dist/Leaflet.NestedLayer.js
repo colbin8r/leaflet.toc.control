@@ -21,7 +21,13 @@ var NestedLayer = function () {
   // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
   // 'children' array (optional)
   function NestedLayer(options) {
+    var _this = this;
+
     _classCallCheck(this, NestedLayer);
+
+    this._handleMapZoom = function (event) {
+      console.log('Zoom ended', _this, event);
+    };
 
     // set default props for optional options
     this._props = { children: [], enabled: true, selected: false, swatch: '' };
@@ -41,6 +47,17 @@ var NestedLayer = function () {
     }
 
     Object.assign(this._props, options);
+
+    // if this is an Esri layer, we need to handle the case where the user zooms to a level where our
+    // layer should be disabled according to the minZoom/maxZoom contained in the layer object
+    console.log(this.layer);
+    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
+      this.map.on('zoomend', this._handleMapZoom());
+    }
+
+    // this.layer.on('remove', (ev) => {
+    //   console.log('remove event fired:', this.name.toUpperCase(), ev);
+    // })
   }
 
   _createClass(NestedLayer, [{
@@ -90,11 +107,33 @@ var NestedLayer = function () {
       }
       this._props.children.push(child);
     }
-
-    // display on map
-
+  }, {
+    key: 'enableChildren',
+    value: function enableChildren() {
+      this._setChildrenEnabledState(true, this.children);
+    }
+  }, {
+    key: 'disableChildren',
+    value: function disableChildren() {
+      this._setChildrenEnabledState(false, this.children);
+    }
+  }, {
+    key: '_setChildrenEnabledState',
+    value: function _setChildrenEnabledState(state, children) {
+      // recursively loops through children (and their children, etc.) to
+      // either enable or disable
+      for (var i = 0; i < children.length; i++) {
+        children[i].enabled = state;
+        if (children[i].hasChildren) {
+          this._setChildrenEnabledState(state, children[i].children);
+        }
+      }
+    }
   }, {
     key: '_attach',
+
+
+    // display on map
     value: function _attach() {
       if (!this._isAttached) {
         this.layer.addTo(this.map);
@@ -157,6 +196,15 @@ var NestedLayer = function () {
     },
     set: function set(val) {
       this._props.enabled = val;
+
+      // if disabling, detach from map
+      if (!val) {
+        this._detach();
+
+        // if enabling, and marked selected (i.e. "re-enabling"), attach to map
+      } else if (this._props.selected) {
+        this._attach();
+      }
     }
 
     // selected = layer present on the map
@@ -175,10 +223,13 @@ var NestedLayer = function () {
       this._props.selected = val;
 
       // attach/detach from map when needed
+      // disable children from selection when unselected
       if (this.selected) {
         this._attach();
+        this.enableChildren();
       } else {
         this._detach();
+        this.disableChildren();
       }
     }
   }, {
@@ -190,6 +241,14 @@ var NestedLayer = function () {
     key: 'deselected',
     get: function get() {
       return !this.selected;
+    }
+
+    // true if the layer has children
+
+  }, {
+    key: 'hasChildren',
+    get: function get() {
+      return this.children.length > 0;
     }
   }]);
 

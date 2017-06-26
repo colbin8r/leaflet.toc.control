@@ -22,6 +22,18 @@ body {
   height: 50vh;
   width: 100%;
 }
+.layer-name {
+  cursor: pointer;
+}
+
+.leaf.enabled {
+  color: limegreen;
+}
+.leaf.disabled {
+  color: grey;
+}
+
+
 </style>
 
 </head>
@@ -37,7 +49,8 @@ body {
 
 <script>
 
-var map = L.map('map').setView([51.505, -0.09], 13);
+// var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([37.4316, -78.6569], 13);
 
 // sample layer
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -48,7 +61,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 // manually assemble a small layer hierarchy
-var mapserverURL = 'http://gis.vdot.virginia.gov/arcgis/rest/services/varoads/VARoads/MapServer';
+var mapserverURL = 'http://gis.vdot.virginia.gov/arcgis/rest/services/varoads/ADT/MapServer';
 
 var leafletLayers = {
   parent: L.esri.dynamicMapLayer({
@@ -64,6 +77,11 @@ var leafletLayers = {
   child2: L.esri.dynamicMapLayer({
     url: mapserverURL,
     opacity : 0.25,
+    layers: [2]
+  }),
+  baby1: L.esri.dynamicMapLayer({
+    url: mapserverURL,
+    opacity : 0.25,
     layers: [3]
   })
 }
@@ -71,23 +89,35 @@ var leafletLayers = {
 var layers = [
   L.nestedLayer({
     id: leafletLayers.parent.getLayers()[0],
-    name: "Sample Layer 1",
+    name: "Interstates (1)",
     layer: leafletLayers.parent,
     map: map,
+    swatch: "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAA1BMVEUA/wA0XsCoAAAADUlEQVR4AWMY9GAUAAABpAABXUC05gAAAABJRU5ErkJggg==",
     children: [
       L.nestedLayer({
-        id: leafletLayers.parent.getLayers()[0],
-        name: "Sample Layer 1.A",
+        id: leafletLayers.child1.getLayers()[0],
+        name: "US Highways (1.A)",
         layer: leafletLayers.child1,
         map: map,
+        swatch: "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAA1BMVEUAAP+KeNJXAAAADUlEQVR4AWMY9GAUAAABpAABXUC05gAAAABJRU5ErkJggg==",
         children: []
       }),
       L.nestedLayer({
-        id: leafletLayers.parent.getLayers()[0],
-        name: "Sample Layer 1.B",
+        id: leafletLayers.child2.getLayers()[0],
+        name: "State Routes (1.B)",
         layer: leafletLayers.child2,
         map: map,
-        children: []
+        swatch: "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAA1BMVEX/AP804Oa6AAAADUlEQVR4AWMY9GAUAAABpAABXUC05gAAAABJRU5ErkJggg==",
+        children: [
+          L.nestedLayer({
+            id: leafletLayers.baby1.getLayers()[0],
+            name: "All Roads (1.B.1)",
+            layer: leafletLayers.baby1,
+            map: map,
+            swatch: "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAA1BMVEX/AP804Oa6AAAADUlEQVR4AWMY9GAUAAABpAABXUC05gAAAABJRU5ErkJggg==",
+            children: []
+          })
+        ]
       })
     ]
   })

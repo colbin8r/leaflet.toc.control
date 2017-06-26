@@ -1,8 +1,18 @@
 /*global describe, expect, it, beforeEach*/
-import NestedLayer from './../../src/Leaflet.NestedLayer';
-import LayerHierarchy from './../../src/Leaflet.LayerHierarchy';
+import NestedLayer from './../src/Leaflet.NestedLayer';
+import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
 
 describe( 'LayerHierarchy', () => {
+
+  function stubLayer(id) {
+    return {
+      id,
+      addTo: function() {},
+      removeFrom: function() {},
+      remove: function() {},
+      on: function() {}
+    }
+  }
 
   let h, layers, l,
       l0,     l1,     l2,     l3,     l4,
@@ -11,21 +21,21 @@ describe( 'LayerHierarchy', () => {
     l = new NestedLayer({
       id: 999,
       name: 'Layer 999',
-      layer: {id: 999},
+      layer: stubLayer(999),
       map: {}
     });
 
     l2 = {
       id: 2,
       name: 'Layer 2',
-      layer: {id: 2},
+      layer: stubLayer(2),
       map: {},
       children: []
     };
     l3 = {
       id: 3,
       name: 'Layer 3',
-      layer: {id: 3},
+      layer: stubLayer(3),
       map: {},
       children: []
     }
@@ -34,7 +44,7 @@ describe( 'LayerHierarchy', () => {
     l1 = {
       id: 1,
       name: 'Layer 1',
-      layer: {id: 1},
+      layer: stubLayer(1),
       map: {},
       children: [layer2, layer3]
     }
@@ -42,7 +52,7 @@ describe( 'LayerHierarchy', () => {
     l0 = {
       id: 0,
       name: 'Layer 0',
-      layer: {id: 0},
+      layer: stubLayer(0),
       map: {},
       children: [layer1]
     }
@@ -50,7 +60,7 @@ describe( 'LayerHierarchy', () => {
     l4 = {
       id: 4,
       name: 'Layer 4',
-      layer: {id: 4},
+      layer: stubLayer(4),
       map: {},
       children: []
     }

@@ -1,6 +1,6 @@
 /*global describe, expect, it, beforeEach*/
-import NestedLayers from './../../src/Leaflet.Control.NestedLayers';
-import LayerHierarchy from './../../src/Leaflet.LayerHierarchy';
+import NestedLayers from './../src/Leaflet.Control.NestedLayers';
+import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
 
 import jsdom from 'jsdom';
 

@@ -4706,7 +4706,13 @@ var NestedLayer = function () {
   // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
   // 'children' array (optional)
   function NestedLayer(options) {
+    var _this = this;
+
     _classCallCheck(this, NestedLayer);
+
+    this._handleMapZoom = function (event) {
+      console.log('Zoom ended', _this, event);
+    };
 
     // set default props for optional options
     this._props = { children: [], enabled: true, selected: false, swatch: '' };
@@ -4726,6 +4732,17 @@ var NestedLayer = function () {
     }
 
     Object.assign(this._props, options);
+
+    // if this is an Esri layer, we need to handle the case where the user zooms to a level where our
+    // layer should be disabled according to the minZoom/maxZoom contained in the layer object
+    console.log(this.layer);
+    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
+      this.map.on('zoomend', this._handleMapZoom());
+    }
+
+    // this.layer.on('remove', (ev) => {
+    //   console.log('remove event fired:', this.name.toUpperCase(), ev);
+    // })
   }
 
   _createClass(NestedLayer, [{
@@ -4759,7 +4776,6 @@ var NestedLayer = function () {
   }, {
     key: 'toggleSelected',
     value: function toggleSelected() {
-      debugger;
       this.selected = !this.selected;
     }
 
@@ -4776,11 +4792,33 @@ var NestedLayer = function () {
       }
       this._props.children.push(child);
     }
-
-    // display on map
-
+  }, {
+    key: 'enableChildren',
+    value: function enableChildren() {
+      this._setChildrenEnabledState(true, this.children);
+    }
+  }, {
+    key: 'disableChildren',
+    value: function disableChildren() {
+      this._setChildrenEnabledState(false, this.children);
+    }
+  }, {
+    key: '_setChildrenEnabledState',
+    value: function _setChildrenEnabledState(state, children) {
+      // recursively loops through children (and their children, etc.) to
+      // either enable or disable
+      for (var i = 0; i < children.length; i++) {
+        children[i].enabled = state;
+        if (children[i].hasChildren) {
+          this._setChildrenEnabledState(state, children[i].children);
+        }
+      }
+    }
   }, {
     key: '_attach',
+
+
+    // display on map
     value: function _attach() {
       if (!this._isAttached) {
         this.layer.addTo(this.map);
@@ -4843,6 +4881,15 @@ var NestedLayer = function () {
     },
     set: function set(val) {
       this._props.enabled = val;
+
+      // if disabling, detach from map
+      if (!val) {
+        this._detach();
+
+        // if enabling, and marked selected (i.e. "re-enabling"), attach to map
+      } else if (this._props.selected) {
+        this._attach();
+      }
     }
 
     // selected = layer present on the map
@@ -4861,10 +4908,13 @@ var NestedLayer = function () {
       this._props.selected = val;
 
       // attach/detach from map when needed
+      // disable children from selection when unselected
       if (this.selected) {
         this._attach();
+        this.enableChildren();
       } else {
         this._detach();
+        this.disableChildren();
       }
     }
   }, {
@@ -4876,6 +4926,14 @@ var NestedLayer = function () {
     key: 'deselected',
     get: function get() {
       return !this.selected;
+    }
+
+    // true if the layer has children
+
+  }, {
+    key: 'hasChildren',
+    get: function get() {
+      return this.children.length > 0;
     }
   }]);
 
@@ -23928,6 +23986,10 @@ var _Leaflet3 = __webpack_require__(33);
 
 var _Leaflet4 = _interopRequireDefault(_Leaflet3);
 
+var _classnames = __webpack_require__(191);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23936,46 +23998,84 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import colors from 'colors';
+
 var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Component) {
   _inherits(NestedLayersComponent, _React$Component);
 
   function NestedLayersComponent(props) {
     _classCallCheck(this, NestedLayersComponent);
 
-    return _possibleConstructorReturn(this, (NestedLayersComponent.__proto__ || Object.getPrototypeOf(NestedLayersComponent)).call(this, props));
-    // primary prop is 'hierarchy', an instance of Leaflet.LayerHierarchy
+    var _this = _possibleConstructorReturn(this, (NestedLayersComponent.__proto__ || Object.getPrototypeOf(NestedLayersComponent)).call(this, props));
+
+    _this.handleToggleSelected = function (layer) {
+      var id = layer.id;
+      var newHierarchy = _this.state.hierarchy;
+      newHierarchy.getLayerByID(id).toggleSelected();
+      _this.setState({
+        hierarchy: newHierarchy
+      });
+    };
+
+    _this.makeComponentFromLayer = function (layer) {
+      // recursive function
+      // 'leaf' is the base case
+      // property initializer syntax + arrow function keeps the scope of 'this' through recursive calls
+      var componentChildren = void 0;
+
+      // branch: this layer has children
+      if (layer.children.length > 0) {
+        // leaves = layer.children.map(this.makeComponentFromLayer)
+        componentChildren = _react2.default.createElement(
+          'ul',
+          { className: 'branch' },
+          layer.children.map(_this.makeComponentFromLayer)
+        );
+      }
+
+      return _react2.default.createElement(
+        NestedLayerComponent,
+        { layer: layer, onToggleSelected: _this.handleToggleSelected, key: _this.makeLayerKey(layer) },
+        componentChildren
+      );
+
+      // // branch: this layer has children
+      // if (layer.children.length > 0) {
+      //   // recursively calls this function on each child (leaf)
+      //   // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
+      //   const leaves = layer.children.map(this.makeComponentFromLayer);
+
+      //   return (
+      //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>
+      //       <ul className="branch">
+      //         {leaves}
+      //       </ul>
+      //     </NestedLayerComponent>
+      //   );
+      // } else {
+      // // leaf: this layer is just a leaf
+
+      //   return (
+      //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)} />
+      //   )
+      // }
+    };
+
+    _this.state = {
+      hierarchy: _this.props.hierarchy
+    };
+    return _this;
   }
 
   _createClass(NestedLayersComponent, [{
-    key: 'makeComponentFromLayer',
-    value: function makeComponentFromLayer(layer) {
-      // recursive function
-      // 'leaf' is the base case
-
-      // branch: this layer has children
-      if (layer.children.length < 0) {
-        // recursively calls this function on each child (leaf)
-        // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
-        var leaves = layer.children.map(this.makeComponentFromLayer);
-
-        return _react2.default.createElement(
-          NestedLayerComponent,
-          { l: layer },
-          _react2.default.createElement(
-            'ul',
-            { className: 'branch' },
-            leaves
-          )
-        );
-      } else {
-        // leaf: this layer is just a leaf
-        return _react2.default.createElement(NestedLayerComponent, { l: layer, key: layer.id });
-      }
+    key: 'makeLayerKey',
+    value: function makeLayerKey(layer) {
+      return layer.id.toString + layer.name;
     }
   }, {
     key: 'render',
     value: function render() {
-      var roots = this.props.hierarchy.getRootLayers();
+      var roots = this.state.hierarchy.getRootLayers();
       var components = [];
 
       for (var i = 0; i < roots.length; i++) {
@@ -23985,8 +24085,16 @@ var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Com
       return _react2.default.createElement(
         'div',
         { className: 'nested-layer-control-container' },
-        'TOC CONTROL',
-        components
+        _react2.default.createElement(
+          'h2',
+          null,
+          'TOC CONTROL'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'branch nested-layer-control' },
+          components
+        )
       );
     }
   }]);
@@ -23994,35 +24102,62 @@ var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Com
   return NestedLayersComponent;
 }(_react2.default.Component);
 
+NestedLayersComponent.propTypes = {
+  hierarchy: _propTypes2.default.instanceOf(_Leaflet2.default).isRequired
+};
+
 var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Component2) {
   _inherits(NestedLayerComponent, _React$Component2);
 
   function NestedLayerComponent(props) {
     _classCallCheck(this, NestedLayerComponent);
 
-    // this.state = {date: new Date()};
+    // this.state = {...this.props};
     var _this2 = _possibleConstructorReturn(this, (NestedLayerComponent.__proto__ || Object.getPrototypeOf(NestedLayerComponent)).call(this, props));
 
     _this2.toggleSelected = function () {
-      debugger;
-      _this2.props.l.toggleSelected();
+      // updates both the component state and the LayerHierarchy structure
+      _this2.props.onToggleSelected(_this2.props.layer);
+
+      // this.props.layer.toggleSelected();
+
+      // if (this.props.layer.deselected || this.props.layer.disabled) {
+      //   this.props.layer.disableChildren()
+      // } else if (this.props.layer.enabled) {
+      //   this.props.layer.enableChildren()
+      // }
+
+      // this.setState({
+      //   selected: this.props.layer.selected,
+      //   enabled: this.props.layer.enabled
+      // });
     };
 
+    _this2.getSwatch = function () {
+      return "data:image/png;base64," + _this2.props.layer.swatch;
+    };
+
+    _this2.state = {};
     return _this2;
   }
 
   _createClass(NestedLayerComponent, [{
     key: 'render',
     value: function render() {
+      var itemClassNames = (0, _classnames2.default)({
+        leaf: true,
+        enabled: this.props.layer.enabled,
+        disabled: this.props.layer.disabled
+      });
       return _react2.default.createElement(
         'li',
-        { className: 'leaf', onClick: this.toggleSelected },
-        _react2.default.createElement('input', { type: 'checkbox', value: this.props.l.selected }),
-        this.props.l.swatch.length > 0 && _react2.default.createElement('img', { src: 'data:{this.props.l.swatch}', className: 'swatch' }),
+        { className: itemClassNames },
+        _react2.default.createElement('input', { type: 'checkbox', checked: this.props.layer.selected }),
+        this.props.layer.swatch.length > 0 && _react2.default.createElement('img', { src: this.getSwatch(), className: 'swatch' }),
         _react2.default.createElement(
           'span',
-          { className: 'layer-name' },
-          this.props.l.name
+          { className: 'layer-name', onClick: this.toggleSelected },
+          this.props.layer.name
         ),
         this.props.children
       );
@@ -24033,7 +24168,12 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
 }(_react2.default.Component);
 
 NestedLayerComponent.propTypes = {
-  l: _propTypes2.default.instanceOf(_Leaflet4.default).isRequired
+  layer: _propTypes2.default.instanceOf(_Leaflet4.default).isRequired,
+  // selected: PropTypes.bool.isRequired,
+  // enabled: PropTypes.bool.isRequired,
+  // name: PropTypes.string.isRequired,
+  // swatch: PropTypes.string
+  onToggleSelected: _propTypes2.default.func.isRequired
 };
 
 var NestedLayers = function () {
@@ -36369,6 +36509,61 @@ module.exports = function() {
 
   return ReactPropTypes;
 };
+
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+}());
 
 
 /***/ })
