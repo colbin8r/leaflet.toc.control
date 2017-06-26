@@ -1,17 +1,23 @@
 /*global describe, expect, it, beforeEach*/
 import NestedLayer from './../src/Leaflet.NestedLayer';
 
+import L from 'leaflet-headless';
 import sinon from 'sinon';
 
 describe( 'NestedLayer', () => {
 
-  function stubLayer(id) {
+  function stubLayer(id, options) {
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     return {
       id,
       addTo: function() {},
       removeFrom: function() {},
       remove: function() {},
-      on: function() {}
+      on: function() {},
+      minZoom: options.minZoom,
+      maxZoom: options.maxZoom
     }
   }
 
@@ -78,6 +84,10 @@ describe( 'NestedLayer', () => {
     // children
     expect(l._props).to.have.property('children');
     expect(l.children).to.be.empty;
+
+    // swatch
+    expect(l._props).to.have.property('swatch');
+    expect(l.swatch).to.equal('');
 
     // enabled + selected
     expect(l.enabled).to.be.true;
@@ -293,5 +303,28 @@ describe( 'NestedLayer', () => {
     l.deselect();
     expect(layerRemoveSpy.calledOnce).to.be.true;
   });
+
+  it('should disable itself if the map is zoomed beyond its zoom boundaries', () => {
+    const minZoom = 5, maxZoom = 15;
+    const map = L.map(document.createElement('div')).setView([52, 4], 10);
+    const layer = new NestedLayer({
+      id: 888,
+      name: 'Layer 888',
+      layer: stubLayer(888, {minZoom, maxZoom}),
+      map,
+      enabled: true,
+      selected: true
+    });
+    expect(layer.minZoom).to.equal(minZoom);
+    expect(layer.maxZoom).to.equal(maxZoom);
+
+    const removeSpy = sinon.spy(layer.layer, 'removeFrom');
+    map.setZoom(4);
+    expect(removeSpy.callCount).to.equal(1);
+
+    map.setZoom(10); // this ensures the layer is reattached to the map
+    map.setZoom(16);
+    expect(removeSpy.callCount).to.equal(2);
+  })
 
 } );

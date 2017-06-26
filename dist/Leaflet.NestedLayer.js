@@ -19,20 +19,31 @@ var NestedLayer = function () {
   // options include:
   // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
   // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
-  // 'children' array (optional)
+  // 'children' array (optional), 'minZoom' zoom level (optional), 'maxZoom' zoom level (optional)
   function NestedLayer(options) {
     var _this = this;
 
     _classCallCheck(this, NestedLayer);
 
-    this._handleMapZoom = function (event) {
-      console.log('Zoom ended', _this, event);
+    this._handleMapZoom = function () {
+      console.log('Zoom ended listener');
+      var zoom = _this.map.getZoom();
+      console.log(zoom);
+
+      if (zoom < _this.minZoom || zoom > _this.maxZoom) {
+        console.log('Outside zoom level, detaching...');
+        _this._detach();
+      } else {
+        console.log('Within zoom level, attaching...');
+        _this._attach();
+      }
     };
 
     // set default props for optional options
     this._props = { children: [], enabled: true, selected: false, swatch: '' };
     this._isAttached = false;
 
+    // verify that all required arguments are present
     if (typeof options.id == 'undefined') {
       throw new Error('Missing ID when creating NestedLayer');
     }
@@ -48,16 +59,26 @@ var NestedLayer = function () {
 
     Object.assign(this._props, options);
 
-    // if this is an Esri layer, we need to handle the case where the user zooms to a level where our
-    // layer should be disabled according to the minZoom/maxZoom contained in the layer object
-    console.log(this.layer);
-    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
-      this.map.on('zoomend', this._handleMapZoom());
+    // if this layer is starting off selected, attach to the map
+    // calling this.select() ensures that we follow any other attachment rules
+    // built into the 'selected' setter
+    if (this.selected) {
+      this.select();
     }
 
-    // this.layer.on('remove', (ev) => {
-    //   console.log('remove event fired:', this.name.toUpperCase(), ev);
-    // })
+    // if the zoom properties are on the leaflet layer object, copy them up to the
+    // NestedLayer object
+    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
+      this._props.minZoom = this.layer.minZoom;
+      this._props.maxZoom = this.layer.maxZoom;
+    }
+
+    // if this layer has zoom data, we need to handle the case where the user zooms to a level where
+    // our layer should be disabled according to the minZoom/maxZoom contained in the layer object
+    if (this.minZoom !== undefined && this.maxZoom !== undefined) {
+      console.info('zoom info detected, attaching listener...');
+      this.map.on('zoomend', this._handleMapZoom);
+    }
   }
 
   _createClass(NestedLayer, [{
@@ -180,6 +201,16 @@ var NestedLayer = function () {
     key: 'children',
     get: function get() {
       return this._props.children;
+    }
+  }, {
+    key: 'minZoom',
+    get: function get() {
+      return this._props.minZoom;
+    }
+  }, {
+    key: 'maxZoom',
+    get: function get() {
+      return this._props.maxZoom;
     }
 
     // enabled = user may freely toggle this layer on and off
