@@ -75,7 +75,7 @@ $ npm run pack:watch
 
 The `npm test` script will lint, run tests, and check code coverage. It's the best way to verify that all the code works short of actually transpling/bundling it.
 ```sh
-$ npm run test
+$ npm test
 ```
 
 ```sh
