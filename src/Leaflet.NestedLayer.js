@@ -44,7 +44,6 @@ export default class NestedLayer {
     // if this layer has zoom data, we need to handle the case where the user zooms to a level where
     // our layer should be disabled according to the minZoom/maxZoom contained in the layer object
     if (this.minZoom !== undefined && this.maxZoom !== undefined) {
-      console.info('zoom info detected, attaching listener...');
       this.map.on('zoomend', this._handleMapZoom);
     }
   }
@@ -187,15 +186,11 @@ export default class NestedLayer {
   }
 
   _handleMapZoom = () => {
-    console.log('Zoom ended listener');
     const zoom = this.map.getZoom();
-    console.log(zoom);
 
     if (zoom < this.minZoom || zoom > this.maxZoom) {
-      console.log('Outside zoom level, detaching...');
       this._detach();
     } else {
-      console.log('Within zoom level, attaching...');
       this._attach()
     }
   }

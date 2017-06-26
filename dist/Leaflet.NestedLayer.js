@@ -26,15 +26,11 @@ var NestedLayer = function () {
     _classCallCheck(this, NestedLayer);
 
     this._handleMapZoom = function () {
-      console.log('Zoom ended listener');
       var zoom = _this.map.getZoom();
-      console.log(zoom);
 
       if (zoom < _this.minZoom || zoom > _this.maxZoom) {
-        console.log('Outside zoom level, detaching...');
         _this._detach();
       } else {
-        console.log('Within zoom level, attaching...');
         _this._attach();
       }
     };
@@ -76,7 +72,6 @@ var NestedLayer = function () {
     // if this layer has zoom data, we need to handle the case where the user zooms to a level where
     // our layer should be disabled according to the minZoom/maxZoom contained in the layer object
     if (this.minZoom !== undefined && this.maxZoom !== undefined) {
-      console.info('zoom info detected, attaching listener...');
       this.map.on('zoomend', this._handleMapZoom);
     }
   }
