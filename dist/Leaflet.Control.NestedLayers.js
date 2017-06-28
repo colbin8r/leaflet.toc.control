@@ -7,10 +7,6 @@ exports.NestedLayerComponent = exports.NestedLayersComponent = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _leafletHeadless = require('leaflet-headless');
-
-var _leafletHeadless2 = _interopRequireDefault(_leafletHeadless);
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -41,9 +37,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import colors from 'colors';
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // import colors from 'colors';
 
 var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Component) {
   _inherits(NestedLayersComponent, _React$Component);
@@ -157,29 +151,15 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
   function NestedLayerComponent(props) {
     _classCallCheck(this, NestedLayerComponent);
 
-    // this.state = {...this.props};
     var _this2 = _possibleConstructorReturn(this, (NestedLayerComponent.__proto__ || Object.getPrototypeOf(NestedLayerComponent)).call(this, props));
 
     _this2.toggleSelected = function () {
       // updates both the component state and the LayerHierarchy structure
       _this2.props.onToggleSelected(_this2.props.layer);
-
-      // this.props.layer.toggleSelected();
-
-      // if (this.props.layer.deselected || this.props.layer.disabled) {
-      //   this.props.layer.disableChildren()
-      // } else if (this.props.layer.enabled) {
-      //   this.props.layer.enableChildren()
-      // }
-
-      // this.setState({
-      //   selected: this.props.layer.selected,
-      //   enabled: this.props.layer.enabled
-      // });
     };
 
     _this2.getSwatch = function () {
-      return "data:image/png;base64," + _this2.props.layer.swatch;
+      return 'data:image/png;base64,' + _this2.props.layer.swatch;
     };
 
     _this2.state = {};
@@ -214,11 +194,8 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
 
 NestedLayerComponent.propTypes = {
   layer: _propTypes2.default.instanceOf(_Leaflet4.default).isRequired,
-  // selected: PropTypes.bool.isRequired,
-  // enabled: PropTypes.bool.isRequired,
-  // name: PropTypes.string.isRequired,
-  // swatch: PropTypes.string
-  onToggleSelected: _propTypes2.default.func.isRequired
+  onToggleSelected: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.any
 };
 
 var NestedLayers = function () {
@@ -241,7 +218,7 @@ var NestedLayers = function () {
     }
     this.hierarchy = hierarchy;
     if (typeof element == 'undefined') {
-      throw new Error('Missing element when creating NestedLayers control');
+      throw new Error('Missing DOM element when creating NestedLayers control');
     }
     this.element = element;
 

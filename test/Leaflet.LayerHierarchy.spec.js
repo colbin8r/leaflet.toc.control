@@ -97,4 +97,34 @@ describe( 'LayerHierarchy', () => {
     expect(layer0.children).to.include(l);
   });
 
+  it('should have valid enabled states upon creation', () => {
+    // use a customized subset of the fixtures for this test
+    // layers 1 and 2 are enabled and children of layer 0, which is disabled
+    // layer 3 is enabled and a child of layer 2
+    // layer 4 is disabled and a child of layer 2
+    // at the start of the test
+    l3.enabled = true;
+    layer3 = new NestedLayer(l3);
+    l4.enabled = false;
+    layer4 = new NestedLayer(l4);
+    l1.children = [];
+    l2.children = [layer3, layer4];
+    l1.enabled = l2.enabled = true;
+    layer1 = new NestedLayer(l1);
+    layer2 = new NestedLayer(l2);
+    l0.children = [layer1, layer2];
+    l0.enabled = false;
+    layer0 = new NestedLayer(l0);
+    layers = [layer0];
+    let hierarchy = new LayerHierarchy({layers});
+
+    // the constructor should have validated the enabled state of all the layers
+    // layers 1 and 2 shoud now be disabled
+
+    expect(layer1.disabled).to.be.true;
+    expect(layer2.disabled).to.be.true;
+    expect(layer3.disabled).to.be.true;
+    expect(layer4.disabled).to.be.true;
+  })
+
 } );

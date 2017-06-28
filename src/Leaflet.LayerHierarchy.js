@@ -1,4 +1,3 @@
-import L from 'leaflet-headless';
 import NestedLayer from './Leaflet.NestedLayer';
 
 export default class LayerHierarchy {
@@ -9,6 +8,8 @@ export default class LayerHierarchy {
       options = {};
     }
     this._layers = (Array.isArray(options.layers) ? options.layers : []);
+
+    this.validateEnabledStates();
   }
 
   // adds a new NestedLayer object into the tree
@@ -32,6 +33,7 @@ export default class LayerHierarchy {
   }
 
   // looks up NestedLayer object by traversing the tree
+  // when calling, do not pass a 'children' parameter
   getLayerByID(id, children) {
 
     // if the function was not called recursively
@@ -39,7 +41,7 @@ export default class LayerHierarchy {
       children = this._layers;
     }
 
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
 
       // if the child matches
       if (children[i].id == id) {
@@ -62,12 +64,43 @@ export default class LayerHierarchy {
 
     }
 
-    // if execution reaches here, no layers in this subtree have the requested id
+    // if execution reaches here, no layers in this tree or subtree have the requested id
     return null;
   }
 
   getRootLayers() {
     return this._layers;
+  }
+
+  // check all the children to ensure that they are all enabled/disabled as appropriate
+  // the highest layer takes precedence over lower layers
+  // i.e. if a root-level layer is disabled, then all its children will be disabled as well
+  // parameters should be undefined when called the first time; the function is recursive
+  validateEnabledStates(layers, newEnabledValue) {
+    // first call? then layers = the whole true
+    if (typeof layers === 'undefined') {
+      // console.log('validateEnabledStates: first call');
+      layers = this.getRootLayers();
+    }
+
+    for (let i = 0; i < layers.length; i++) {
+      // console.log('validateEnabledStates: checking', layers[i].name);
+
+      // if we have a specific enabled value, set the children to that
+      if (typeof newEnabledValue !== 'undefined') {
+        // console.log('validateEnabledStates: setting', layers[i].name, 'to', newEnabledValue);
+        layers[i].enabled = newEnabledValue;
+      }
+
+      // if the layer has children, repeat this process on them
+      // console.log('validateEnabledStates: does', layers[i].name, 'have children?', (layers[i].hasChildren ? 'yes' : 'no'));
+      if (layers[i].hasChildren) {
+        // console.log('validateEnabledStates: setting children of', layers[i].name, 'to', layers[i].enabled);
+        this.validateEnabledStates(layers[i].children, layers[i].enabled)
+      }
+
+    }
+
   }
 
 }

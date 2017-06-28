@@ -1,5 +1,3 @@
-import L from 'leaflet-headless';
-
 // import colors from 'colors';
 
 import React from 'react';
@@ -100,39 +98,22 @@ export class NestedLayersComponent extends React.Component {
 export class NestedLayerComponent extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {...this.props};
     this.state = {};
   }
 
   static propTypes = {
     layer: PropTypes.instanceOf(NestedLayer).isRequired,
-    // selected: PropTypes.bool.isRequired,
-    // enabled: PropTypes.bool.isRequired,
-    // name: PropTypes.string.isRequired,
-    // swatch: PropTypes.string
-    onToggleSelected: PropTypes.func.isRequired
+    onToggleSelected: PropTypes.func.isRequired,
+    children: PropTypes.any
   }
 
   toggleSelected = () => {
     // updates both the component state and the LayerHierarchy structure
     this.props.onToggleSelected(this.props.layer);
-
-    // this.props.layer.toggleSelected();
-
-    // if (this.props.layer.deselected || this.props.layer.disabled) {
-    //   this.props.layer.disableChildren()
-    // } else if (this.props.layer.enabled) {
-    //   this.props.layer.enableChildren()
-    // }
-
-    // this.setState({
-    //   selected: this.props.layer.selected,
-    //   enabled: this.props.layer.enabled
-    // });
   }
 
   getSwatch = () => {
-    return "data:image/png;base64," + this.props.layer.swatch;
+    return 'data:image/png;base64,' + this.props.layer.swatch;
   }
 
   render() {
@@ -168,12 +149,13 @@ export default class NestedLayers {
    * n/a
    */
   constructor(hierarchy, element, options) {
+
     if (typeof hierarchy == 'undefined') {
       throw new Error('Missing hierarchy when creating NestedLayers control');
     }
     this.hierarchy = hierarchy;
     if (typeof element == 'undefined') {
-      throw new Error('Missing element when creating NestedLayers control');
+      throw new Error('Missing DOM element when creating NestedLayers control');
     }
     this.element = element;
 
