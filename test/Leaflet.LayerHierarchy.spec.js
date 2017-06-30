@@ -14,16 +14,17 @@ describe( 'LayerHierarchy', () => {
     }
   }
 
-  let h, layers, l,
+  let h, layers, l, layerData, ownedLayer,
       l0,     l1,     l2,     l3,     l4,
       layer0, layer1, layer2, layer3, layer4;
   beforeEach( () => {
-    l = new NestedLayer({
+    layerData = {
       id: 999,
       name: 'Layer 999',
       layer: stubLayer(999),
       map: {}
-    });
+    };
+    l = new NestedLayer(layerData);
 
     l2 = {
       id: 2,
@@ -41,6 +42,7 @@ describe( 'LayerHierarchy', () => {
     }
     layer2 = new NestedLayer(l2);
     layer3 = new NestedLayer(l3);
+
     l1 = {
       id: 1,
       name: 'Layer 1',
@@ -49,6 +51,7 @@ describe( 'LayerHierarchy', () => {
       children: [layer2, layer3]
     }
     layer1 = new NestedLayer(l1);
+
     l0 = {
       id: 0,
       name: 'Layer 0',
@@ -57,6 +60,7 @@ describe( 'LayerHierarchy', () => {
       children: [layer1]
     }
     layer0 = new NestedLayer(l0);
+
     l4 = {
       id: 4,
       name: 'Layer 4',
@@ -67,9 +71,32 @@ describe( 'LayerHierarchy', () => {
     layer4 = new NestedLayer(l4);
 
     layers = [layer0, layer4];
-
     h = new LayerHierarchy({layers});
+
+    ownedLayer = h.makeLayer(layerData);
   } );
+
+  it('should have default (configuration) options', () => {
+    // expect(control.options).to.be.an('object').that.is.not.empty;
+    expect(h.options).to.have.all.keys([
+      'followAncestorVisibility',
+      'followAncestorMutability',
+      'propogateDeselectToChildren'
+    ]);
+  });
+
+  it('should be able to make layers with a factory method', () => {
+    expect(ownedLayer).to.be.an.instanceOf(NestedLayer);
+  });
+
+  it('should be able to check if it owns a layer', () => {
+    expect(ownedLayer.owner).to.equal(h);
+    expect(ownedLayer.isOwnedBy(h)).to.be.true;
+
+    const nonOwner = {};
+    expect(ownedLayer.owner).to.not.equal(nonOwner);
+    expect(ownedLayer.isOwnedBy(nonOwner)).to.be.false;
+  });
 
   it('should be able to get layers by id', () => {
     expect(h.getLayerByID(0), 'hierarchy getLayerByID').to.equal(layer0);
@@ -77,6 +104,13 @@ describe( 'LayerHierarchy', () => {
     expect(h.getLayerByID(2), 'hierarchy getLayerByID').to.equal(layer2);
     expect(h.getLayerByID(3), 'hierarchy getLayerByID').to.equal(layer3);
     expect(h.getLayerByID(4), 'hierarchy getLayerByID').to.equal(layer4);
+  });
+
+  it('should not be able to add non-NestedLayer layers', () => {
+    const badLayer = {};
+    expect(() => {
+      h.addLayer(badLayer);
+    }).to.throw(TypeError, 'NestedLayer');
   });
 
   it('should be able to add layers at the root level', () => {
@@ -96,6 +130,24 @@ describe( 'LayerHierarchy', () => {
     expect(h.getLayerByID(l.id)).to.equal(l);
     expect(layer0.children).to.include(l);
   });
+
+  it('should ensure that layers it adds at the root level are owned by it', () => {
+    h.addLayer(l);
+    expect(l.isOwnedBy(h)).to.be.true;
+  });
+
+  it('should ensure that layers it adds below the root level are owned by it', () => {
+    h.addLayer(l, layer0.id)
+    expect(l.isOwnedBy(h)).to.be.true;
+  });
+
+  it('should own all layers it was created with', () => {
+    expect(layer0.isOwnedBy(h)).to.be.true;
+    // expect(layer1.isOwnedBy(h)).to.be.true;
+    // expect(layer2.isOwnedBy(h)).to.be.true;
+    // expect(layer3.isOwnedBy(h)).to.be.true;
+    // expect(layer4.isOwnedBy(h)).to.be.true;
+  })
 
   it('should have valid enabled states upon creation', () => {
     // use a customized subset of the fixtures for this test
@@ -125,6 +177,6 @@ describe( 'LayerHierarchy', () => {
     expect(layer2.disabled).to.be.true;
     expect(layer3.disabled).to.be.true;
     expect(layer4.disabled).to.be.true;
-  })
+  });
 
 } );

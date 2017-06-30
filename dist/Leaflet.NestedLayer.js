@@ -6,12 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _leafletHeadless = require('leaflet-headless');
-
-var _leafletHeadless2 = _interopRequireDefault(_leafletHeadless);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var NestedLayer = function () {
@@ -78,9 +72,6 @@ var NestedLayer = function () {
 
   _createClass(NestedLayer, [{
     key: 'enable',
-
-
-    // convenience methods to change state
     value: function enable() {
       this.enabled = true;
     }
@@ -94,6 +85,10 @@ var NestedLayer = function () {
     value: function toggleEnabled() {
       this.enabled = !this.enabled;
     }
+
+    // selected = layer present on the map
+    // deselected = layer not present on the map
+
   }, {
     key: 'select',
     value: function select() {
@@ -110,7 +105,17 @@ var NestedLayer = function () {
       this.selected = !this.selected;
     }
 
-    // convenience properties that reflect state
+    // this is used to track what programmatic object owns this NestedLayer
+
+  }, {
+    key: 'isOwnedBy',
+
+    // checks ownership
+    value: function isOwnedBy(owner) {
+      return this.owner === owner;
+    }
+
+    // true if the layer has children
 
   }, {
     key: 'addChild',
@@ -126,22 +131,31 @@ var NestedLayer = function () {
   }, {
     key: 'enableChildren',
     value: function enableChildren() {
-      this._setChildrenEnabledState(true, this.children);
+      this._applyStateChangeToAllChildren('enabled', true, this.children);
     }
   }, {
     key: 'disableChildren',
     value: function disableChildren() {
-      this._setChildrenEnabledState(false, this.children);
+      this._applyStateChangeToAllChildren('enabled', false, this.children);
     }
   }, {
-    key: '_setChildrenEnabledState',
-    value: function _setChildrenEnabledState(state, children) {
-      // recursively loops through children (and their children, etc.) to
-      // either enable or disable
+    key: 'ownChildren',
+    value: function ownChildren() {
+      this._applyStateChangeToAllChildren('owner', this.owner, this.children);
+    }
+  }, {
+    key: '_applyStateChangeToAllChildren',
+    value: function _applyStateChangeToAllChildren(prop, val, children) {
+      // utility to recursively loop through children (and their children, etc.)
+      // to change their state
+      // IDEA: convert to a "deep map" function
       for (var i = 0; i < children.length; i++) {
-        children[i].enabled = state;
+        // make the state change
+        children[i][prop] = val;
+
+        // loop through children/subtrees when necessary
         if (children[i].hasChildren) {
-          this._setChildrenEnabledState(state, children[i].children);
+          this._applyStateChangeToAllChildren(prop, val, children[i].children);
         }
       }
     }
@@ -232,10 +246,11 @@ var NestedLayer = function () {
         this._attach();
       }
     }
-
-    // selected = layer present on the map
-    // deselected = layer not present on the map
-
+  }, {
+    key: 'disabled',
+    get: function get() {
+      return !this.enabled;
+    }
   }, {
     key: 'selected',
     get: function get() {
@@ -259,18 +274,18 @@ var NestedLayer = function () {
       }
     }
   }, {
-    key: 'disabled',
-    get: function get() {
-      return !this.enabled;
-    }
-  }, {
     key: 'deselected',
     get: function get() {
       return !this.selected;
     }
-
-    // true if the layer has children
-
+  }, {
+    key: 'owner',
+    get: function get() {
+      return this._owner;
+    },
+    set: function set(val) {
+      this._owner = val;
+    }
   }, {
     key: 'hasChildren',
     get: function get() {

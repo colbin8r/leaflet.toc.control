@@ -4,12 +4,30 @@ export default class LayerHierarchy {
   constructor(options) {
     // for the layers parameter, ensure that we are at least passed an array
     // otherwise, default to empty array
-    if (typeof options === 'undefined') {
-      options = {};
-    }
-    this._layers = (Array.isArray(options.layers) ? options.layers : []);
+
+    // default options
+    this._options = {
+      // 'layers' will be deleted by the end of the constructor
+      layers: [],
+      followAncestorVisibility: true,
+      propogateDeselectToChildren: false,
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
+    Object.assign(this._options, options);
+
+    // extract the 'layers' property from 'options' into its own property
+    this._layers = this.options.layers;
+    delete this._options.layers;
 
     this.validateEnabledStates();
+
+    this.ownAllLayers(this.layers);
+  }
+
+  get options() {
+    return this._options;
   }
 
   // adds a new NestedLayer object into the tree
@@ -22,6 +40,9 @@ export default class LayerHierarchy {
     if (!(layer instanceof NestedLayer)) {
       throw new TypeError('layer is not a NestedLayer');
     }
+
+    // take ownership of the layer
+    layer.owner = this;
 
     if (typeof parentID != 'undefined') {
       // add as child
@@ -68,8 +89,15 @@ export default class LayerHierarchy {
     return null;
   }
 
-  getRootLayers() {
+  // getRootLayers() {
+  //   return this._layers;
+  // }
+
+  get layers() {
     return this._layers;
+  }
+  get rootLayers() {
+    return this.layers;
   }
 
   // check all the children to ensure that they are all enabled/disabled as appropriate
@@ -80,7 +108,7 @@ export default class LayerHierarchy {
     // first call? then layers = the whole true
     if (typeof layers === 'undefined') {
       // console.log('validateEnabledStates: first call');
-      layers = this.getRootLayers();
+      layers = this.rootLayers;
     }
 
     for (let i = 0; i < layers.length; i++) {
@@ -101,6 +129,27 @@ export default class LayerHierarchy {
 
     }
 
+  }
+
+  ownsLayer(layer) {
+    return layer.owner === this;
+  }
+
+  makeLayer(layerData) {
+    const l = new NestedLayer(layerData);
+    l.owner = this;
+    return l;
+  }
+
+  ownLayer(layer) {
+    layer.owner = this;
+  }
+
+  ownAllLayers(layers) {
+    for (let i = 0; i < layers.length; i++) {
+      this.ownLayer(layers[i]);
+      layers[i].ownChildren();
+    }
   }
 
 }

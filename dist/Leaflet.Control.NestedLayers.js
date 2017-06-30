@@ -114,7 +114,7 @@ var NestedLayersComponent = exports.NestedLayersComponent = function (_React$Com
   }, {
     key: 'render',
     value: function render() {
-      var roots = this.state.hierarchy.getRootLayers();
+      var roots = this.state.hierarchy.rootLayers;
       var components = [];
 
       for (var i = 0; i < roots.length; i++) {
@@ -222,8 +222,19 @@ var NestedLayers = function () {
     }
     this.element = element;
 
-    // save the options
-    this._options = {};
+    // default options
+    this._options = {
+      // deselecting any ancestor makes its children invisible (without changing their selected state)
+      followAncestorVisibility: true,
+
+      // deselecting a parent also deselects children (by changing their state)
+      propogateDeselectToChildren: false,
+
+      // deselecting any ancestor disables its children (cannot change children's selected state)
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
     Object.assign(this._options, options);
 
     this._component = _react2.default.createElement(NestedLayersComponent, { hierarchy: this.hierarchy });
@@ -237,12 +248,10 @@ var NestedLayers = function () {
   _createClass(NestedLayers, [{
     key: 'attach',
 
-    // no direct setting of 'isAttached' from outside the class
-    // the attach() and detach() methods handle this state
 
     // bind to DOM
     value: function attach() {
-      if (!this.isAttachedz) {
+      if (!this.isAttached) {
         _reactDom2.default.render(this.component, this.element);
       }
       this._isAttached = true;
@@ -293,19 +302,18 @@ var NestedLayers = function () {
     get: function get() {
       return this._component;
     }
-    // short convenience accessor
-
-  }, {
-    key: 'c',
-    get: function get() {
-      return this.component;
-    }
-    // no direct setting of 'component' from outside the class
-
   }, {
     key: 'isAttached',
     get: function get() {
       return this._isAttached;
+    }
+    // no direct setting of 'isAttached' from outside the class
+    // the attach() and detach() methods handle this state
+
+  }, {
+    key: 'options',
+    get: function get() {
+      return this._options;
     }
   }]);
 

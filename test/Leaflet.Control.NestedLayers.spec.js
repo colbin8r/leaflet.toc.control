@@ -31,6 +31,17 @@ describe( 'NestedLayers', () => {
     }).to.throw('element');
   });
 
+  it('should have default (configuration) options', () => {
+    // expect(control.options).to.be.an('object').that.is.not.empty;
+    expect(control.options).to.have.all.keys([
+      'followAncestorVisibility',
+      'followAncestorMutability',
+      'propogateDeselectToChildren'
+    ]);
+  });
+
+
+
   // it('should have better tests written', () => {
   //   let betterTestsWritten = false;
   //   expect(betterTestsWritten).to.be.true;

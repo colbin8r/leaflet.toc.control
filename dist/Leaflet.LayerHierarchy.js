@@ -20,21 +20,35 @@ var LayerHierarchy = function () {
 
     // for the layers parameter, ensure that we are at least passed an array
     // otherwise, default to empty array
-    if (typeof options === 'undefined') {
-      options = {};
-    }
-    this._layers = Array.isArray(options.layers) ? options.layers : [];
+
+    // default options
+    this._options = {
+      // 'layers' will be deleted by the end of the constructor
+      layers: [],
+      followAncestorVisibility: true,
+      propogateDeselectToChildren: false,
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
+    Object.assign(this._options, options);
+
+    // extract the 'layers' property from 'options' into its own property
+    this._layers = this.options.layers;
+    delete this._options.layers;
 
     this.validateEnabledStates();
+
+    this.ownAllLayers(this.layers);
   }
-
-  // adds a new NestedLayer object into the tree
-  // defaults to insertion at the root of the tree, but with a parentID
-  // you may insert underneath any other NestedLayer in the tree
-
 
   _createClass(LayerHierarchy, [{
     key: 'addLayer',
+
+
+    // adds a new NestedLayer object into the tree
+    // defaults to insertion at the root of the tree, but with a parentID
+    // you may insert underneath any other NestedLayer in the tree
     value: function addLayer(layer, parentID) {
       // id, name, layer, defaultVisibility, minScale, maxScale, children
       // layer should be a NestedLayer
@@ -42,6 +56,9 @@ var LayerHierarchy = function () {
       if (!(layer instanceof _Leaflet2.default)) {
         throw new TypeError('layer is not a NestedLayer');
       }
+
+      // take ownership of the layer
+      layer.owner = this;
 
       if (typeof parentID != 'undefined') {
         // add as child
@@ -87,24 +104,24 @@ var LayerHierarchy = function () {
       // if execution reaches here, no layers in this tree or subtree have the requested id
       return null;
     }
+
+    // getRootLayers() {
+    //   return this._layers;
+    // }
+
   }, {
-    key: 'getRootLayers',
-    value: function getRootLayers() {
-      return this._layers;
-    }
+    key: 'validateEnabledStates',
+
 
     // check all the children to ensure that they are all enabled/disabled as appropriate
     // the highest layer takes precedence over lower layers
     // i.e. if a root-level layer is disabled, then all its children will be disabled as well
     // parameters should be undefined when called the first time; the function is recursive
-
-  }, {
-    key: 'validateEnabledStates',
     value: function validateEnabledStates(layers, newEnabledValue) {
       // first call? then layers = the whole true
       if (typeof layers === 'undefined') {
         // console.log('validateEnabledStates: first call');
-        layers = this.getRootLayers();
+        layers = this.rootLayers;
       }
 
       for (var i = 0; i < layers.length; i++) {
@@ -123,6 +140,46 @@ var LayerHierarchy = function () {
           this.validateEnabledStates(layers[i].children, layers[i].enabled);
         }
       }
+    }
+  }, {
+    key: 'ownsLayer',
+    value: function ownsLayer(layer) {
+      return layer.owner === this;
+    }
+  }, {
+    key: 'makeLayer',
+    value: function makeLayer(layerData) {
+      var l = new _Leaflet2.default(layerData);
+      l.owner = this;
+      return l;
+    }
+  }, {
+    key: 'ownLayer',
+    value: function ownLayer(layer) {
+      layer.owner = this;
+    }
+  }, {
+    key: 'ownAllLayers',
+    value: function ownAllLayers(layers) {
+      for (var i = 0; i < layers.length; i++) {
+        this.ownLayer(layers[i]);
+        layers[i].ownChildren();
+      }
+    }
+  }, {
+    key: 'options',
+    get: function get() {
+      return this._options;
+    }
+  }, {
+    key: 'layers',
+    get: function get() {
+      return this._layers;
+    }
+  }, {
+    key: 'rootLayers',
+    get: function get() {
+      return this.layers;
     }
   }]);
 

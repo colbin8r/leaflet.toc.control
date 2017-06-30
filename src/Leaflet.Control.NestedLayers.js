@@ -77,7 +77,7 @@ export class NestedLayersComponent extends React.Component {
   }
 
   render() {
-    const roots = this.state.hierarchy.getRootLayers();
+    const roots = this.state.hierarchy.rootLayers;
     let components = [];
 
     for (let i = 0; i < roots.length; i++) {
@@ -159,8 +159,19 @@ export default class NestedLayers {
     }
     this.element = element;
 
-    // save the options
-    this._options = {};
+    // default options
+    this._options = {
+      // deselecting any ancestor makes its children invisible (without changing their selected state)
+      followAncestorVisibility: true,
+
+      // deselecting a parent also deselects children (by changing their state)
+      propogateDeselectToChildren: false,
+
+      // deselecting any ancestor disables its children (cannot change children's selected state)
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
     Object.assign(this._options, options);
 
     this._component = <NestedLayersComponent hierarchy={this.hierarchy} />
@@ -196,11 +207,6 @@ export default class NestedLayers {
   get component() {
     return this._component;
   }
-  // short convenience accessor
-  get c() {
-    return this.component;
-  }
-  // no direct setting of 'component' from outside the class
 
   get isAttached() {
     return this._isAttached;
@@ -208,9 +214,13 @@ export default class NestedLayers {
   // no direct setting of 'isAttached' from outside the class
   // the attach() and detach() methods handle this state
 
+  get options() {
+    return this._options;
+  }
+
   // bind to DOM
   attach() {
-    if (!this.isAttachedz) {
+    if (!this.isAttached) {
       ReactDOM.render(
         this.component,
         this.element

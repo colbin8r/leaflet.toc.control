@@ -1,5 +1,6 @@
 /*global describe, expect, it, beforeEach*/
 import NestedLayer from './../src/Leaflet.NestedLayer';
+import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
 
 import L from 'leaflet-headless';
 import sinon from 'sinon';
@@ -207,6 +208,19 @@ describe( 'NestedLayer', () => {
     expect(l.selected).to.be.false;
   });
 
+  it('should know who its owner is', () => {
+    expect(l.owner).to.be.undefined;
+
+    const owner = new LayerHierarchy();
+    l.owner = owner;
+    expect(l.owner).to.equal(owner);
+    expect(l.isOwnedBy(owner)).to.be.true;
+
+    const nonOwner = {};
+    expect(l.owner).to.not.equal(nonOwner);
+    expect(l.isOwnedBy(nonOwner)).to.be.false;
+  })
+
   it('should be able to add valid child layers', () => {
     expect(layer0.children).to.not.contain(l);
 
@@ -263,6 +277,24 @@ describe( 'NestedLayer', () => {
     expect(() => {
       layer0.disableChildren()
     }).to.not.throw();
+  })
+
+  it('should be able to take ownership of all its children', () => {
+    const owner = {};
+    expect(layer0.owner).to.be.undefined;
+    expect(layer1.owner).to.be.undefined;
+    expect(layer2.owner).to.be.undefined;
+
+    layer0.owner = owner;
+    expect(layer0.isOwnedBy(owner)).to.be.true;
+    // child layers are not owned until ownChildren() is called
+    expect(layer1.owner).to.be.undefined;
+    expect(layer2.owner).to.be.undefined;
+
+    layer0.ownChildren();
+    expect(layer0.isOwnedBy(owner)).to.be.true;
+    expect(layer1.isOwnedBy(owner)).to.be.true;
+    expect(layer2.isOwnedBy(owner)).to.be.true;
   })
 
   it('should attach to the map when selected', () => {

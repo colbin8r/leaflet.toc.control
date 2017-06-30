@@ -1,5 +1,3 @@
-import L from 'leaflet-headless';
-
 export default class NestedLayer {
 
   // options include:
@@ -101,6 +99,18 @@ export default class NestedLayer {
       this._attach();
     }
   }
+  get disabled() {
+    return !this.enabled;
+  }
+  enable() {
+    this.enabled = true;
+  }
+  disable() {
+    this.enabled = false;
+  }
+  toggleEnabled() {
+    this.enabled = !this.enabled;
+  }
 
   // selected = layer present on the map
   // deselected = layer not present on the map
@@ -124,16 +134,8 @@ export default class NestedLayer {
       this.disableChildren();
     }
   }
-
-  // convenience methods to change state
-  enable() {
-    this.enabled = true;
-  }
-  disable() {
-    this.enabled = false;
-  }
-  toggleEnabled() {
-    this.enabled = !this.enabled;
+  get deselected() {
+    return !this.selected;
   }
   select() {
     this.selected = true;
@@ -145,12 +147,16 @@ export default class NestedLayer {
     this.selected = !this.selected;
   }
 
-  // convenience properties that reflect state
-  get disabled() {
-    return !this.enabled;
+  // this is used to track what programmatic object owns this NestedLayer
+  get owner() {
+    return this._owner;
   }
-  get deselected() {
-    return !this.selected;
+  set owner(val) {
+    this._owner = val;
+  }
+  // checks ownership
+  isOwnedBy(owner) {
+    return this.owner === owner;
   }
 
   // true if the layer has children
@@ -167,20 +173,28 @@ export default class NestedLayer {
   }
 
   enableChildren() {
-    this._setChildrenEnabledState(true, this.children);
+    this._applyStateChangeToAllChildren('enabled', true, this.children);
   }
 
   disableChildren() {
-    this._setChildrenEnabledState(false, this.children);
+    this._applyStateChangeToAllChildren('enabled', false, this.children);
   }
 
-  _setChildrenEnabledState(state, children) {
-    // recursively loops through children (and their children, etc.) to
-    // either enable or disable
+  ownChildren() {
+    this._applyStateChangeToAllChildren('owner', this.owner, this.children);
+  }
+
+  _applyStateChangeToAllChildren(prop, val, children) {
+    // utility to recursively loop through children (and their children, etc.)
+    // to change their state
+    // IDEA: convert to a "deep map" function
     for (let i = 0; i < children.length; i++) {
-      children[i].enabled = state;
+      // make the state change
+      children[i][prop] = val;
+
+      // loop through children/subtrees when necessary
       if (children[i].hasChildren) {
-        this._setChildrenEnabledState(state, children[i].children);
+        this._applyStateChangeToAllChildren(prop, val, children[i].children);
       }
     }
   }
