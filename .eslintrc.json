@@ -15,20 +15,20 @@
     "vars-on-top": "off",
     "func-names": ["warn", "as-needed"],
     "no-unused-vars": "warn",
-    "mocha/no-exclusive-tests": "error"
-    // "valid-jsdoc": ["error", {
-    //   "requireReturn": false,
-    //   "requireReturnType": true,
-    //   "requireParamDescription": true
-    // }],
-    // "require-jsdoc": ["warn", {
-    //   "require": {
-    //     "ClassDeclaration": true,
-    //     "MethodDefinition": true,
-    //     "FunctionDeclaration": false,
-    //     "ArrowFunctionExpression": false
-    //   }
-    // }]
+    "mocha/no-exclusive-tests": "error",
+    "valid-jsdoc": ["error", {
+      "requireReturn": false,
+      "requireReturnType": true,
+      "requireParamDescription": true
+    }],
+    "require-jsdoc": ["warn", {
+      "require": {
+        "ClassDeclaration": true,
+        "MethodDefinition": true,
+        "FunctionDeclaration": false,
+        "ArrowFunctionExpression": false
+      }
+    }]
   },
   "parser": "babel-eslint",
   "parserOptions": {
