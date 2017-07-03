@@ -89,13 +89,20 @@ describe( 'LayerHierarchy', () => {
     expect(ownedLayer).to.be.an.instanceOf(NestedLayer);
   });
 
-  it('should be able to check if it owns a layer', () => {
+  it('should be able own layers', () => {
     expect(ownedLayer.owner).to.equal(h);
     expect(ownedLayer.isOwnedBy(h)).to.be.true;
 
     const nonOwner = {};
     expect(ownedLayer.owner).to.not.equal(nonOwner);
     expect(ownedLayer.isOwnedBy(nonOwner)).to.be.false;
+  });
+
+  it('should be able to check if it owns a layer', () => {
+    expect(h.ownsLayer(ownedLayer)).to.be.true;
+
+    const nonOwner = new LayerHierarchy();
+    expect(nonOwner.ownsLayer(ownedLayer)).to.be.false;
   });
 
   it('should be able to get layers by id', () => {

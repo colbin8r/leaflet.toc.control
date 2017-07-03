@@ -48,7 +48,7 @@ $ npm start
 
 ### Script Tasks
 
-During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, linting, testing, and coverage reporting.
+During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, linting, and testing.
 
 ```sh
 $ npm start
@@ -81,7 +81,6 @@ $ npm test
 ```sh
 # Unit tests with code coverage
 $ npm run coverage
-$ npm run coverage:watch
 
 # Just unit tests
 $ npm run test:once

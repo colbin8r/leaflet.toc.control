@@ -128,6 +128,10 @@ describe( 'NestedLayer', () => {
     }).to.throw('map object');
   });
 
+  it('should have a name', () => {
+    expect(l.name).to.equal('Layer 999');
+  })
+
   it('should be selectable', () => {
     l.select();
     expect(l.selected).to.be.true;
@@ -219,6 +223,18 @@ describe( 'NestedLayer', () => {
     const nonOwner = {};
     expect(l.owner).to.not.equal(nonOwner);
     expect(l.isOwnedBy(nonOwner)).to.be.false;
+  })
+
+  it('should have access to its owner\'s configuration properties when owned', () => {
+    // trying to fetch the options of an unowned layer should give null (no options)
+    expect(layer0.options).to.be.null;
+
+    const owner = new LayerHierarchy({ layers: [layer0] });
+    expect(layer0.options).to.have.all.keys([
+      'followAncestorVisibility',
+      'followAncestorMutability',
+      'propogateDeselectToChildren'
+    ]);
   })
 
   it('should be able to add valid child layers', () => {

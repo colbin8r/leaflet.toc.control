@@ -10,11 +10,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var NestedLayer = function () {
 
-  // options include:
+  // props include:
   // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
   // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
   // 'children' array (optional), 'minZoom' zoom level (optional), 'maxZoom' zoom level (optional)
-  function NestedLayer(options) {
+  function NestedLayer(props) {
     var _this = this;
 
     _classCallCheck(this, NestedLayer);
@@ -29,25 +29,25 @@ var NestedLayer = function () {
       }
     };
 
-    // set default props for optional options
+    // set default props for optional props
     this._props = { children: [], enabled: true, selected: false, swatch: '' };
     this._isAttached = false;
 
     // verify that all required arguments are present
-    if (typeof options.id == 'undefined') {
+    if (typeof props.id == 'undefined') {
       throw new Error('Missing ID when creating NestedLayer');
     }
-    if (typeof options.name == 'undefined') {
+    if (typeof props.name == 'undefined') {
       throw new Error('Missing name when creating NestedLayer');
     }
-    if (typeof options.layer == 'undefined') {
+    if (typeof props.layer == 'undefined') {
       throw new Error('Missing layer object when creating NestedLayer');
     }
-    if (typeof options.map == 'undefined') {
+    if (typeof props.map == 'undefined') {
       throw new Error('Missing map object when creating NestedLayer');
     }
 
-    Object.assign(this._props, options);
+    Object.assign(this._props, props);
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
@@ -115,7 +115,8 @@ var NestedLayer = function () {
       return this.owner === owner;
     }
 
-    // true if the layer has children
+    // options come from the layers owner
+    // will return null if there is no owner
 
   }, {
     key: 'addChild',
@@ -286,6 +287,18 @@ var NestedLayer = function () {
     set: function set(val) {
       this._owner = val;
     }
+  }, {
+    key: 'options',
+    get: function get() {
+      if (typeof this.owner === 'undefined') {
+        return null;
+      } else {
+        return this.owner.options;
+      }
+    }
+
+    // true if the layer has children
+
   }, {
     key: 'hasChildren',
     get: function get() {
