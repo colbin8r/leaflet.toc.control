@@ -315,41 +315,41 @@ describe( 'NestedLayer', () => {
 
   it('should attach to the map when selected', () => {
     l.select();
-    expect(layerAddSpy.called).to.be.true;
+    expect(layerAddSpy).to.have.been.called;
   });
 
   it('should not attach to the map if it is already attached', () => {
     l.select();
     l.select();
-    expect(layerAddSpy.calledOnce).to.be.true;
-    expect(layerRemoveSpy.called).to.be.false;
+    expect(layerAddSpy).to.have.been.calledOnce;
+    expect(layerRemoveSpy).to.not.have.been.called;
   });
 
   it('should detach from the map when deselected', () => {
     // start by attaching it through selection
     l.select();
     l.deselect();
-    expect(layerRemoveSpy.called).to.be.true;
+    expect(layerRemoveSpy).to.have.been.called;
   });
 
   it('should detach from the map when disabled', () => {
     l.select();
     l.disable();
-    expect(layerRemoveSpy.called).to.be.true;
+    expect(layerRemoveSpy).to.have.been.called;
   })
 
   it('should re-attach to the map after being re-enabled (if selected)', () => {
     l.select(); // mark layer as "selected"
     l.disable(); // layer should persist selected state even when disabled
     l.enable(); // layer should remember that it was selected before it was disabled
-    expect(layerAddSpy.callCount).to.equal(2); // layer should re-attach to the map
+    expect(layerAddSpy).to.have.been.calledTwice; // layer should re-attach to the map
   })
 
   it('should not detach from the map if it is already detached', () => {
     l.select();
     l.deselect();
     l.deselect();
-    expect(layerRemoveSpy.calledOnce).to.be.true;
+    expect(layerRemoveSpy).to.have.been.calledOnce;
   });
 
   it('should disable itself if the map is zoomed beyond its zoom boundaries', () => {
@@ -368,11 +368,11 @@ describe( 'NestedLayer', () => {
 
     const removeSpy = sinon.spy(layer.layer, 'removeFrom');
     map.setZoom(4);
-    expect(removeSpy.callCount).to.equal(1);
+    expect(removeSpy).to.have.been.calledOnce;
 
     map.setZoom(10); // this ensures the layer is reattached to the map
     map.setZoom(16);
-    expect(removeSpy.callCount).to.equal(2);
+    expect(removeSpy).to.have.been.calledTwice;
   })
 
 } );
