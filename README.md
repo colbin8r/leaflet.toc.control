@@ -29,7 +29,7 @@ If you want to use this package like most other Leaflet plugins (i.e. directly i
 
 ## Contributing
 
-`NestedLayers` includes a transpilation build system via [babel](https://babeljs.io/), a bundler build system [webpack](https://webpack.github.io/), unit tests via [mocha](https://mochajs.org/) and [chai](http://chaijs.com/), coverage reporting via [istanbul and nyc](https://istanbul.js.org/), and syntax/style linter via [eslint](http://eslint.org/).
+`NestedLayers` includes a transpilation build system via [babel](https://babeljs.io/), a bundler build system [webpack](https://webpack.github.io/), unit tests via [mocha](https://mochajs.org/) and [chai](http://chaijs.com/), coverage reporting via [istanbul and nyc](https://istanbul.js.org/), syntax/style linter via [eslint](http://eslint.org/), and API documentation generator via [documentation.js](http://documentation.js.org/).
 
 **Quick start:**
 
@@ -60,6 +60,9 @@ $ npm run watch
 ### Building and Transpiling
 
 ```sh
+# Rebuild everything
+$ npm run build
+
 # Transpile via babel
 $ npm run compile
 
@@ -74,6 +77,7 @@ $ npm run pack:watch
 ### Testing, Coverage, and Linting
 
 The `npm test` script will lint, run tests, and check code coverage. It's the best way to verify that all the code works short of actually transpling/bundling it.
+
 ```sh
 $ npm test
 ```
@@ -95,6 +99,24 @@ $ npm run lint:watch
 # Only run the linter against your `.spec.js` test files:
 $ npm run lint:tests
 ```
+
+### Docs
+
+Inline [JSDoc](http://usejsdoc.org/) comments can be used to generate HTML documentation (and other formats, too, [manually with `documentation`](https://github.com/documentationjs/documentation/blob/master/docs/USAGE.md)). Generated documentation lives in `/docs` and is created with [documentation.js](http://documentation.js.org/).
+
+The linting scripts will throw errors if you are missing or have malformed inline docs. You can see a list of all valid [block tags](http://usejsdoc.org/#block-tags) that you can use in comment blocks. Since the project is written in ES6, there are some [special notes for usage with ES6](https://github.com/documentationjs/documentation/blob/master/docs/RECIPES.md).
+
+```sh
+# Generate documentation in /docs
+# This is also called when you npm run build
+$ npm run docs:build
+
+# View and read the documentation live
+$ npm run docs:view
+```
+
+
+
 
 ## Author
 
