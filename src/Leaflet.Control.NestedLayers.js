@@ -1,4 +1,4 @@
-// import colors from 'colors';
+// import chalk from 'chalk';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,7 +7,16 @@ import LayerHierarchy from './Leaflet.LayerHierarchy';
 import NestedLayer from './Leaflet.NestedLayer';
 import classnames from 'classnames';
 
+/**
+ * React component to represent a LayerHierarchy
+ * @param {object} props The component's props.
+ * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.
+ */
 export class NestedLayersComponent extends React.Component {
+  /**
+   * @param {object} props The component's props.
+   * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -15,14 +24,27 @@ export class NestedLayersComponent extends React.Component {
     }
   }
 
+  /**
+   * Describes the React props object
+   * @type {Object}
+   */
   static propTypes = {
     hierarchy: PropTypes.instanceOf(LayerHierarchy).isRequired
-  }
+  };
 
+  /**
+   * Generates a unique key for rendering a layer in JSX
+   * @param  {NestedLayer} layer The layer to use data from
+   * @return {string}       A string unique to this layer
+   */
   makeLayerKey(layer) {
     return (layer.id.toString + layer.name);
   }
 
+  /**
+   * Event handler to toggle a layer's selected state
+   * @param  {NestedLayer} layer The layer to toggle
+   */
   handleToggleSelected = (layer) => {
     const id = layer.id;
     const newHierarchy = this.state.hierarchy;
@@ -32,6 +54,13 @@ export class NestedLayersComponent extends React.Component {
     });
   }
 
+  /**
+   * Recursively renders a NestedLayer using NestedLayerComponent. If the NestedLayer has
+   * children, use this function as it not only renders a single NestedLayer, but also the subtree
+   * of layers under the NestedLayer recursively.
+   * @param  {NestedLayer} layer The layer to represent with a React component
+   * @return {NestedLayerComponent}       A react component representing the given NestedLayer.
+   */
   makeComponentFromLayer = (layer) => {
     // recursive function
     // 'leaf' is the base case
@@ -54,28 +83,12 @@ export class NestedLayersComponent extends React.Component {
       </NestedLayerComponent>
     );
 
-    // // branch: this layer has children
-    // if (layer.children.length > 0) {
-    //   // recursively calls this function on each child (leaf)
-    //   // 'leaves' will be an array of JSX components (NestedLayerComponent) for each child (leaf)
-    //   const leaves = layer.children.map(this.makeComponentFromLayer);
-
-    //   return (
-    //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>
-    //       <ul className="branch">
-    //         {leaves}
-    //       </ul>
-    //     </NestedLayerComponent>
-    //   );
-    // } else {
-    // // leaf: this layer is just a leaf
-
-    //   return (
-    //     <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)} />
-    //   )
-    // }
   }
 
+  /**
+   * Renders the component
+   * @return {Component} JSX
+   */
   render() {
     const roots = this.state.hierarchy.rootLayers;
     let components = [];
@@ -95,27 +108,55 @@ export class NestedLayersComponent extends React.Component {
   }
 }
 
+/**
+ * React Component to represent a single NestedLayer
+ * @param {object} props Component properties
+ * @param {NestedLayer} props.layer The layer to represent
+ * @param {function} props.onToggleSelected The callback to change the layer's selected state
+ */
 export class NestedLayerComponent extends React.Component {
+  /**
+   * @param {object} props Component properties
+   * @param {NestedLayer} props.layer The layer to represent
+   * @param {function} props.onToggleSelected The callback to change the layer's selected state
+   */
   constructor(props) {
     super(props);
     this.state = {};
   }
 
+  /**
+   * Describes the React props object
+   * @type {Object}
+   */
   static propTypes = {
     layer: PropTypes.instanceOf(NestedLayer).isRequired,
     onToggleSelected: PropTypes.func.isRequired,
     children: PropTypes.any
-  }
+  };
 
+  /**
+   * Calls the toggle selected state handler passed by the parent to change the selected state of
+   * the layer
+   */
   toggleSelected = () => {
     // updates both the component state and the LayerHierarchy structure
     this.props.onToggleSelected(this.props.layer);
   }
 
+  /**
+   * Returns a data URL suitable for use in a the src of an <img /> that contains the base 64
+   * encoded layer swatch
+   * @return {string} data URL containing the swatch
+   */
   getSwatch = () => {
     return 'data:image/png;base64,' + this.props.layer.swatch;
   }
 
+  /**
+   * Renders the component
+   * @return {Component} JSX
+   */
   render() {
     const itemClassNames = classnames({
       leaf: true,
@@ -136,17 +177,26 @@ export class NestedLayerComponent extends React.Component {
   }
 }
 
+/**
+ * Leaflet plugin to display a hierarchial version of {@link http://leafletjs.com/reference-1.1.0.html#control-layers L.Control.Layers}. Uses React to wrap the
+ * NestedLayersComponent.
+ * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control
+ * @param  {Element} element   The DOM element to bind the control to
+ * @param  {object} options   Configuration options that dictate how the control should behave
+ */
 export default class NestedLayers {
 
-  /*
-   * NestedLayers plugin
-   *
-   * Required Arguments
-   * hierarchy: LayerHierarchy object to represent; create this with L.layerHierarchy
-   * element: DOM element to attach to and render in
-   *
-   * Options
-   * n/a
+  /**
+   * Initialize the plugin and {@link #NestedLayers#attach attaches} to the DOM.
+   * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control
+   * @param  {Element} element   The DOM element to bind the control to
+   * @param  {object} options   Configuration options that dictate how the control should behave
+   * @param  {boolean} [options.followAncestorVisibility=true] Deselecting any ancestor makes its
+   * children invisible (without changing their selected state)
+   * @param {boolean} [options.propogateDeselectToChildren=false] Deselecting a parent also deselects
+   * children (by changing their state)
+   * @param {boolean} [options.followAncestorMutability=true] Deselecting any ancestor disables its
+   * children (cannot change children's selected state)
    */
   constructor(hierarchy, element, options) {
 
@@ -161,13 +211,8 @@ export default class NestedLayers {
 
     // default options
     this._options = {
-      // deselecting any ancestor makes its children invisible (without changing their selected state)
       followAncestorVisibility: true,
-
-      // deselecting a parent also deselects children (by changing their state)
       propogateDeselectToChildren: false,
-
-      // deselecting any ancestor disables its children (cannot change children's selected state)
       followAncestorMutability: true
     };
 
@@ -182,10 +227,16 @@ export default class NestedLayers {
     this.attach();
   }
 
+  /**
+   * The underlying hierarchy of layers the plugin visually represents
+   * @type {LayerHierarchy}
+   */
   get hierarchy() {
     return this._hierarchy;
   }
-  // shorthand convenience accessor
+  /**
+   * Shorthand accessor for the {@link #NestedLayers#hierarchy hierarchy} property
+   */
   get h() {
     return this.hierarchy;
   }
@@ -193,10 +244,16 @@ export default class NestedLayers {
     this._hierarchy = val;
   }
 
+  /**
+   * The DOM element that the control attaches to
+   * @type {Element}
+   */
   get element() {
     return this._element;
   }
-  // shorthand convenience accessor
+  /**
+   * Shorthand accessor for the {@link #NestedLayers#element element} property
+   */
   get el() {
     return this.element;
   }
@@ -204,21 +261,37 @@ export default class NestedLayers {
     this._element = val;
   }
 
+  /**
+   * The React component under the hood
+   * @type {NestedLayersComponent}
+   */
   get component() {
     return this._component;
   }
 
+  /**
+   * True if the plugin has attached itself to the DOM element
+   * @type {boolean}
+   */
   get isAttached() {
     return this._isAttached;
   }
   // no direct setting of 'isAttached' from outside the class
   // the attach() and detach() methods handle this state
 
+  /**
+   * Configuration options
+   * @type {object}
+   */
   get options() {
     return this._options;
   }
 
-  // bind to DOM
+  /**
+   * Bind to the DOM. Internally, it checks to see if it has already been attached, and if not,
+   * uses React to render the {@link #NestedLayers#component component} to the specified {@link
+   * #NestedLayers#element element}.
+   */
   attach() {
     if (!this.isAttached) {
       ReactDOM.render(
@@ -229,7 +302,9 @@ export default class NestedLayers {
     this._isAttached = true;
   }
 
-  // unbind from DOM
+  /**
+   * Unbind from the DOM. Releases the {@link #NestedLayers#element element} for reuse.
+   */
   detach() {
     if (this.isAttached) {
       ReactDOM.unmountComponentAtNode(this.element);
@@ -238,5 +313,3 @@ export default class NestedLayers {
   }
 
 }
-
-

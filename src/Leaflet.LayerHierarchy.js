@@ -1,6 +1,23 @@
 import NestedLayer from './Leaflet.NestedLayer';
 
+/**
+ * Represents a non-rooted tree structure of NestedLayer objects
+ * @param {object} options Configuration options that dictate how the tree
+ * should behave
+ */
 export default class LayerHierarchy {
+
+  /**
+   * @param {object} options Configuration options
+   * @param {NestedLayer[]} [options.layers=[]] Layers to include at the root
+   * level
+   * @param {boolean} [options.followAncestorVisibility=true] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   * @param {boolean} [options.propogateDeselectToChildren=false] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   * @param {boolean} [options.followAncestorMutability=true] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   */
   constructor(options) {
     // for the layers parameter, ensure that we are at least passed an array
     // otherwise, default to empty array
@@ -26,13 +43,21 @@ export default class LayerHierarchy {
     this.ownAllLayers(this.layers);
   }
 
+  /**
+   * Configuration options
+   * @type {object}
+   */
   get options() {
     return this._options;
   }
 
-  // adds a new NestedLayer object into the tree
-  // defaults to insertion at the root of the tree, but with a parentID
-  // you may insert underneath any other NestedLayer in the tree
+  /**
+   * Adds a new layer into the tree. Defaults to insertion at the root of the
+   * tree, but passing a the ID of another layer will insert the layer as a
+   * child of that parent.
+   * @param {NestedLayer} layer    The layer to insert
+   * @param {?number} [parentID=null] The ID of a parent to insert underneath
+   */
   addLayer(layer, parentID) {
     // id, name, layer, defaultVisibility, minScale, maxScale, children
     // layer should be a NestedLayer
@@ -53,8 +78,14 @@ export default class LayerHierarchy {
     }
   }
 
-  // looks up NestedLayer object by traversing the tree
-  // when calling, do not pass a 'children' parameter
+  /**
+   * Finds a layer in the tree by ID. Traverses the tree recurisvely until it
+   * is found. Don't pass children unless you want to search a specific
+   * subtree.
+   * @param  {number}          id       The layer ID to search for
+   * @param  {NestedLayer[]}   [children=this.layers] A subtree to search
+   * @return {?NestedLayer}     The layer if found, or null otherwise.
+   */
   getLayerByID(id, children) {
 
     // if the function was not called recursively
@@ -89,13 +120,17 @@ export default class LayerHierarchy {
     return null;
   }
 
-  // getRootLayers() {
-  //   return this._layers;
-  // }
-
+  /**
+   * Root-level NestedLayer layers
+   * @type {NestedLayer[]}
+   */
   get layers() {
     return this._layers;
   }
+  /**
+   * {@link #LayerHierarchy#layers Root-level NestedLayer layers}
+   * @type {NestedLayer[]}
+   */
   get rootLayers() {
     return this.layers;
   }
@@ -131,20 +166,38 @@ export default class LayerHierarchy {
 
   }
 
+  /**
+   * Checks if this LayerHierarchy owns the provided layer
+   * @param  {NestedLayer} layer The layer to check
+   * @return {boolean}       True if the layer is owned by this hierarchy; false otherwise
+   */
   ownsLayer(layer) {
     return layer.owner === this;
   }
 
+  /**
+   * Factory method for making a new NestedLayer that is owned by this hierarchy
+   * @param  {object} layerData The same object you would provide to the {@link #NestedLayer#constructor constructor of NestedLayer}
+   * @return {NestedLayer}           A NestedLayer owned by this hierarchy
+   */
   makeLayer(layerData) {
     const l = new NestedLayer(layerData);
     l.owner = this;
     return l;
   }
 
+  /**
+   * Take ownership of a layer
+   * @param  {NestedLayer} layer The layer to become the owner of
+   */
   ownLayer(layer) {
     layer.owner = this;
   }
 
+  /**
+   * Take ownership of a layer subtree AND those layers' children
+   * @param  {NestedLayer[]} layers The layers to become the owner of
+   */
   ownAllLayers(layers) {
     for (let i = 0; i < layers.length; i++) {
       this.ownLayer(layers[i]);

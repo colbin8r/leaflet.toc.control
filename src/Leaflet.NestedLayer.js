@@ -1,9 +1,28 @@
+
+/**
+ * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet
+ * layer} to allow that layer to be the "parent" of other layers by having
+ * "child" layers
+ * @param {object} props The layer data
+ */
 export default class NestedLayer {
 
-  // props include:
-  // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
-  // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
-  // 'children' array (optional), 'minZoom' zoom level (optional), 'maxZoom' zoom level (optional)
+  /**
+   *
+   * @param {object} props The layer data
+   * @param {number} props.id The layer's unique ID number
+   * @param {string} props.name The layer's unique name
+   * @param {L.Layer} props.layer A {@link
+   * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}
+   * @param {L.Map} props.map {@link
+   * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to
+   * @param {boolean} [props.enabled=true] Initial enabled state of the layer
+   * @param {boolean} [props.selected=false] Initial selected state of the layer
+   * @param {string} [props.swatch=''] Base64 encoded swatch PNG
+   * @param {NestedLayer[]} [props.children=[]] Child layers
+   * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible
+   * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible
+   */
   constructor(props) {
     // set default props for optional props
     this._props = { children: [], enabled: true, selected: false, swatch: '' };
@@ -46,34 +65,66 @@ export default class NestedLayer {
     }
   }
 
+  /**
+   * Layer ID
+   * @type {number}
+   */
   get id() {
     return this._props.id;
   }
 
+  /**
+   * Layer name
+   * @type {string}
+   */
   get name() {
     return this._props.name;
   }
 
+  /**
+   * Underlying Leaflet layer
+   * @type {L.Layer}
+   */
   get layer() {
     return this._props.layer;
   }
 
+  /**
+   * Leaflet Map to attach to
+   * @type {L.Map}
+   */
   get map() {
     return this._props.map;
   }
 
+  /**
+   * Base64 encoded swatch PNG
+   * @type {string}
+   */
   get swatch() {
     return this._props.swatch;
   }
 
+  /**
+   * Child layers
+   * @type {NestedLayer[]}
+   */
   get children() {
     return this._props.children;
   }
 
+  /**
+   * Minimum zoom level for this layer to be visible
+   * @type {number}
+   */
   get minZoom() {
     return this._props.minZoom;
   }
 
+  /**
+   * Maximum zoom level for this layer to be visible
+   * @type {number}
+   */
   get maxZoom() {
     return this._props.maxZoom;
   }
@@ -84,6 +135,11 @@ export default class NestedLayer {
   // the layer is re-enabled, the selected state is what it was prior to disabling
   // i.e. if disabled, always deselected
   // this logic is handled in the .selected getter
+
+  /**
+   * Whether the user may freely toggle this layer on and off
+   * @type {boolean}
+   */
   get enabled() {
     return this._props.enabled;
   }
@@ -99,15 +155,23 @@ export default class NestedLayer {
       this._attach();
     }
   }
+  /**
+   * The inverse of #enabled
+   * @type {boolean}
+   */
   get disabled() {
     return !this.enabled;
   }
+
+  /** Enable the layer */
   enable() {
     this.enabled = true;
   }
+  /** Disable the layer */
   disable() {
     this.enabled = false;
   }
+  /** Toggle the layer's enabled state */
   toggleEnabled() {
     this.enabled = !this.enabled;
   }

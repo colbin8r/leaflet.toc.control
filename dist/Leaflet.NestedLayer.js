@@ -8,12 +8,30 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet
+ * layer} to allow that layer to be the "parent" of other layers by having
+ * "child" layers
+ * @param {object} props The layer data
+ */
 var NestedLayer = function () {
 
-  // props include:
-  // 'id' number (req'd), 'name' string (req'd), 'layer' object (req'd), 'map' object (req'd)
-  // 'enabled' boolean (optional), 'selected' boolean (optional), 'swatch' base64 string (optional)
-  // 'children' array (optional), 'minZoom' zoom level (optional), 'maxZoom' zoom level (optional)
+  /**
+   *
+   * @param {object} props The layer data
+   * @param {number} props.id The layer's unique ID number
+   * @param {string} props.name The layer's unique name
+   * @param {L.Layer} props.layer A {@link
+   * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}
+   * @param {L.Map} props.map {@link
+   * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to
+   * @param {boolean} [props.enabled=true] Initial enabled state of the layer
+   * @param {boolean} [props.selected=false] Initial selected state of the layer
+   * @param {string} [props.swatch=''] Base64 encoded swatch PNG
+   * @param {NestedLayer[]} [props.children=[]] Child layers
+   * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible
+   * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible
+   */
   function NestedLayer(props) {
     var _this = this;
 
@@ -70,16 +88,29 @@ var NestedLayer = function () {
     }
   }
 
+  /**
+   * Layer ID
+   * @type {number}
+   */
+
+
   _createClass(NestedLayer, [{
     key: 'enable',
+
+
+    /** Enable the layer */
     value: function enable() {
       this.enabled = true;
     }
+    /** Disable the layer */
+
   }, {
     key: 'disable',
     value: function disable() {
       this.enabled = false;
     }
+    /** Toggle the layer's enabled state */
+
   }, {
     key: 'toggleEnabled',
     value: function toggleEnabled() {
@@ -187,36 +218,78 @@ var NestedLayer = function () {
     get: function get() {
       return this._props.id;
     }
+
+    /**
+     * Layer name
+     * @type {string}
+     */
+
   }, {
     key: 'name',
     get: function get() {
       return this._props.name;
     }
+
+    /**
+     * Underlying Leaflet layer
+     * @type {L.Layer}
+     */
+
   }, {
     key: 'layer',
     get: function get() {
       return this._props.layer;
     }
+
+    /**
+     * Leaflet Map to attach to
+     * @type {L.Map}
+     */
+
   }, {
     key: 'map',
     get: function get() {
       return this._props.map;
     }
+
+    /**
+     * Base64 encoded swatch PNG
+     * @type {string}
+     */
+
   }, {
     key: 'swatch',
     get: function get() {
       return this._props.swatch;
     }
+
+    /**
+     * Child layers
+     * @type {NestedLayer[]}
+     */
+
   }, {
     key: 'children',
     get: function get() {
       return this._props.children;
     }
+
+    /**
+     * Minimum zoom level for this layer to be visible
+     * @type {number}
+     */
+
   }, {
     key: 'minZoom',
     get: function get() {
       return this._props.minZoom;
     }
+
+    /**
+     * Maximum zoom level for this layer to be visible
+     * @type {number}
+     */
+
   }, {
     key: 'maxZoom',
     get: function get() {
@@ -229,6 +302,11 @@ var NestedLayer = function () {
     // the layer is re-enabled, the selected state is what it was prior to disabling
     // i.e. if disabled, always deselected
     // this logic is handled in the .selected getter
+
+    /**
+     * Whether the user may freely toggle this layer on and off
+     * @type {boolean}
+     */
 
   }, {
     key: 'enabled',
@@ -247,6 +325,11 @@ var NestedLayer = function () {
         this._attach();
       }
     }
+    /**
+     * The inverse of #enabled
+     * @type {boolean}
+     */
+
   }, {
     key: 'disabled',
     get: function get() {
