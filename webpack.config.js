@@ -19,5 +19,10 @@ module.exports = {
         }
       }
     ]
+  },
+  "resolve": {
+    "alias": {
+      "request$": "xhr"
+    }
   }
 };

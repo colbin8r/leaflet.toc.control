@@ -43,10 +43,12 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "concat-stream": "^1.6.0",
     "leaflet-headless": "^0.2.5",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "xhr": "^2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
