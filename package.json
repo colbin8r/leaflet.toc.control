@@ -36,19 +36,23 @@
     "lint:test": "eslint test",
     "lint:watch": "cross-env NODE_ENV=test esw --watch --changed src",
     "test:once": "mocha './test/**/*.spec.js' --compilers js:babel-core/register --require './test/mocha.conf.js'",
-    "test:watch": "mocha './test/**/*.spec.js' --compilers js:babel-core/register --require './test/mocha.conf.js' --watch",
+    "test:watch-full": "mocha './test/**/*.spec.js' --compilers js:babel-core/register --require './test/mocha.conf.js' --watch",
+    "test:watch": "mocha './test/**/*.spec.js' --compilers js:babel-core/register --require './test/mocha.conf.js' --reporter min --watch",
     "gulp:build": "gulp build",
     "gulp:watch": "gulp watch",
     "watch": "npm-run-all --parallel --continue-on-error test:watch lint:watch gulp:watch pack:watch"
   },
   "dependencies": {
+    "bluebird": "^3.5.0",
+    "chalk": "^2.0.1",
     "classnames": "^2.2.5",
-    "concat-stream": "^1.6.0",
-    "leaflet-headless": "^0.2.5",
+    "esri-leaflet": "^2.0.8",
+    "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "xhr": "^2.4.0"
+    "superagent": "^3.5.2",
+    "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -76,6 +80,8 @@
     "gulp-format-md": "*",
     "gulp-sourcemaps": "^1.6.0",
     "jsdom": "^11.0.0",
+    "leaflet": "^1.0.3",
+    "leaflet-headless": "^0.2.5",
     "mocha": "*",
     "npm-run-all": "^4.0.2",
     "nyc": "^7.1.0",
