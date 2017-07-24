@@ -1,5 +1,5 @@
 /*global describe, expect, it, beforeEach*/
-// this package must be imported before MapServerParser
+// this package must be imported before MapServerParser for testing purposes
 // MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when
 // run in a headless environment
 import 'leaflet-headless';

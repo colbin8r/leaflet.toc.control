@@ -7,7 +7,7 @@ import superagent from 'superagent';
 import Promise from 'bluebird';
 import superagentPromise from 'superagent-promise';
 const request = superagentPromise(superagent, Promise);
-import { FeatureLayerService } from 'esri-leaflet';
+import { FeatureLayer } from 'esri-leaflet';
 
 /**
  * Parses the layer data served by an ArcGIS MapServer
@@ -138,7 +138,6 @@ export default class MapServerParser {
       });
 
       // resolve the promise with the resulting LayerHierarchy
-      // console.log(hierarchy);
       return hierarchy;
     });
   }
@@ -172,14 +171,14 @@ export default class MapServerParser {
   }
 
   _convertLayerNodeToNestedLayer = (node) => {
-    let layerData = {
+    let nestedLayerData = {
       id: node.id,
       name: node.name,
       map: this.map
     };
     // Leaflet layer data
     let leafletLayerData = {
-      url: MapServerParser._makeLayerURL(this.url, layerData.id)
+      url: MapServerParser._makeLayerURL(this.url, nestedLayerData.id)
     };
 
     // get scale/zoom data from layer node
@@ -191,13 +190,14 @@ export default class MapServerParser {
     }
 
     // attach the Leaflet layer object to the NestedLayer's data
-    layerData.layer = new FeatureLayerService(leafletLayerData);
+    nestedLayerData.layer = new FeatureLayer(leafletLayerData);
 
-    // use the provided NestedLayer factory to turn layerData into an owned NestedLayer
-    let layer = new NestedLayer(layerData);
+    // create a new NestedLayer that wraps the Leaflet layer, map, etc.
+    let layer = new NestedLayer(nestedLayerData);
 
     // set the selected state = to the node's default visibility state
     if (this.options.data.defaultVisibility) {
+      console.log('setting visibility to', node.defaultVisibility);
       layer.selected = node.defaultVisibility;
     }
 

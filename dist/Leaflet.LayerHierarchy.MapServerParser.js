@@ -68,14 +68,14 @@ var MapServerParser = function () {
     _classCallCheck(this, MapServerParser);
 
     this._convertLayerNodeToNestedLayer = function (node) {
-      var layerData = {
+      var nestedLayerData = {
         id: node.id,
         name: node.name,
         map: _this.map
       };
       // Leaflet layer data
       var leafletLayerData = {
-        url: MapServerParser._makeLayerURL(_this.url, layerData.id)
+        url: MapServerParser._makeLayerURL(_this.url, nestedLayerData.id)
       };
 
       // get scale/zoom data from layer node
@@ -87,13 +87,14 @@ var MapServerParser = function () {
       }
 
       // attach the Leaflet layer object to the NestedLayer's data
-      layerData.layer = new _esriLeaflet.FeatureLayerService(leafletLayerData);
+      nestedLayerData.layer = new _esriLeaflet.FeatureLayer(leafletLayerData);
 
-      // use the provided NestedLayer factory to turn layerData into an owned NestedLayer
-      var layer = new _Leaflet4.default(layerData);
+      // create a new NestedLayer that wraps the Leaflet layer, map, etc.
+      var layer = new _Leaflet4.default(nestedLayerData);
 
       // set the selected state = to the node's default visibility state
       if (_this.options.data.defaultVisibility) {
+        console.log('setting visibility to', node.defaultVisibility);
         layer.selected = node.defaultVisibility;
       }
 
@@ -169,7 +170,6 @@ var MapServerParser = function () {
         });
 
         // resolve the promise with the resulting LayerHierarchy
-        // console.log(hierarchy);
         return hierarchy;
       });
     }

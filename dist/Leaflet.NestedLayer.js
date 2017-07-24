@@ -198,7 +198,6 @@ var NestedLayer = function () {
     // display on map
     value: function _attach() {
       if (!this._isAttached) {
-        // console.log(this.layer);
         this.map.addLayer(this.layer);
         // this.layer.addTo(this.map);
         this._isAttached = true;
