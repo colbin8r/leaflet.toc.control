@@ -164,12 +164,12 @@ export class NestedLayerComponent extends React.Component {
       disabled: this.props.layer.disabled
     });
     return (
-      <li className={itemClassNames}>
-        <input type="checkbox" checked={this.props.layer.selected} />
+      <li className={itemClassNames} >
+        <input type="checkbox" checked={this.props.layer.selected} onChange={this.toggleSelected}/>
         {this.props.layer.swatch.length > 0 &&
           <img src={this.getSwatch()} className="swatch" />
         }
-        <span className="layer-name" onClick={this.toggleSelected}>{this.props.layer.name}</span>
+        <span className="layer-name">{this.props.layer.name}</span>
 
         {this.props.children}
       </li>

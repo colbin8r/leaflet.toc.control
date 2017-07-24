@@ -53874,11 +53874,11 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
       return _react2.default.createElement(
         'li',
         { className: itemClassNames },
-        _react2.default.createElement('input', { type: 'checkbox', checked: this.props.layer.selected }),
+        _react2.default.createElement('input', { type: 'checkbox', checked: this.props.layer.selected, onChange: this.toggleSelected }),
         this.props.layer.swatch.length > 0 && _react2.default.createElement('img', { src: this.getSwatch(), className: 'swatch' }),
         _react2.default.createElement(
           'span',
-          { className: 'layer-name', onClick: this.toggleSelected },
+          { className: 'layer-name' },
           this.props.layer.name
         ),
         this.props.children

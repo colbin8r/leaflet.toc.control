@@ -1,0 +1,24 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+#map, #toc {
+  height: 50vh;
+  width: 100%;
+  font-size: 18px;
+}
+.layer-name {
+
+}
+.leaf input[type=checkbox] {
+  cursor: pointer;
+  zoom: 1.25;
+  vertical-align: top;
+  margin-top: 2px;
+}
+.leaf.enabled {
+  color: limegreen;
+}
+.leaf.disabled {
+  color: grey;
+}
