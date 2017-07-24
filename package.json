@@ -24,6 +24,7 @@
     "start": "npm run watch",
     "test": "npm run lint && npm run coverage",
     "build": "npm run test && npm run compile && npm run pack && npm run docs",
+    "dev:build": "npm-run-all --parallel --continue-on-error compile:watch pack:watch",
     "compile": "npm run gulp:build",
     "compile:watch": "npm run gulp:watch",
     "docs": "esdoc",
