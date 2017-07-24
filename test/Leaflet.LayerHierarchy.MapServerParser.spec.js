@@ -1,4 +1,9 @@
 /*global describe, expect, it, beforeEach*/
+// this package must be imported before MapServerParser
+// MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when
+// run in a headless environment
+import 'leaflet-headless';
+
 import MapServerParser from './../src/Leaflet.LayerHierarchy.MapServerParser';
 import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
 
@@ -11,7 +16,7 @@ import sinon from 'sinon';
 describe( 'MapServerParser', () => {
 
   let url, map, options, parser;
-  beforeEach( () => {
+  before( () => {
     // setup fixture data
     url = 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer';
     // stubbing Leaflet's Map prevents us from actually calling the Map constructor, which would require
@@ -21,7 +26,8 @@ describe( 'MapServerParser', () => {
     options = {
       data: {
         scale: false,
-        defaultVisibility: false
+        defaultVisibility: false,
+        swatch: true
       },
       hierarchyOptions: {
         followAncestorVisibility: false,
@@ -86,15 +92,35 @@ describe( 'MapServerParser', () => {
   })
 
   describe('#parse', () => {
+
+    let promise;
+    before(() => {
+      promise = parser.parse();
+    });
+
     it('should return a promise', () => {
-      expect(parser.parse()).to.be.an.instanceof(Promise);
-    })
+      expect(promise).to.be.an.instanceof(Promise);
+    });
+
+    it('should resolve the promise', () => {
+      return expect(promise).to.be.fulfilled;
+    });
+
+    it.skip('should resolve the promise with a LayerHierarchy', () => {
+      return expect(promise).to.eventually.be.an.instanceof(LayerHierarchy);
+    });
   })
 
   describe('#_queryLayers', () => {
     it('should return a promise', () => {
       expect(parser._queryLayers()).to.be.an.instanceof(Promise);
-    })
+    });
+  })
+
+  describe('#_queryLegend', () => {
+    it('should return a promise', () => {
+      expect(parser._queryLayers()).to.be.an.instanceof(Promise);
+    });
   })
 
   describe('._makeLayerURL', () => {
@@ -114,7 +140,7 @@ describe( 'MapServerParser', () => {
       expect(function invalidIDType() {
         MapServerParser._makeLayerURL('foo', {});
       }).to.throw('ID');
-    })
+    });
 
     it('should make valid URLs', () => {
       const fixture1 = {
@@ -130,7 +156,7 @@ describe( 'MapServerParser', () => {
 
       expect(MapServerParser._makeLayerURL(fixture1.base, fixture1.id)).to.equal(fixture1.result);
       expect(MapServerParser._makeLayerURL(fixture2.base, fixture2.id)).to.equal(fixture2.result);
-    })
+    });
   })
 
 

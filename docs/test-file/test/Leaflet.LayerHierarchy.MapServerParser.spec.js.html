@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/Leaflet.LayerHierarchy.MapServerParser.spec.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.LayerHierarchy.MapServerParser.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
+// this package must be imported before MapServerParser
+// MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when
+// run in a headless environment
+import &apos;leaflet-headless&apos;;
+
+import MapServerParser from &apos;./../src/Leaflet.LayerHierarchy.MapServerParser&apos;;
+import LayerHierarchy from &apos;./../src/Leaflet.LayerHierarchy&apos;;
+
+import Promise from &apos;bluebird&apos;;
+import { Map } from &apos;leaflet-headless&apos;;
+
+// import chalk from &apos;chalk&apos;;
+import sinon from &apos;sinon&apos;;
+
+describe( &apos;MapServerParser&apos;, () =&gt; {
+
+  let url, map, options, parser;
+  before( () =&gt; {
+    // setup fixture data
+    url = &apos;https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer&apos;;
+    // stubbing Leaflet&apos;s Map prevents us from actually calling the Map constructor, which would require
+    // a HTMLElement to use; getting JSDOM to work with Map is more trouble that it&apos;s worth
+    // however, checks like `map instanceof Map` still pass with the stub
+    map = sinon.createStubInstance(Map);
+    options = {
+      data: {
+        scale: false,
+        defaultVisibility: false,
+        swatch: true
+      },
+      hierarchyOptions: {
+        followAncestorVisibility: false,
+        propogateDeselectToChildren: true,
+        followAncestorMutability: false
+      }
+    };
+    parser = new MapServerParser(url, map, options);
+  } );
+
+  describe(&apos;#url&apos;, () =&gt; {
+    it(&apos;should be able to get the MapServer url&apos;, () =&gt; {
+      expect(parser.url).to.be.a(&apos;string&apos;).that.has.string(url);
+    });
+  })
+
+  describe(&apos;#map&apos;, () =&gt; {
+    it(&apos;should be able to get the Leaflet map object&apos;, () =&gt; {
+      expect(parser.map).to.be.an.instanceof(Map).and.to.equal(map);
+    });
+  })
+
+  describe(&apos;#options&apos;, () =&gt; {
+    it(&apos;should be able to get configuration options&apos;, () =&gt; {
+      expect(parser.options).to.be.an(&apos;object&apos;).that.has.all.deep.keys(options);
+    })
+  })
+
+  describe(&apos;#defaults&apos;, () =&gt; {
+    it(&apos;should have default configuration options accessible always&apos;, () =&gt; {
+      expect(parser.defaults).to.be.an(&apos;object&apos;).that.has.all.deep.keys(options);
+    })
+  })
+
+  describe(&apos;#constructor&apos;, () =&gt; {
+    it(&apos;should throw errors if required arguments are missing&apos;, () =&gt; {
+      expect(() =&gt; {
+        let p = new MapServerParser();
+      }).to.throw();
+      expect(() =&gt; {
+        let p = new MapServerParser(undefined, map, options);
+      }).to.throw(&apos;URL&apos;);
+      expect(() =&gt; {
+        let p = new MapServerParser(url, undefined, options);
+      }).to.throw(&apos;map&apos;);
+    });
+
+    it(&apos;should have default (configuration) options&apos;, () =&gt; {
+      // create a new parser without any options passed
+      // so we can assert that it uses default options of some sort
+      let p = new MapServerParser(url, map);
+      expect(p.options).to.be.an(&apos;object&apos;).that.has.all.deep.keys(options)
+    });
+
+    it(&apos;should merge options with defaults&apos;, () =&gt; {
+      const o = { data: { scale: false } };
+      let p = new MapServerParser(url, map, o);
+      expect(p.options).to.be.an(&apos;object&apos;).that.has.all.deep.keys(options);
+      expect(p.options.data.scale).to.be.false;
+      expect(p.options.data.defaultVisibility).to.exist.and.to.equal(p.defaults.data.defaultVisibility);
+    });
+  })
+
+  describe(&apos;#parse&apos;, () =&gt; {
+
+    let promise;
+    before(() =&gt; {
+      promise = parser.parse();
+    });
+
+    it(&apos;should return a promise&apos;, () =&gt; {
+      expect(promise).to.be.an.instanceof(Promise);
+    });
+
+    it(&apos;should resolve the promise&apos;, () =&gt; {
+      return expect(promise).to.be.fulfilled;
+    });
+
+    it.skip(&apos;should resolve the promise with a LayerHierarchy&apos;, () =&gt; {
+      return expect(promise).to.eventually.be.an.instanceof(LayerHierarchy);
+    });
+  })
+
+  describe(&apos;#_queryLayers&apos;, () =&gt; {
+    it(&apos;should return a promise&apos;, () =&gt; {
+      expect(parser._queryLayers()).to.be.an.instanceof(Promise);
+    });
+  })
+
+  describe(&apos;#_queryLegend&apos;, () =&gt; {
+    it(&apos;should return a promise&apos;, () =&gt; {
+      expect(parser._queryLayers()).to.be.an.instanceof(Promise);
+    });
+  })
+
+  describe(&apos;._makeLayerURL&apos;, () =&gt; {
+    it(&apos;should require valid parameters&apos;, () =&gt; {
+      expect(function noParams() {
+        MapServerParser._makeLayerURL()
+      }).to.throw();
+      expect(function missingURL() {
+        MapServerParser._makeLayerURL(undefined, 0)
+      }).to.throw(&apos;URL&apos;);
+      expect(function invalidURLType() {
+        MapServerParser._makeLayerURL({}, 0)
+      }).to.throw(&apos;URL&apos;);
+      expect(function missingID() {
+        MapServerParser._makeLayerURL(&apos;foo&apos;, undefined);
+      }).to.throw(&apos;ID&apos;);
+      expect(function invalidIDType() {
+        MapServerParser._makeLayerURL(&apos;foo&apos;, {});
+      }).to.throw(&apos;ID&apos;);
+    });
+
+    it(&apos;should make valid URLs&apos;, () =&gt; {
+      const fixture1 = {
+        base: &apos;https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer&apos;,
+        id: 0,
+        result: &apos;https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer/0&apos;
+      };
+      const fixture2 = {
+        base: &apos;MapServer&apos;,
+        id: 42,
+        result: &apos;MapServer/42&apos;
+      }
+
+      expect(MapServerParser._makeLayerURL(fixture1.base, fixture1.id)).to.equal(fixture1.result);
+      expect(MapServerParser._makeLayerURL(fixture2.base, fixture2.id)).to.equal(fixture2.result);
+    });
+  })
+
+
+} );
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

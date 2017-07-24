@@ -1,0 +1,56 @@
+{
+  "coverage": "69.13%",
+  "expectCount": 81,
+  "actualCount": 56,
+  "files": {
+    "src/Leaflet.LayerHierarchy.MapServerParser.js": {
+      "expectCount": 10,
+      "actualCount": 6,
+      "undocumentLines": [
+        21,
+        30,
+        26,
+        112
+      ]
+    },
+    "src/Leaflet.LayerHierarchy.js": {
+      "expectCount": 12,
+      "actualCount": 11,
+      "undocumentLines": [
+        142
+      ]
+    },
+    "src/Leaflet.NestedLayer.js": {
+      "expectCount": 31,
+      "actualCount": 15,
+      "undocumentLines": [
+        241,
+        206,
+        200,
+        252,
+        248,
+        145,
+        236,
+        221,
+        227,
+        256,
+        217,
+        214,
+        203,
+        187,
+        180,
+        209
+      ]
+    },
+    "src/Leaflet.Control.NestedLayers.js": {
+      "expectCount": 28,
+      "actualCount": 24,
+      "undocumentLines": [
+        260,
+        243,
+        125,
+        22
+      ]
+    }
+  }
+}

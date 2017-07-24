@@ -67,7 +67,7 @@ export default class LayerHierarchy {
     }
 
     // take ownership of the layer
-    layer.owner = this;
+    this.ownLayer(layer);
 
     if (typeof parentID != 'undefined') {
       // add as child

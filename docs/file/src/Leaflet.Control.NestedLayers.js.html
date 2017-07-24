@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Leaflet.Control.NestedLayers.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Leaflet.Control.NestedLayers.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// import chalk from &apos;chalk&apos;;
+
+import React from &apos;react&apos;;
+import ReactDOM from &apos;react-dom&apos;;
+import PropTypes from &apos;prop-types&apos;;
+import LayerHierarchy from &apos;./Leaflet.LayerHierarchy&apos;;
+import NestedLayer from &apos;./Leaflet.NestedLayer&apos;;
+import classnames from &apos;classnames&apos;;
+
+/**
+ * React component to represent a LayerHierarchy
+ * @param {object} props The component&apos;s props.
+ * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.
+ */
+export class NestedLayersComponent extends React.Component {
+  /**
+   * @param {object} props The component&apos;s props.
+   * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      hierarchy: this.props.hierarchy
+    }
+  }
+
+  /**
+   * Describes the React props object
+   * @type {Object}
+   */
+  static propTypes = {
+    hierarchy: PropTypes.instanceOf(LayerHierarchy).isRequired
+  };
+
+  /**
+   * Generates a unique key for rendering a layer in JSX
+   * @param  {NestedLayer} layer The layer to use data from
+   * @return {string}       A string unique to this layer
+   */
+  makeLayerKey(layer) {
+    return (layer.id.toString + layer.name);
+  }
+
+  /**
+   * Event handler to toggle a layer&apos;s selected state
+   * @param  {NestedLayer} layer The layer to toggle
+   */
+  handleToggleSelected = (layer) =&gt; {
+    const id = layer.id;
+    const newHierarchy = this.state.hierarchy;
+    newHierarchy.getLayerByID(id).toggleSelected();
+    this.setState({
+      hierarchy: newHierarchy
+    });
+  }
+
+  /**
+   * Recursively renders a NestedLayer using NestedLayerComponent. If the NestedLayer has
+   * children, use this function as it not only renders a single NestedLayer, but also the subtree
+   * of layers under the NestedLayer recursively.
+   * @param  {NestedLayer} layer The layer to represent with a React component
+   * @return {NestedLayerComponent}       A react component representing the given NestedLayer.
+   */
+  makeComponentFromLayer = (layer) =&gt; {
+    // recursive function
+    // &apos;leaf&apos; is the base case
+    // property initializer syntax + arrow function keeps the scope of &apos;this&apos; through recursive calls
+    let componentChildren;
+
+    // branch: this layer has children
+    if (layer.children.length &gt; 0) {
+      // leaves = layer.children.map(this.makeComponentFromLayer)
+      componentChildren = (
+        &lt;ul className=&quot;branch&quot;&gt;
+          {layer.children.map(this.makeComponentFromLayer)}
+        &lt;/ul&gt;
+      );
+    }
+
+    return (
+      &lt;NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}&gt;
+        {componentChildren}
+      &lt;/NestedLayerComponent&gt;
+    );
+
+  }
+
+  /**
+   * Renders the component
+   * @return {Component} JSX
+   */
+  render() {
+    const roots = this.state.hierarchy.rootLayers;
+    let components = [];
+
+    for (let i = 0; i &lt; roots.length; i++) {
+      components.push(this.makeComponentFromLayer(roots[i]));
+    }
+
+    return (
+      &lt;div className=&quot;nested-layer-control-container&quot;&gt;
+        &lt;h2&gt;TOC CONTROL&lt;/h2&gt;
+        &lt;ul className=&quot;branch nested-layer-control&quot;&gt;
+          {components}
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+/**
+ * React Component to represent a single NestedLayer
+ * @param {object} props Component properties
+ * @param {NestedLayer} props.layer The layer to represent
+ * @param {function} props.onToggleSelected The callback to change the layer&apos;s selected state
+ */
+export class NestedLayerComponent extends React.Component {
+  /**
+   * @param {object} props Component properties
+   * @param {NestedLayer} props.layer The layer to represent
+   * @param {function} props.onToggleSelected The callback to change the layer&apos;s selected state
+   */
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  /**
+   * Describes the React props object
+   * @type {Object}
+   */
+  static propTypes = {
+    layer: PropTypes.instanceOf(NestedLayer).isRequired,
+    onToggleSelected: PropTypes.func.isRequired,
+    children: PropTypes.any
+  };
+
+  /**
+   * Calls the toggle selected state handler passed by the parent to change the selected state of
+   * the layer
+   */
+  toggleSelected = () =&gt; {
+    // updates both the component state and the LayerHierarchy structure
+    this.props.onToggleSelected(this.props.layer);
+  }
+
+  /**
+   * Returns a data URL suitable for use in a the src of an &lt;img /&gt; that contains the base 64
+   * encoded layer swatch
+   * @return {string} data URL containing the swatch
+   */
+  getSwatch = () =&gt; {
+    return &apos;data:image/png;base64,&apos; + this.props.layer.swatch;
+  }
+
+  /**
+   * Renders the component
+   * @return {Component} JSX
+   */
+  render() {
+    const itemClassNames = classnames({
+      leaf: true,
+      enabled: this.props.layer.enabled,
+      disabled: this.props.layer.disabled
+    });
+    return (
+      &lt;li className={itemClassNames}&gt;
+        &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} /&gt;
+        {this.props.layer.swatch.length &gt; 0 &amp;&amp;
+          &lt;img src={this.getSwatch()} className=&quot;swatch&quot; /&gt;
+        }
+        &lt;span className=&quot;layer-name&quot; onClick={this.toggleSelected}&gt;{this.props.layer.name}&lt;/span&gt;
+
+        {this.props.children}
+      &lt;/li&gt;
+    );
+  }
+}
+
+/**
+ * Leaflet plugin to display a hierarchial version of {@link http://leafletjs.com/reference-1.1.0.html#control-layers L.Control.Layers}. Uses React to wrap the
+ * NestedLayersComponent.
+ * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control
+ * @param  {Element} element   The DOM element to bind the control to
+ * @param  {object} options   Configuration options that dictate how the control should behave
+ */
+export default class NestedLayers {
+
+  /**
+   * Initialize the plugin and {@link #NestedLayers#attach attaches} to the DOM.
+   * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control
+   * @param  {Element} element   The DOM element to bind the control to
+   * @param  {object} options   Configuration options that dictate how the control should behave
+   * @param  {boolean} [options.followAncestorVisibility=true] Deselecting any ancestor makes its
+   * children invisible (without changing their selected state)
+   * @param {boolean} [options.propogateDeselectToChildren=false] Deselecting a parent also deselects
+   * children (by changing their state)
+   * @param {boolean} [options.followAncestorMutability=true] Deselecting any ancestor disables its
+   * children (cannot change children&apos;s selected state)
+   */
+  constructor(hierarchy, element, options) {
+
+    if (typeof hierarchy == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing hierarchy when creating NestedLayers control&apos;);
+    }
+    this.hierarchy = hierarchy;
+    if (typeof element == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing DOM element when creating NestedLayers control&apos;);
+    }
+    this.element = element;
+
+    // default options
+    this._options = {
+      followAncestorVisibility: true,
+      propogateDeselectToChildren: false,
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
+    Object.assign(this._options, options);
+
+    this._component = &lt;NestedLayersComponent hierarchy={this.hierarchy} /&gt;
+
+    this._isAttached = false;
+
+    // bind to the DOM
+    this.attach();
+  }
+
+  /**
+   * The underlying hierarchy of layers the plugin visually represents
+   * @type {LayerHierarchy}
+   */
+  get hierarchy() {
+    return this._hierarchy;
+  }
+  /**
+   * Shorthand accessor for the {@link #NestedLayers#hierarchy hierarchy} property
+   */
+  get h() {
+    return this.hierarchy;
+  }
+  set hierarchy(val) {
+    this._hierarchy = val;
+  }
+
+  /**
+   * The DOM element that the control attaches to
+   * @type {Element}
+   */
+  get element() {
+    return this._element;
+  }
+  /**
+   * Shorthand accessor for the {@link #NestedLayers#element element} property
+   */
+  get el() {
+    return this.element;
+  }
+  set element(val) {
+    this._element = val;
+  }
+
+  /**
+   * The React component under the hood
+   * @type {NestedLayersComponent}
+   */
+  get component() {
+    return this._component;
+  }
+
+  /**
+   * True if the plugin has attached itself to the DOM element
+   * @type {boolean}
+   */
+  get isAttached() {
+    return this._isAttached;
+  }
+  // no direct setting of &apos;isAttached&apos; from outside the class
+  // the attach() and detach() methods handle this state
+
+  /**
+   * Configuration options
+   * @type {object}
+   */
+  get options() {
+    return this._options;
+  }
+
+  /**
+   * Bind to the DOM. Internally, it checks to see if it has already been attached, and if not,
+   * uses React to render the {@link #NestedLayers#component component} to the specified {@link
+   * #NestedLayers#element element}.
+   */
+  attach() {
+    if (!this.isAttached) {
+      ReactDOM.render(
+        this.component,
+        this.element
+      );
+    }
+    this._isAttached = true;
+  }
+
+  /**
+   * Unbind from the DOM. Releases the {@link #NestedLayers#element element} for reuse.
+   */
+  detach() {
+    if (this.isAttached) {
+      ReactDOM.unmountComponentAtNode(this.element);
+    }
+    this._isAttached = true;
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

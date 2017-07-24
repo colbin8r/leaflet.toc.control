@@ -1,41 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset='utf-8' />
-  <title>leaflet.control.nestedlayers 0.1.0 | Documentation</title>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
-  <link href='assets/style.css' type='text/css' rel='stylesheet' />
-  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
 </head>
-<body class='documentation'>
-  <div class='max-width-4 mx-auto'>
-    <div class='clearfix md-mxn2'>
-      <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
-        <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>leaflet.control.nestedlayers</h3>
-          <div class='mb1'><code>0.1.0</code></div>
-          <input
-            placeholder='Filter'
-            id='filter-input'
-            class='col12 block input'
-            type='text' />
-          <div id='toc'>
-            <ul class='list-reset h5 py1-ul'>
-              
-            </ul>
-          </div>
-          <div class='mt1 h6 quiet'>
-            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
-          </div>
-        </div>
-      </div>
-      <div class='fix-margin-3'>
-        
-      </div>
-    </div>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
   </div>
-  <script src='assets/anchor.js'></script>
-  <script src='assets/site.js'></script>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="leaflet-control-nestedlayers">Leaflet.Control.NestedLayers</h1>
+<p><code>Leaflet.Control.NestedLayers</code> is a plugin for <a href="http://leafletjs.com/">Leaflet</a> similar to the native <a href="http://leafletjs.com/reference-1.0.3.html#control-layers"><code>L.control.layers</code></a> control, except that unlike the native control, <code>NestedLayers</code> permits a hierarchial structure to overlay layers. Written in ES6, it uses the ES6 class syntatic sugar instead of <a href="http://leafletjs.com/reference-1.0.3.html#class">Leaflet&apos;s own class framework</a>. It transpiles code down via <a href="https://babeljs.io/">babel</a> (<code>dist/index.js</code>) and also includes a ready-to-use bundle via <a href="https://webpack.github.io/">webpack</a> (<code>demo/bundle.js</code>).</p>
+<p>(TODO: DEMO)</p>
+<h2 id="installation">Installation</h2>
+<h2 id="usage">Usage</h2>
+<p>(TODO: DEMO)</p>
+<h3 id="as-a-package">As a Package</h3>
+<p>If you use ES6 or higher, you can import exactly what you need for use in your own package with ES6 syntax:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import { NestedLayers } from &apos;Leaflet.Control.NestedLayers&apos;</code>
+</code></pre>
+<p>If you use ES5 or lower with a module loader like <a href="http://browserify.org/">Browserify</a>, <a href="https://rollupjs.org/">rollup.js</a>, or <a href="https://webpack.github.io/">webpack</a>, you can do exactly the same thing with your module loader of choice. A pre-built bundle is available via <code>demo/bundle.js</code>.</p>
+<h3 id="as-a-plugin">As a Plugin</h3>
+<p>If you want to use this package like most other Leaflet plugins (i.e. directly in the browser, maybe as a <code>&lt;script&gt;</code> tag), you can include the <code>bundle.js</code> on your page:</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;./node_modules/Leaflet.Control.NestedLayers/demo/bundle.js&quot;&gt;&lt;/script&gt;</code>
+</code></pre>
+<h2 id="contributing">Contributing</h2>
+<p><code>NestedLayers</code> includes a transpilation build system via <a href="https://babeljs.io/">babel</a>, a bundler build system <a href="https://webpack.github.io/">webpack</a>, unit tests via <a href="https://mochajs.org/">mocha</a> and <a href="http://chaijs.com/">chai</a>, coverage reporting via <a href="https://istanbul.js.org/">istanbul and nyc</a>, syntax/style linter via <a href="http://eslint.org/">eslint</a>, and API documentation generator via <a href="https://esdoc.org/">ESDoc</a>.</p>
+<p><strong>Quick start:</strong></p>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Clone the repo
+$ git clone git@bitbucket.org:worldviewsolutions/leaflet.control.nestedlayers.git
+
+# Install all dependencies
+$ npm install
+
+# Compile, run tests, and lint in real-time
+$ npm start
+
+# Start development :)</code>
+</code></pre>
+<h3 id="script-tasks">Script Tasks</h3>
+<p>During development, it&apos;s recommended to use the main <code>watch</code> task (which is aliased to <code>npm start</code>), which will enable real-time transpilation, bundling, linting, and testing. These processes run in parallel together; if one &quot;fails&quot; at any point, the others will continue.</p>
+<pre><code class="lang-sh"><code class="source-code prettyprint">$ npm start
+# or
+$ npm run watch</code>
+</code></pre>
+<h4 id="building-and-transpiling">Building and Transpiling</h4>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Rebuild everything
+$ npm run build
+
+# Transpile via babel
+$ npm run compile
+
+# Bundle via webpack
+$ npm run pack
+
+# Watch versions are also available
+$ npm run compile:watch
+$ npm run pack:watch</code>
+</code></pre>
+<h4 id="testing-coverage-and-linting">Testing, Coverage, and Linting</h4>
+<p>The <code>npm test</code> script will lint, run tests, and check code coverage. It&apos;s the best way to verify that all the code works short of actually transpling/bundling it.</p>
+<pre><code class="lang-sh"><code class="source-code prettyprint">$ npm test</code>
+</code></pre>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Unit tests with code coverage
+$ npm run coverage
+
+# Just unit tests
+$ npm run test:once
+$ npm run test:watch</code>
+</code></pre>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Linting scripts
+$ npm run lint
+$ npm run lint:watch
+
+# Only run the linter against your `.spec.js` test files:
+$ npm run lint:tests</code>
+</code></pre>
+<h4 id="docs">Docs</h4>
+<p>Inline <a href="https://esdoc.org/manual/tags.html">ESDoc</a> comments, which are very similar to <a href="http://usejsdoc.org/">JSDoc</a> comments, can be used to generate HTML documentation. Generated documentation lives in <code>/docs</code> and is created with <a href="https://esdoc.org/manual/usage.html"><code>esdoc</code></a>.</p>
+<p>The linting scripts will throw errors if you are missing or have malformed inline docs. You can see a list of all valid <a href="https://esdoc.org/manual/tags.html">tags</a> that you can use in comment blocks. Since the project is written in ES6, there is support for much of the <a href="https://esdoc.org/manual/feature.html#ecmascript-proposal">experimental ES6 features</a> provided as a part of the ECMAScript proposal that Babel implements.</p>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Generate documentation in /docs
+# This is also called when you npm run build
+$ npm run docs
+
+# View the docs at /docs/index.html</code>
+</code></pre>
+<h3 id="script-configurations">Script Configurations</h3>
+<p>Gulp, the build system, can be configured in <code>gulpfile.babel.js</code>.</p>
+<p>Webpack, the bundler, can be configured in <code>webpack.config.js</code>.</p>
+<p>Babel, the transpiler used by both Gulp and Webpack, has duplicated configurations in <code>gulpfile.babel.js</code> and <code>webpack.config.js</code>.</p>
+<p>ESLint, the linter, can be configured in <code>.eslintrc.json</code>.</p>
+<p>Mocha, the test runner, can be configured in <code>test\mocha.conf.js</code>; command-line arguments always passed to Mocha are configured in <code>test\mocha.opts</code>.</p>
+<p>ESDoc, the documentation generator, can be configured in <code>.esdoc.json</code>.</p>
+<p>Other, maybe obvious, configuration files:</p>
+<ul>
+<li><code>package.json</code></li>
+<li><code>.gitignore</code></li>
+<li><code>.gitattributes</code></li>
+<li><code>.editorconfig</code></li>
+<li>Note that as of 7/24/2017 <code>.babelrc</code> is not in use</li>
+</ul>
+<h2 id="author">Author</h2>
+<p><strong>Colby Rogness</strong></p>
+<ul>
+<li><a href="https://github.com/colbin8r">github @colbin8r</a></li>
+<li><a href="http://twitter.com/colbyrogness">twitter @colbyrogness</a></li>
+<li><a href="https://bitbucket.org/colbin8r/">bitbucket @colbin8r</a></li>
+</ul>
+<h2 id="license">License</h2>
+<p><a href="LICENSE.md">MIT</a></p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
 </body>
 </html>

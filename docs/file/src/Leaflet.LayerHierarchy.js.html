@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Leaflet.LayerHierarchy.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Leaflet.LayerHierarchy.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import NestedLayer from &apos;./Leaflet.NestedLayer&apos;;
+
+/**
+ * Represents a non-rooted tree structure of NestedLayer objects
+ * @param {object} options Configuration options that dictate how the tree
+ * should behave
+ */
+export default class LayerHierarchy {
+
+  /**
+   * @param {object} options Configuration options
+   * @param {NestedLayer[]} [options.layers=[]] Layers to include at the root
+   * level
+   * @param {boolean} [options.followAncestorVisibility=true] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   * @param {boolean} [options.propogateDeselectToChildren=false] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   * @param {boolean} [options.followAncestorMutability=true] {@link
+   * #NestedLayers#constructor See the plugin constructor.}
+   */
+  constructor(options) {
+    // for the layers parameter, ensure that we are at least passed an array
+    // otherwise, default to empty array
+
+    // default options
+    this._options = {
+      // &apos;layers&apos; will be deleted by the end of the constructor
+      layers: [],
+      followAncestorVisibility: true,
+      propogateDeselectToChildren: false,
+      followAncestorMutability: true
+    };
+
+    // overwrite defaults with passed options
+    Object.assign(this._options, options);
+
+    // extract the &apos;layers&apos; property from &apos;options&apos; into its own property
+    this._layers = this.options.layers;
+    delete this._options.layers;
+
+    this.validateEnabledStates();
+
+    this.ownAllLayers(this.layers);
+  }
+
+  /**
+   * Configuration options
+   * @type {object}
+   */
+  get options() {
+    return this._options;
+  }
+
+  /**
+   * Adds a new layer into the tree. Defaults to insertion at the root of the
+   * tree, but passing a the ID of another layer will insert the layer as a
+   * child of that parent.
+   * @param {NestedLayer} layer    The layer to insert
+   * @param {?number} [parentID=null] The ID of a parent to insert underneath
+   */
+  addLayer(layer, parentID) {
+    // id, name, layer, defaultVisibility, minScale, maxScale, children
+    // layer should be a NestedLayer
+
+    if (!(layer instanceof NestedLayer)) {
+      throw new TypeError(&apos;layer is not a NestedLayer&apos;);
+    }
+
+    // take ownership of the layer
+    this.ownLayer(layer);
+
+    if (typeof parentID != &apos;undefined&apos;) {
+      // add as child
+      this.getLayerByID(parentID).addChild(layer);
+    } else {
+      // no parent, add at root level
+      this._layers.push(layer);
+    }
+  }
+
+  /**
+   * Finds a layer in the tree by ID. Traverses the tree recurisvely until it
+   * is found. Don&apos;t pass children unless you want to search a specific
+   * subtree.
+   * @param  {number}          id       The layer ID to search for
+   * @param  {NestedLayer[]}   [children=this.layers] A subtree to search
+   * @return {?NestedLayer}     The layer if found, or null otherwise.
+   */
+  getLayerByID(id, children) {
+
+    // if the function was not called recursively
+    if (!children) {
+      children = this._layers;
+    }
+
+    for (let i = 0; i &lt; children.length; i++) {
+
+      // if the child matches
+      if (children[i].id == id) {
+        // return the child
+        return children[i];
+
+      } else {
+
+        // if the child has its own children
+        if (children[i].children &amp;&amp; children[i].children.length &gt; 0) {
+
+          // reucrisvely check them
+          let recursiveResult = this.getLayerByID(id, children[i].children);
+          if (recursiveResult !== null) {
+            return recursiveResult;
+          }
+
+        }
+      }
+
+    }
+
+    // if execution reaches here, no layers in this tree or subtree have the requested id
+    return null;
+  }
+
+  /**
+   * Root-level NestedLayer layers
+   * @type {NestedLayer[]}
+   */
+  get layers() {
+    return this._layers;
+  }
+  /**
+   * {@link #LayerHierarchy#layers Root-level NestedLayer layers}
+   * @type {NestedLayer[]}
+   */
+  get rootLayers() {
+    return this.layers;
+  }
+
+  // check all the children to ensure that they are all enabled/disabled as appropriate
+  // the highest layer takes precedence over lower layers
+  // i.e. if a root-level layer is disabled, then all its children will be disabled as well
+  // parameters should be undefined when called the first time; the function is recursive
+  validateEnabledStates(layers, newEnabledValue) {
+    // first call? then layers = the whole true
+    if (typeof layers === &apos;undefined&apos;) {
+      // console.log(&apos;validateEnabledStates: first call&apos;);
+      layers = this.rootLayers;
+    }
+
+    for (let i = 0; i &lt; layers.length; i++) {
+      // console.log(&apos;validateEnabledStates: checking&apos;, layers[i].name);
+
+      // if we have a specific enabled value, set the children to that
+      if (typeof newEnabledValue !== &apos;undefined&apos;) {
+        // console.log(&apos;validateEnabledStates: setting&apos;, layers[i].name, &apos;to&apos;, newEnabledValue);
+        layers[i].enabled = newEnabledValue;
+      }
+
+      // if the layer has children, repeat this process on them
+      // console.log(&apos;validateEnabledStates: does&apos;, layers[i].name, &apos;have children?&apos;, (layers[i].hasChildren ? &apos;yes&apos; : &apos;no&apos;));
+      if (layers[i].hasChildren) {
+        // console.log(&apos;validateEnabledStates: setting children of&apos;, layers[i].name, &apos;to&apos;, layers[i].enabled);
+        this.validateEnabledStates(layers[i].children, layers[i].enabled)
+      }
+
+    }
+
+  }
+
+  /**
+   * Checks if this LayerHierarchy owns the provided layer
+   * @param  {NestedLayer} layer The layer to check
+   * @return {boolean}       True if the layer is owned by this hierarchy; false otherwise
+   */
+  ownsLayer(layer) {
+    return layer.owner === this;
+  }
+
+  /**
+   * Factory method for making a new NestedLayer that is owned by this hierarchy
+   * @param  {object} layerData The same object you would provide to the {@link #NestedLayer#constructor constructor of NestedLayer}
+   * @return {NestedLayer}           A NestedLayer owned by this hierarchy
+   */
+  makeLayer(layerData) {
+    const l = new NestedLayer(layerData);
+    l.owner = this;
+    return l;
+  }
+
+  /**
+   * Take ownership of a layer
+   * @param  {NestedLayer} layer The layer to become the owner of
+   */
+  ownLayer(layer) {
+    layer.owner = this;
+  }
+
+  /**
+   * Take ownership of a layer subtree AND those layers&apos; children
+   * @param  {NestedLayer[]} layers The layers to become the owner of
+   */
+  ownAllLayers(layers) {
+    for (let i = 0; i &lt; layers.length; i++) {
+      this.ownLayer(layers[i]);
+      layers[i].ownChildren();
+    }
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

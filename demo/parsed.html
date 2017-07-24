@@ -1,0 +1,80 @@
+<html>
+
+<head>
+<title>Leaflet.Control.NestedLayers plugin demo &mdash; Simple</title>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
+<!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script> -->
+
+<!-- Bluebird (for Promises) -->
+<!-- <script src="https://unpkg.com/bluebird"></script> -->
+
+<!-- Plugin -->
+<script src="./bundle.js"></script>
+
+<!-- Esri Leaflet -->
+<!-- <script src="https://unpkg.com/esri-leaflet@2.0.8"></script> -->
+
+<style>
+body {
+  padding: 0;
+  margin: 0;
+}
+#map, #toc {
+  height: 50vh;
+  width: 100%;
+}
+.layer-name {
+  cursor: pointer;
+}
+
+.leaf.enabled {
+  color: limegreen;
+}
+.leaf.disabled {
+  color: grey;
+}
+
+
+</style>
+
+</head>
+<body>
+
+<div id="map">
+
+</div>
+
+<div id="toc">
+
+</div>
+
+<script>
+
+// var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([37.4316, -78.6569], 13);
+
+// basemap
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiY29sYmluOHIiLCJhIjoiY2o0OHA1a3EyMGhqaTJ3cDJpZ3V3bWtwYyJ9.EVWPRmgB_cDROLCbCAEr7Q'
+}).addTo(map);
+
+// manually assemble a small layer hierarchy
+// var mapServerURL = 'http://gis.vdot.virginia.gov/arcgis/rest/services/varoads/ADT/MapServer';
+var mapServerURL = 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer';
+var parser = L.mapServerParser(mapServerURL, map)
+
+parser.parse().then(function(hierarchy) {
+  // put together the Table of Contents (TOC) control
+  var tocEl = document.getElementById('toc');
+  var toc = L.control.nestedLayers(hierarchy, tocEl);
+})
+
+</script>
+</body>
+
+</html>

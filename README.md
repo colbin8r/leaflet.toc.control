@@ -2,7 +2,7 @@
 
 `Leaflet.Control.NestedLayers` is a plugin for [Leaflet](http://leafletjs.com/) similar to the native [`L.control.layers`](http://leafletjs.com/reference-1.0.3.html#control-layers) control, except that unlike the native control, `NestedLayers` permits a hierarchial structure to overlay layers. Written in ES6, it uses the ES6 class syntatic sugar instead of [Leaflet's own class framework](http://leafletjs.com/reference-1.0.3.html#class). It transpiles code down via [babel](https://babeljs.io/) (`dist/index.js`) and also includes a ready-to-use bundle via [webpack](https://webpack.github.io/) (`demo/bundle.js`).
 
-(TODO: DEMO)
+(TODO: BRIEF DEMO)
 
 ## Installation
 
@@ -29,7 +29,7 @@ If you want to use this package like most other Leaflet plugins (i.e. directly i
 
 ## Contributing
 
-`NestedLayers` includes a transpilation build system via [babel](https://babeljs.io/), a bundler build system [webpack](https://webpack.github.io/), unit tests via [mocha](https://mochajs.org/) and [chai](http://chaijs.com/), coverage reporting via [istanbul and nyc](https://istanbul.js.org/), syntax/style linter via [eslint](http://eslint.org/), and API documentation generator via [documentation.js](http://documentation.js.org/).
+`NestedLayers` includes a transpilation build system via [babel](https://babeljs.io/), a bundler build system [webpack](https://webpack.github.io/), unit tests via [mocha](https://mochajs.org/) and [chai](http://chaijs.com/), coverage reporting via [istanbul and nyc](https://istanbul.js.org/), syntax/style linter via [eslint](http://eslint.org/), and API documentation generator via [ESDoc](https://esdoc.org/).
 
 **Quick start:**
 
@@ -48,7 +48,7 @@ $ npm start
 
 ### Script Tasks
 
-During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, linting, and testing.
+During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, linting, and testing. These processes run in parallel together; if one "fails" at any point, the others will continue.
 
 ```sh
 $ npm start
@@ -57,7 +57,7 @@ $ npm run watch
 ```
 
 
-### Building and Transpiling
+#### Building and Transpiling
 
 ```sh
 # Rebuild everything
@@ -74,7 +74,7 @@ $ npm run compile:watch
 $ npm run pack:watch
 ```
 
-### Testing, Coverage, and Linting
+#### Testing, Coverage, and Linting
 
 The `npm test` script will lint, run tests, and check code coverage. It's the best way to verify that all the code works short of actually transpling/bundling it.
 
@@ -100,23 +100,40 @@ $ npm run lint:watch
 $ npm run lint:tests
 ```
 
-### Docs
+#### Docs
 
-Inline [JSDoc](http://usejsdoc.org/) comments can be used to generate HTML documentation (and other formats, too, [manually with `documentation`](https://github.com/documentationjs/documentation/blob/master/docs/USAGE.md)). Generated documentation lives in `/docs` and is created with [documentation.js](http://documentation.js.org/).
+Inline [ESDoc](https://esdoc.org/manual/tags.html) comments, which are very similar to [JSDoc](http://usejsdoc.org/) comments, can be used to generate HTML documentation. Generated documentation lives in `/docs` and is created with [`esdoc`](https://esdoc.org/manual/usage.html).
 
-The linting scripts will throw errors if you are missing or have malformed inline docs. You can see a list of all valid [block tags](http://usejsdoc.org/#block-tags) that you can use in comment blocks. Since the project is written in ES6, there are some [special notes for usage with ES6](https://github.com/documentationjs/documentation/blob/master/docs/RECIPES.md).
+The linting scripts will throw errors if you are missing or have malformed inline docs. You can see a list of all valid [tags](https://esdoc.org/manual/tags.html) that you can use in comment blocks. Since the project is written in ES6, there is support for much of the [experimental ES6 features](https://esdoc.org/manual/feature.html#ecmascript-proposal) provided as a part of the ECMAScript proposal that Babel implements.
 
 ```sh
 # Generate documentation in /docs
 # This is also called when you npm run build
-$ npm run docs:build
+$ npm run docs
 
-# View and read the documentation live
-$ npm run docs:view
+# View the docs at /docs/index.html
 ```
 
+### Script Configurations
 
+Gulp, the build system, can be configured in `gulpfile.babel.js`.
 
+Webpack, the bundler, can be configured in `webpack.config.js`.
+
+Babel, the transpiler used by both Gulp and Webpack, has duplicated configurations in `gulpfile.babel.js` and `webpack.config.js`.
+
+ESLint, the linter, can be configured in `.eslintrc.json`.
+
+Mocha, the test runner, can be configured in `test\mocha.conf.js`; command-line arguments always passed to Mocha are configured in `test\mocha.opts`.
+
+ESDoc, the documentation generator, can be configured in `.esdoc.json`.
+
+Other, maybe obvious, configuration files:
+* `package.json`
+* `.gitignore`
+* `.gitattributes`
+* `.editorconfig`
+* Note that as of 7/24/2017 `.babelrc` is not in use
 
 ## Author
 
@@ -128,4 +145,4 @@ $ npm run docs:view
 
 ## License
 
-(TODO: LICENSE)
+[MIT](LICENSE.md)

@@ -1,0 +1,20 @@
+{
+  "source": "./src",
+  "destination": "./docs",
+  "experimentalProposal": {
+    "classProperties": true,
+    "objectRestSpread": true,
+    "decorators": true,
+    "doExpressions": true,
+    "functionBind": true,
+    "asyncGenerators": true,
+    "exportExtensions": true,
+    "dynamicImport": true
+  },
+  "test": {
+    "type": "mocha",
+    "source": "./test"
+  },
+  "package": "./package.json",
+  "autoPrivate": "true"
+}

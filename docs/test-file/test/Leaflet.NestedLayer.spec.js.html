@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/Leaflet.NestedLayer.spec.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.NestedLayer.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
+import NestedLayer from &apos;./../src/Leaflet.NestedLayer&apos;;
+import LayerHierarchy from &apos;./../src/Leaflet.LayerHierarchy&apos;;
+
+import L from &apos;leaflet-headless&apos;;
+import sinon from &apos;sinon&apos;;
+
+describe( &apos;NestedLayer&apos;, () =&gt; {
+
+  function stubLayer(id, options) {
+    if (typeof options === &apos;undefined&apos;) {
+      options = {};
+    }
+    return {
+      id,
+      addTo: function() {},
+      removeFrom: function() {},
+      remove: function() {},
+      on: function() {},
+      minZoom: options.minZoom,
+      maxZoom: options.maxZoom
+    }
+  }
+
+  // layer1 and layer2 are both children of layer0
+  // l is for testing other non-nested layer features
+  let l, l0, l1, l2, layer0, layer1, layer2,
+      layerAddSpy, layerRemoveSpy;
+
+  beforeEach(() =&gt; {
+    l = new NestedLayer({
+      id: 999,
+      name: &apos;Layer 999&apos;,
+      layer: stubLayer(999),
+      map: {},
+      enabled: true,
+      selected: false
+    });
+
+    l1 = {
+      id: 1,
+      name: &apos;Layer 1&apos;,
+      layer: stubLayer(1),
+      map: {},
+      children: []
+    };
+    l2 = {
+      id: 2,
+      name: &apos;Layer 2&apos;,
+      layer: stubLayer(2),
+      map: {},
+      children: []
+    }
+    layer1 = new NestedLayer(l1);
+    layer2 = new NestedLayer(l2);
+
+    l0 = {
+      id: 0,
+      name: &apos;Layer 0&apos;,
+      layer: stubLayer(0),
+      map: {},
+      children: [layer1, layer2]
+    }
+    layer0 = new NestedLayer(l0);
+
+    layerAddSpy = sinon.spy(l.layer, &apos;addTo&apos;);
+    layerRemoveSpy = sinon.spy(l.layer, &apos;removeFrom&apos;);
+  });
+
+  afterEach(() =&gt; {
+    l._attach.restore;
+    l._detach.restore;
+  });
+
+  it(&apos;should accept props on construction&apos;, () =&gt; {
+    expect(layer1._props).to.have.property(&apos;id&apos;);
+    expect(layer1._props).to.have.property(&apos;name&apos;);
+    expect(layer1._props).to.have.property(&apos;layer&apos;);
+    expect(layer1._props).to.have.property(&apos;children&apos;);
+  });
+
+  it(&apos;should have defaults for optional arguments in the constructor&apos;, () =&gt; {
+
+
+    // children
+    expect(l._props).to.have.property(&apos;children&apos;);
+    expect(l.children).to.be.empty;
+
+    // swatch
+    expect(l._props).to.have.property(&apos;swatch&apos;);
+    expect(l.swatch).to.equal(&apos;&apos;);
+
+    // enabled + selected
+    expect(l.enabled).to.be.true;
+    expect(l.selected).to.be.false;
+  });
+
+  it(&apos;should throw errors when missing required arguments on construction&apos;, () =&gt; {
+    expect(function() {
+      new NestedLayer({
+        name: &apos;Layer 999&apos;,
+        layer: {id: 999},
+        map: {}
+      });
+    }).to.throw(&apos;ID&apos;);
+
+    expect(function() {
+      new NestedLayer({
+        id: 999,
+        layer: {id: 999},
+        map: {}
+      });
+    }).to.throw(&apos;name&apos;);
+
+    expect(function() {
+      new NestedLayer({
+        id: 999,
+        name: &apos;Layer 999&apos;,
+        map: {}
+      });
+    }).to.throw(&apos;layer object&apos;);
+    expect(function() {
+      new NestedLayer({
+        id: 999,
+        name: &apos;Layer 999&apos;,
+        layer: {id:999},
+      });
+    }).to.throw(&apos;map object&apos;);
+  });
+
+  it(&apos;should have a name&apos;, () =&gt; {
+    expect(l.name).to.equal(&apos;Layer 999&apos;);
+  })
+
+  it(&apos;should be selectable&apos;, () =&gt; {
+    l.select();
+    expect(l.selected).to.be.true;
+    expect(l.deselected).to.be.false;
+
+    l.selected = true;
+    expect(l.selected).to.be.true;
+    expect(l.deselected).to.be.false;
+  });
+
+  it(&apos;should be deselectable&apos;, () =&gt; {
+    l.deselect();
+    expect(l.selected).to.be.false;
+    expect(l.deselected).to.be.true;
+
+    l.selected = false;
+    expect(l.selected).to.be.false;
+    expect(l.deselected).to.be.true;
+  })
+
+  it(&apos;should permit toggling the selected state&apos;, () =&gt; {
+    l.selected = false;
+    l.toggleSelected();
+    expect(l.selected).to.be.true;
+    expect(l.deselected).to.be.false;
+  })
+
+  it(&apos;should be enableable&apos;, () =&gt; {
+    l.enable();
+    expect(l.enabled).to.be.true;
+    expect(l.disabled).to.be.false;
+
+    l.enabled = true;
+    expect(l.enabled).to.be.true;
+    expect(l.disabled).to.be.false;
+  });
+
+  it(&apos;should be disableable&apos;, () =&gt; {
+    l.disable();
+    expect(l.enabled).to.be.false;
+    expect(l.disabled).to.be.true;
+
+    l.enabled = false;
+    expect(l.enabled).to.be.false;
+    expect(l.disabled).to.be.true;
+  })
+
+  it(&apos;should permit toggling the enabled state&apos;, () =&gt; {
+    l.enabled = false;
+    l.toggleEnabled();
+    expect(l.enabled).to.be.true;
+    expect(l.disabled).to.be.false;
+  })
+
+  it(&apos;should always be deselected if disabled&apos;, () =&gt; {
+    l.disable();
+    expect(l.selected).to.be.false;
+    expect(l.deselected).to.be.true;
+
+    l.select();
+    expect(l.selected).to.be.false;
+    expect(l.deselected).to.be.true;
+  });
+
+  it(&apos;should retain selected state if disabled then re-enabled&apos;, () =&gt; {
+    l.select();
+    l.disable();
+    expect(l.selected).to.be.false;
+
+    l.enable();
+    expect(l.selected).to.be.true;
+
+    l.deselect();
+    l.disable();
+    expect(l.selected).to.be.false;
+
+    l.enable();
+    expect(l.selected).to.be.false;
+  });
+
+  it(&apos;should know who its owner is&apos;, () =&gt; {
+    expect(l.owner).to.be.undefined;
+
+    const owner = new LayerHierarchy();
+    l.owner = owner;
+    expect(l.owner).to.equal(owner);
+    expect(l.isOwnedBy(owner)).to.be.true;
+
+    const nonOwner = {};
+    expect(l.owner).to.not.equal(nonOwner);
+    expect(l.isOwnedBy(nonOwner)).to.be.false;
+  })
+
+  it(&apos;should have access to its owner\&apos;s configuration properties when owned&apos;, () =&gt; {
+    // trying to fetch the options of an unowned layer should give null (no options)
+    expect(layer0.options).to.be.null;
+
+    const owner = new LayerHierarchy({ layers: [layer0] });
+    expect(layer0.options).to.have.all.keys([
+      &apos;followAncestorVisibility&apos;,
+      &apos;followAncestorMutability&apos;,
+      &apos;propogateDeselectToChildren&apos;
+    ]);
+  })
+
+  it(&apos;should be able to add valid child layers&apos;, () =&gt; {
+    expect(layer0.children).to.not.contain(l);
+
+    layer0.addChild(l)
+    expect(layer0.children).to.contain(l);
+
+    // try adding an invalid child layer
+    let notALayer = 42;
+    expect(() =&gt; {
+      layer0.addChild(notALayer);
+    }).to.throw(TypeError);
+  });
+
+  it(&apos;should know if it has children&apos;, () =&gt; {
+    expect(layer0.hasChildren).to.be.true;
+    expect(layer1.hasChildren).to.be.false;
+  })
+
+  it(&apos;should be able to enable its children&apos;, () =&gt; {
+    layer2.addChild(l);
+
+    layer1.disable();
+    layer2.disable();
+    l.disable();
+
+    layer0.enableChildren();
+
+    expect(layer1.enabled).to.be.true;
+    expect(layer2.enabled).to.be.true;
+
+    layer1.enable();
+    layer2.enable();
+
+    expect(() =&gt; {
+      layer0.enableChildren()
+    }).to.not.throw();
+  })
+
+  it(&apos;should be able to disable its children&apos;, () =&gt; {
+    layer2.addChild(l);
+
+    layer1.enable();
+    layer2.enable();
+    l.enable();
+
+    layer0.disableChildren();
+
+    expect(layer1.disabled).to.be.true;
+    expect(layer2.disabled).to.be.true;
+
+    layer1.disable();
+    layer2.disable();
+
+    expect(() =&gt; {
+      layer0.disableChildren()
+    }).to.not.throw();
+  })
+
+  it(&apos;should be able to take ownership of all its children&apos;, () =&gt; {
+    const owner = {};
+    expect(layer0.owner).to.be.undefined;
+    expect(layer1.owner).to.be.undefined;
+    expect(layer2.owner).to.be.undefined;
+
+    layer0.owner = owner;
+    expect(layer0.isOwnedBy(owner)).to.be.true;
+    // child layers are not owned until ownChildren() is called
+    expect(layer1.owner).to.be.undefined;
+    expect(layer2.owner).to.be.undefined;
+
+    layer0.ownChildren();
+    expect(layer0.isOwnedBy(owner)).to.be.true;
+    expect(layer1.isOwnedBy(owner)).to.be.true;
+    expect(layer2.isOwnedBy(owner)).to.be.true;
+  })
+
+  it(&apos;should attach to the map when selected&apos;, () =&gt; {
+    l.select();
+    expect(layerAddSpy).to.have.been.called;
+  });
+
+  it(&apos;should not attach to the map if it is already attached&apos;, () =&gt; {
+    l.select();
+    l.select();
+    expect(layerAddSpy).to.have.been.calledOnce;
+    expect(layerRemoveSpy).to.not.have.been.called;
+  });
+
+  it(&apos;should detach from the map when deselected&apos;, () =&gt; {
+    // start by attaching it through selection
+    l.select();
+    l.deselect();
+    expect(layerRemoveSpy).to.have.been.called;
+  });
+
+  it(&apos;should detach from the map when disabled&apos;, () =&gt; {
+    l.select();
+    l.disable();
+    expect(layerRemoveSpy).to.have.been.called;
+  })
+
+  it(&apos;should re-attach to the map after being re-enabled (if selected)&apos;, () =&gt; {
+    l.select(); // mark layer as &quot;selected&quot;
+    l.disable(); // layer should persist selected state even when disabled
+    l.enable(); // layer should remember that it was selected before it was disabled
+    expect(layerAddSpy).to.have.been.calledTwice; // layer should re-attach to the map
+  })
+
+  it(&apos;should not detach from the map if it is already detached&apos;, () =&gt; {
+    l.select();
+    l.deselect();
+    l.deselect();
+    expect(layerRemoveSpy).to.have.been.calledOnce;
+  });
+
+  it(&apos;should disable itself if the map is zoomed beyond its zoom boundaries&apos;, () =&gt; {
+    const minZoom = 5, maxZoom = 15;
+    const map = L.map(document.createElement(&apos;div&apos;)).setView([52, 4], 10);
+    const layer = new NestedLayer({
+      id: 888,
+      name: &apos;Layer 888&apos;,
+      layer: stubLayer(888, {minZoom, maxZoom}),
+      map,
+      enabled: true,
+      selected: true
+    });
+    expect(layer.minZoom).to.equal(minZoom);
+    expect(layer.maxZoom).to.equal(maxZoom);
+
+    const removeSpy = sinon.spy(layer.layer, &apos;removeFrom&apos;);
+    map.setZoom(4);
+    expect(removeSpy).to.have.been.calledOnce;
+
+    map.setZoom(10); // this ensures the layer is reattached to the map
+    map.setZoom(16);
+    expect(removeSpy).to.have.been.calledTwice;
+  })
+
+} );
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

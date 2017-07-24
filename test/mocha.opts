@@ -1,0 +1,3 @@
+./test/**/*.spec.js
+--require babel-core/register
+--require ./test/mocha.conf.js

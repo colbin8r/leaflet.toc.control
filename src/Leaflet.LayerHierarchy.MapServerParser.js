@@ -1,8 +1,8 @@
 import LayerHierarchy from './Leaflet.LayerHierarchy';
+import NestedLayer from './Leaflet.NestedLayer';
 
 import { defaultsDeep as defaults } from 'lodash';
-// superagent mimics the node 'request' library on the client side
-// used for xhr/ajax
+// superagent mimics the node 'request' library on the client side as an xhr library
 import superagent from 'superagent';
 import Promise from 'bluebird';
 import superagentPromise from 'superagent-promise';
@@ -23,7 +23,7 @@ export default class MapServerParser {
     legend: '/legend'
   };
 
-  static JSONQueryParameters = {
+  static QueryParameters = {
     f: 'json'
   };
 
@@ -65,7 +65,8 @@ export default class MapServerParser {
     this._defaults = {
       data: {
         scale: true,
-        defaultVisibility: true
+        defaultVisibility: true,
+        swatch: false
       },
       hierarchyOptions: {}
     }
@@ -109,35 +110,37 @@ export default class MapServerParser {
   }
 
   parse() {
-    // setup the promise we will return
-    const p = new Promise((resolve, reject) => {
-
-    });
-
-    // query the layers endpoint and resolve the promise
-    this._queryLayers().then((res) => {
-      // ensure we hit HTTP 2xx status
-      if (!res.ok) {
-        throw new Error('Non-HTTP status 200');
+    // we have to wait for both xhr promises to resolve before we can begin processing
+    // note that Promise.join returns a promise that resolves to a LayerHierarchy
+    return Promise.join(this._queryLayers(), this._queryLegend(), (layerRes, legendRes) => {
+      // ensure we hit HTTP 2xx statuses
+      if (!layerRes.ok || !legendRes.ok) {
+        throw new Error('Bad request: HTTP status was not 2xx');
       }
 
-      let body = res.body;
+      // parse the layerdata into JSON
+      let body = layerRes.body;
       // ArcGIS does not properly set its Content-Type header
       // so force JSON parsing if superagent did not parse automatically
-      if (res.type !== MapServerParser.Headers.Accept) {
-        body = JSON.parse(res.text);
+      if (layerRes.type !== MapServerParser.Headers.Accept) {
+        body = JSON.parse(layerRes.text);
       }
 
       // create the LayerHierarchy
-      let hierarchy = new LayerHierarchy(this.options.hierarchyOptions);
+      var hierarchy = new LayerHierarchy(this.options.hierarchyOptions);
 
-      // loop through each layer and make a NestedLayer based on it
-      let layers = body.layers.map(
-        this._processLayerNode.bind(this, hierarchy.makeLayer)
-        );
+      // move layers down as children of other layers
+      body.layers.forEach((node) => {
+        let layer = this._convertLayerNodeToNestedLayer(node)
+        let parent = (node.parentLayer !== null ? node.parentLayer.id : undefined);
+        // if this layer has no parent, addLayer(...) will add as a root layer
+        hierarchy.addLayer(layer, parent);
+      });
+
+      // resolve the promise with the resulting LayerHierarchy
+      // console.log(hierarchy);
+      return hierarchy;
     });
-
-    return p;
   }
 
   /**
@@ -148,20 +151,27 @@ export default class MapServerParser {
     // assemble layerdata url
     const layerdataURL = this.url + MapServerParser.APISuffixes.layers;
 
-    // ArcGIS does not properly set its Content-Type header
-    // so force superagent to use JSON parsing
-    // superagent.parse['text/plain'] = JSON.parse;
-
     // fetch layerdata as JSON
     return request
       .get(layerdataURL)
       .set(MapServerParser.Headers)
-      .query(MapServerParser.JSONQueryParameters)
+      .query(MapServerParser.QueryParameters)
       .end();
   }
 
-  _processLayerNode = (layerFactory, node) => {
-    // NestedLayer data
+  _queryLegend() {
+    // assemble legend url
+    const legendURL = this.url + MapServerParser.APISuffixes.legend;
+
+    // fetch legend as JSON
+    return request
+      .get(legendURL)
+      .set(MapServerParser.Headers)
+      .query(MapServerParser.QueryParameters)
+      .end();
+  }
+
+  _convertLayerNodeToNestedLayer = (node) => {
     let layerData = {
       id: node.id,
       name: node.name,
@@ -176,15 +186,15 @@ export default class MapServerParser {
     if (this.options.data.scale) {
       // converts scale factor from ArcGIS to Leaflet's zoom factor
       // http://leafletjs.com/reference-1.1.0.html#crs-scale
-      leafletLayerData.maxZoom = this.map.zoom(node.maxScale);
-      leafletLayerData.minZoom = this.map.zoom(node.minScale);
+      leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);
+      leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);
     }
 
     // attach the Leaflet layer object to the NestedLayer's data
     layerData.layer = new FeatureLayerService(leafletLayerData);
 
     // use the provided NestedLayer factory to turn layerData into an owned NestedLayer
-    let layer = layerFactory(layerData);
+    let layer = new NestedLayer(layerData);
 
     // set the selected state = to the node's default visibility state
     if (this.options.data.defaultVisibility) {

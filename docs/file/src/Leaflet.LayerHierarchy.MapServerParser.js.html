@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Leaflet.LayerHierarchy.MapServerParser.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Leaflet.LayerHierarchy.MapServerParser.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import LayerHierarchy from &apos;./Leaflet.LayerHierarchy&apos;;
+import NestedLayer from &apos;./Leaflet.NestedLayer&apos;;
+
+import { defaultsDeep as defaults } from &apos;lodash&apos;;
+// superagent mimics the node &apos;request&apos; library on the client side as an xhr library
+import superagent from &apos;superagent&apos;;
+import Promise from &apos;bluebird&apos;;
+import superagentPromise from &apos;superagent-promise&apos;;
+const request = superagentPromise(superagent, Promise);
+import { FeatureLayerService } from &apos;esri-leaflet&apos;;
+
+/**
+ * Parses the layer data served by an ArcGIS MapServer
+ * @param {string} url A valid and reachable ArcGIS MapServer URL
+ * @param {L.Map} map A Leaflet Map object, which will be passed to all
+ * the layers in the resulting LayerHierarchy
+ * @param {object} [options] An optional configuration object
+ */
+export default class MapServerParser {
+
+  static APISuffixes = {
+    layers: &apos;/layers&apos;,
+    legend: &apos;/legend&apos;
+  };
+
+  static QueryParameters = {
+    f: &apos;json&apos;
+  };
+
+  static Headers = {
+    Accept: &apos;application/json&apos;
+  };
+
+  /**
+   * Initializes the parser with the given parameters
+   * @param {string} url     A valid and reachable ArcGIS MapServer URL
+   * @param {L.Map} map     A Leaflet Map object, which will be passed to all
+   * the layers in the resulting LayerHierarchy
+   * @param {object} [options] An optional configuration object
+   * @param {object} [options.data] The configuration options related to what data
+   * should be parsed from the MapServer to be included on NestedLayer objects
+   * @param {boolean} [options.data.scale=true] Include minZoom and maxZoom
+   * parameters on the NestedLayer
+   * @param {boolean} [options.data.defaultVisibility=true] Include the
+   * initial selected state of the NestedLayer
+   * @param {object} [options.hierarchyOptions={}] The configuration options
+   * the NestedHierarchy takes on instantiation
+   */
+  constructor(url, map, options) {
+    // ensure required parameters are present
+    if (typeof url == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing URL when creating MapServerParser&apos;);
+    }
+    if (typeof map == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing Leaflet map object when creating MapServerParser&apos;);
+    }
+
+    // save url
+    this._url = url;
+
+    // save map
+    this._map = map;
+
+    // set default options
+    this._defaults = {
+      data: {
+        scale: true,
+        defaultVisibility: true,
+        swatch: false
+      },
+      hierarchyOptions: {}
+    }
+
+    // merge options with defaults
+    this._options = {};
+    // https://lodash.com/docs/4.17.4#defaultsDeep
+    defaults(this._options, options, this.defaults);
+  }
+
+  /**
+   * MapServer URL
+   * @type {string}
+   */
+  get url() {
+    return this._url;
+  }
+
+  /**
+   * Leaflet Map object
+   * @type {L.Map}
+   */
+  get map() {
+    return this._map;
+  }
+
+  /**
+   * Configuration options
+   * @type {object}
+   */
+  get options() {
+    return this._options;
+  }
+
+  /**
+   * Default configuration options
+   * @type {object}
+   */
+  get defaults() {
+    return this._defaults;
+  }
+
+  parse() {
+    // we have to wait for both xhr promises to resolve before we can begin processing
+    // note that Promise.join returns a promise that resolves to a LayerHierarchy
+    return Promise.join(this._queryLayers(), this._queryLegend(), (layerRes, legendRes) =&gt; {
+      // ensure we hit HTTP 2xx statuses
+      if (!layerRes.ok || !legendRes.ok) {
+        throw new Error(&apos;Bad request: HTTP status was not 2xx&apos;);
+      }
+
+      // parse the layerdata into JSON
+      let body = layerRes.body;
+      // ArcGIS does not properly set its Content-Type header
+      // so force JSON parsing if superagent did not parse automatically
+      if (layerRes.type !== MapServerParser.Headers.Accept) {
+        body = JSON.parse(layerRes.text);
+      }
+
+      // create the LayerHierarchy
+      var hierarchy = new LayerHierarchy(this.options.hierarchyOptions);
+
+      // move layers down as children of other layers
+      body.layers.forEach((node) =&gt; {
+        let layer = this._convertLayerNodeToNestedLayer(node)
+        let parent = (node.parentLayer !== null ? node.parentLayer.id : undefined);
+        // if this layer has no parent, addLayer(...) will add as a root layer
+        hierarchy.addLayer(layer, parent);
+      });
+
+      // resolve the promise with the resulting LayerHierarchy
+      // console.log(hierarchy);
+      return hierarchy;
+    });
+  }
+
+  /**
+   * Queries the layers endpoint of the MapServer for layer data.
+   * @return {Promise} Promise that resolves the request.
+   */
+  _queryLayers() {
+    // assemble layerdata url
+    const layerdataURL = this.url + MapServerParser.APISuffixes.layers;
+
+    // fetch layerdata as JSON
+    return request
+      .get(layerdataURL)
+      .set(MapServerParser.Headers)
+      .query(MapServerParser.QueryParameters)
+      .end();
+  }
+
+  _queryLegend() {
+    // assemble legend url
+    const legendURL = this.url + MapServerParser.APISuffixes.legend;
+
+    // fetch legend as JSON
+    return request
+      .get(legendURL)
+      .set(MapServerParser.Headers)
+      .query(MapServerParser.QueryParameters)
+      .end();
+  }
+
+  _convertLayerNodeToNestedLayer = (node) =&gt; {
+    let layerData = {
+      id: node.id,
+      name: node.name,
+      map: this.map
+    };
+    // Leaflet layer data
+    let leafletLayerData = {
+      url: MapServerParser._makeLayerURL(this.url, layerData.id)
+    };
+
+    // get scale/zoom data from layer node
+    if (this.options.data.scale) {
+      // converts scale factor from ArcGIS to Leaflet&apos;s zoom factor
+      // http://leafletjs.com/reference-1.1.0.html#crs-scale
+      leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);
+      leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);
+    }
+
+    // attach the Leaflet layer object to the NestedLayer&apos;s data
+    layerData.layer = new FeatureLayerService(leafletLayerData);
+
+    // use the provided NestedLayer factory to turn layerData into an owned NestedLayer
+    let layer = new NestedLayer(layerData);
+
+    // set the selected state = to the node&apos;s default visibility state
+    if (this.options.data.defaultVisibility) {
+      layer.selected = node.defaultVisibility;
+    }
+
+    // returns a NestedLayer object
+    return layer;
+  }
+
+  static _makeLayerURL(baseURL, layerID) {
+    if (typeof baseURL !== &apos;string&apos;) {
+      throw new Error(&apos;Base URL was undefined, null, or was not a string&apos;);
+    }
+    if (typeof layerID !== &apos;number&apos;) {
+      throw new Error(&apos;ID was undefined, null, or was not a number&apos;);
+    }
+
+    return baseURL + &apos;/&apos; + layerID.toString();
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

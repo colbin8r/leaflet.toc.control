@@ -1,4 +1,3 @@
-
 /**
  * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet
  * layer} to allow that layer to be the "parent" of other layers by having
@@ -286,7 +285,9 @@ export default class NestedLayer {
   // display on map
   _attach() {
     if (!this._isAttached) {
-      this.layer.addTo(this.map);
+      // console.log(this.layer);
+      this.map.addLayer(this.layer);
+      // this.layer.addTo(this.map);
       this._isAttached = true;
     }
   }
@@ -294,7 +295,8 @@ export default class NestedLayer {
   // remove from map
   _detach() {
     if (this._isAttached) {
-      this.layer.removeFrom(this.map);
+      this.map.removeLayer(this.layer);
+      // this.layer.removeFrom(this.map);
       this._isAttached = false;
     }
   }

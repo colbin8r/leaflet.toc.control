@@ -198,7 +198,9 @@ var NestedLayer = function () {
     // display on map
     value: function _attach() {
       if (!this._isAttached) {
-        this.layer.addTo(this.map);
+        // console.log(this.layer);
+        this.map.addLayer(this.layer);
+        // this.layer.addTo(this.map);
         this._isAttached = true;
       }
     }
@@ -209,7 +211,8 @@ var NestedLayer = function () {
     key: '_detach',
     value: function _detach() {
       if (this._isAttached) {
-        this.layer.removeFrom(this.map);
+        this.map.removeLayer(this.layer);
+        // this.layer.removeFrom(this.map);
         this._isAttached = false;
       }
     }
