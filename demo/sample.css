@@ -1,11 +1,25 @@
 body {
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 #map, #toc {
-  height: 50vh;
-  width: 100%;
+  margin-top: 1em;
+  height: 100%;
+  display: inline-block;
   font-size: 18px;
+}
+#toc {
+  float: left;
+  width: 25vw;
+  overflow: auto;
+}
+#toc .nested-layer-control-container {
+  padding-left: .5em;
+}
+#map {
+  float: right;
+  width: 75vw;
 }
 .layer-name {
 
@@ -16,9 +30,19 @@ body {
   vertical-align: top;
   margin-top: 2px;
 }
-.leaf.enabled {
+.enabled {
   color: limegreen;
 }
-.leaf.disabled {
+.disabled {
   color: grey;
 }
+/*.leaf::after {
+  content: '*';
+}
+.visible::after {
+  color: red;
+}
+.invisible::after {
+  display: none;
+}
+*/

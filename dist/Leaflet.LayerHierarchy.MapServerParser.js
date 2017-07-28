@@ -67,10 +67,10 @@ var MapServerParser = function () {
 
     _classCallCheck(this, MapServerParser);
 
-    this._convertLayerNodeToNestedLayer = function (node) {
+    this._convertLayerNodeToNestedLayer = function (node, legend) {
       var nestedLayerData = {
         id: node.id,
-        name: node.name,
+        name: node.name.trim(),
         map: _this.map
       };
       // Leaflet layer data
@@ -82,8 +82,21 @@ var MapServerParser = function () {
       if (_this.options.data.scale) {
         // converts scale factor from ArcGIS to Leaflet's zoom factor
         // http://leafletjs.com/reference-1.1.0.html#crs-scale
-        leafletLayerData.maxZoom = _this.map.options.crs.zoom(node.maxScale);
-        leafletLayerData.minZoom = _this.map.options.crs.zoom(node.minScale);
+        // leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);
+        // leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);
+        console.warn('Floor\'ing maxZoom and ceil\'ing minZoom');
+        // console.log(nestedLayerData.name, 'minZoom', leafletLayerData.minZoom, 'maxZoom', leafletLayerData.maxZoom)
+        leafletLayerData.maxZoom = Math.floor(_this.map.options.crs.zoom(node.maxScale));
+        leafletLayerData.minZoom = Math.ceil(_this.map.options.crs.zoom(node.minScale));
+      }
+
+      // attach the swatch data
+      // if (this.options.data.swatch && legend[nestedLayerData.id].legend.length > 0) {
+      //   nestedLayerData.swatch = legend[nestedLayerData.id].legend[0].imageData;
+      //   console.log(nestedLayerData.name, nestedLayerData.id, nestedLayerData.swatch);
+      // }
+      if (_this.options.data.swatch) {
+        nestedLayerData.swatch = MapServerParser._findSwatchInLegend(legend, nestedLayerData.id);
       }
 
       // attach the Leaflet layer object to the NestedLayer's data
@@ -94,7 +107,6 @@ var MapServerParser = function () {
 
       // set the selected state = to the node's default visibility state
       if (_this.options.data.defaultVisibility) {
-        console.log('setting visibility to', node.defaultVisibility);
         layer.selected = node.defaultVisibility;
       }
 
@@ -158,12 +170,22 @@ var MapServerParser = function () {
           body = JSON.parse(layerRes.text);
         }
 
+        // parse the legend into JSON
+        var legend = legendRes.body;
+        // ArcGIS does not properly set its Content-Type header
+        // so force JSON parsing if superagent did not parse automatically
+        if (legendRes.type !== MapServerParser.Headers.Accept) {
+          legend = JSON.parse(legendRes.text);
+        }
+        // the actual legend is located under the 'layers' node
+        legend = legend.layers;
+
         // create the LayerHierarchy
         var hierarchy = new _Leaflet2.default(_this2.options.hierarchyOptions);
 
         // move layers down as children of other layers
         body.layers.forEach(function (node) {
-          var layer = _this2._convertLayerNodeToNestedLayer(node);
+          var layer = _this2._convertLayerNodeToNestedLayer(node, legend);
           var parent = node.parentLayer !== null ? node.parentLayer.id : undefined;
           // if this layer has no parent, addLayer(...) will add as a root layer
           hierarchy.addLayer(layer, parent);
@@ -183,7 +205,7 @@ var MapServerParser = function () {
     key: '_queryLayers',
     value: function _queryLayers() {
       // assemble layerdata url
-      var layerdataURL = this.url + MapServerParser.APISuffixes.layers;
+      var layerdataURL = this.url + MapServerParser.APIEndpoints.layers;
 
       // fetch layerdata as JSON
       return request.get(layerdataURL).set(MapServerParser.Headers).query(MapServerParser.QueryParameters).end();
@@ -192,7 +214,7 @@ var MapServerParser = function () {
     key: '_queryLegend',
     value: function _queryLegend() {
       // assemble legend url
-      var legendURL = this.url + MapServerParser.APISuffixes.legend;
+      var legendURL = this.url + MapServerParser.APIEndpoints.legend;
 
       // fetch legend as JSON
       return request.get(legendURL).set(MapServerParser.Headers).query(MapServerParser.QueryParameters).end();
@@ -236,6 +258,28 @@ var MapServerParser = function () {
       return this._defaults;
     }
   }], [{
+    key: '_findSwatchInLegend',
+    value: function _findSwatchInLegend(legend, layerID) {
+      // if no swatches even exist (e.g. invalid legend)
+      if (legend.length <= 0) {
+        return '';
+      }
+
+      // loop through to try to find a valid swatch
+      // this algorithm could be optimized from O(n) due to
+      // the sorted nature of the legend
+      // it just must account for the fact that a legend object may not exist for
+      // any given layer
+      for (var i = 0; i < legend.length; i++) {
+        if (legend[i].layerId == layerID && legend[i].legend.length > 0) {
+          return legend[i].legend[0].imageData;
+        }
+      }
+
+      // no swatch found
+      return '';
+    }
+  }, {
     key: '_makeLayerURL',
     value: function _makeLayerURL(baseURL, layerID) {
       if (typeof baseURL !== 'string') {
@@ -252,7 +296,7 @@ var MapServerParser = function () {
   return MapServerParser;
 }();
 
-MapServerParser.APISuffixes = {
+MapServerParser.APIEndpoints = {
   layers: '/layers',
   legend: '/legend'
 };

@@ -17,38 +17,43 @@
 <link rel="stylesheet" href="sample.css" />
 
 <!-- Esri Leaflet -->
-<!-- <script src="https://unpkg.com/esri-leaflet@2.0.8"></script> -->
+<script src="https://unpkg.com/esri-leaflet@2.0.8"></script>
 
 </head>
 <body>
 
-<div id="map">
+<div id="toc"></div>
 
-</div>
-
-<div id="toc">
-
-</div>
+<div id="map"></div>
 
 <script>
 
 // var map = L.map('map').setView([51.505, -0.09], 13);
-var map = L.map('map').setView([37.4316, -78.6569], 13);
+// var map = L.map('map').setView([37.4316, -78.6569], 13);
+var map = L.map('map').setView([37.7063, -75.8069], 13);
 
 // basemap
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiY29sYmluOHIiLCJhIjoiY2o0OHA1a3EyMGhqaTJ3cDJpZ3V3bWtwYyJ9.EVWPRmgB_cDROLCbCAEr7Q'
-}).addTo(map);
+// L.esri.basemapLayer('Streets').addTo(map);
+L.esri.basemapLayer('Topographic').addTo(map);
+// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+//     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+//     maxZoom: 18,
+//     id: 'mapbox.streets',
+//     accessToken: 'pk.eyJ1IjoiY29sYmluOHIiLCJhIjoiY2o0OHA1a3EyMGhqaTJ3cDJpZ3V3bWtwYyJ9.EVWPRmgB_cDROLCbCAEr7Q'
+// }).addTo(map);
 
-// manually assemble a small layer hierarchy
+// manually assemble a layer hierarchy
 // var mapServerURL = 'http://gis.vdot.virginia.gov/arcgis/rest/services/varoads/ADT/MapServer';
 var mapServerURL = 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer';
-var parser = L.mapServerParser(mapServerURL, map)
+var parser = L.mapServerParser(mapServerURL, map, {
+  data: {
+    swatch: true,
+    scale: false
+  }
+});
 
 parser.parse().then(function(hierarchy) {
+  console.log(hierarchy);
   // put together the Table of Contents (TOC) control
   var tocEl = document.getElementById('toc');
   var toc = L.control.nestedLayers(hierarchy, tocEl);

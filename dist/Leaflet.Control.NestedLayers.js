@@ -232,7 +232,9 @@ var NestedLayerComponent = exports.NestedLayerComponent = function (_React$Compo
       var itemClassNames = (0, _classnames2.default)({
         leaf: true,
         enabled: this.props.layer.enabled,
-        disabled: this.props.layer.disabled
+        disabled: this.props.layer.disabled,
+        selected: this.props.layer.selected,
+        deselected: this.props.layer.deselected
       });
       return _react2.default.createElement(
         'li',

@@ -161,7 +161,9 @@ export class NestedLayerComponent extends React.Component {
     const itemClassNames = classnames({
       leaf: true,
       enabled: this.props.layer.enabled,
-      disabled: this.props.layer.disabled
+      disabled: this.props.layer.disabled,
+      selected: this.props.layer.selected,
+      deselected: this.props.layer.deselected
     });
     return (
       <li className={itemClassNames} >

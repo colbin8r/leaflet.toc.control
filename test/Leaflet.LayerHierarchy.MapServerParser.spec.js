@@ -159,5 +159,16 @@ describe( 'MapServerParser', () => {
     });
   })
 
+  describe('#_convertLayerNodeToNestedLayer)', () => {
+      // fixture node data
+    let node = {"currentVersion":10.31,"id":26,"name":"County Resources","type":"Group Layer","description":"","geometryType":null,"copyrightText":"","parentLayer":null,"subLayers":[{"id":27,"name":"Fire and Rescue Stations"},{"id":28,"name":"Fire Response"},{"id":29,"name":"Rescue Response"},{"id":30,"name":"Fire Districts"},{"id":31,"name":"Rescue Districts"},{"id":32,"name":"County Administration Building"},{"id":33,"name":"Airports"},{"id":34,"name":"Schools"},{"id":35,"name":"Solid Waste Disposal Facilities"},{"id":36,"name":"Boating Public Access Sites"},{"id":37,"name":"Polling Places"}],"minScale":0,"maxScale":0,"defaultVisibility":true,"extent":{"xmin":-8465355.1356,"ymin":4501816.1559,"xmax":-8375617.3878,"ymax":4583811.349899999,"spatialReference":{"wkid":102100,"latestWkid":3857}},"hasAttachments":false,"htmlPopupType":"esriServerHTMLPopupTypeNone","displayField":"","typeIdField":null,"fields":null,"relationships":[],"canModifyLayer":false,"canScaleSymbols":false,"hasLabels":false,"capabilities":"Map,Query","supportsStatistics":false,"supportsAdvancedQueries":false,"supportedQueryFormats":"JSON, AMF","ownershipBasedAccessControlForFeatures":{"allowOthersToQuery":true},"useStandardizedQueries":true,"advancedQueryCapabilities":{"useStandardizedQueries":true,"supportsStatistics":false,"supportsOrderBy":false,"supportsDistinct":false,"supportsPagination":false,"supportsTrueCurve":true,"supportsReturningQueryExtent":true,"supportsQueryWithDistance":true}};
+    const fakeLegend = [];
+
+    it('should trim whitespace around a layer name', () => {
+      node.name = '  TEST  \t\n';
+      let l = parser._convertLayerNodeToNestedLayer(node, fakeLegend);
+      expect(l.name).to.equal('TEST');
+    });
+  })
 
 } );
