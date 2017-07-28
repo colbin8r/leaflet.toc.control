@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -206,15 +207,17 @@ export class NestedLayerComponent extends React.Component {
     const itemClassNames = classnames({
       leaf: true,
       enabled: this.props.layer.enabled,
-      disabled: this.props.layer.disabled
+      disabled: this.props.layer.disabled,
+      selected: this.props.layer.selected,
+      deselected: this.props.layer.deselected
     });
     return (
-      &lt;li className={itemClassNames}&gt;
-        &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} /&gt;
+      &lt;li className={itemClassNames} &gt;
+        &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} onChange={this.toggleSelected}/&gt;
         {this.props.layer.swatch.length &gt; 0 &amp;&amp;
           &lt;img src={this.getSwatch()} className=&quot;swatch&quot; /&gt;
         }
-        &lt;span className=&quot;layer-name&quot; onClick={this.toggleSelected}&gt;{this.props.layer.name}&lt;/span&gt;
+        &lt;span className=&quot;layer-name&quot;&gt;{this.props.layer.name}&lt;/span&gt;
 
         {this.props.children}
       &lt;/li&gt;

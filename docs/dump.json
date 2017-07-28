@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/Leaflet.Control.NestedLayers.js",
-    "content": "// import chalk from 'chalk';\n\nimport React from 'react';\nimport ReactDOM from 'react-dom';\nimport PropTypes from 'prop-types';\nimport LayerHierarchy from './Leaflet.LayerHierarchy';\nimport NestedLayer from './Leaflet.NestedLayer';\nimport classnames from 'classnames';\n\n/**\n * React component to represent a LayerHierarchy\n * @param {object} props The component's props.\n * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.\n */\nexport class NestedLayersComponent extends React.Component {\n  /**\n   * @param {object} props The component's props.\n   * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.\n   */\n  constructor(props) {\n    super(props);\n    this.state = {\n      hierarchy: this.props.hierarchy\n    }\n  }\n\n  /**\n   * Describes the React props object\n   * @type {Object}\n   */\n  static propTypes = {\n    hierarchy: PropTypes.instanceOf(LayerHierarchy).isRequired\n  };\n\n  /**\n   * Generates a unique key for rendering a layer in JSX\n   * @param  {NestedLayer} layer The layer to use data from\n   * @return {string}       A string unique to this layer\n   */\n  makeLayerKey(layer) {\n    return (layer.id.toString + layer.name);\n  }\n\n  /**\n   * Event handler to toggle a layer's selected state\n   * @param  {NestedLayer} layer The layer to toggle\n   */\n  handleToggleSelected = (layer) => {\n    const id = layer.id;\n    const newHierarchy = this.state.hierarchy;\n    newHierarchy.getLayerByID(id).toggleSelected();\n    this.setState({\n      hierarchy: newHierarchy\n    });\n  }\n\n  /**\n   * Recursively renders a NestedLayer using NestedLayerComponent. If the NestedLayer has\n   * children, use this function as it not only renders a single NestedLayer, but also the subtree\n   * of layers under the NestedLayer recursively.\n   * @param  {NestedLayer} layer The layer to represent with a React component\n   * @return {NestedLayerComponent}       A react component representing the given NestedLayer.\n   */\n  makeComponentFromLayer = (layer) => {\n    // recursive function\n    // 'leaf' is the base case\n    // property initializer syntax + arrow function keeps the scope of 'this' through recursive calls\n    let componentChildren;\n\n    // branch: this layer has children\n    if (layer.children.length > 0) {\n      // leaves = layer.children.map(this.makeComponentFromLayer)\n      componentChildren = (\n        <ul className=\"branch\">\n          {layer.children.map(this.makeComponentFromLayer)}\n        </ul>\n      );\n    }\n\n    return (\n      <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>\n        {componentChildren}\n      </NestedLayerComponent>\n    );\n\n  }\n\n  /**\n   * Renders the component\n   * @return {Component} JSX\n   */\n  render() {\n    const roots = this.state.hierarchy.rootLayers;\n    let components = [];\n\n    for (let i = 0; i < roots.length; i++) {\n      components.push(this.makeComponentFromLayer(roots[i]));\n    }\n\n    return (\n      <div className=\"nested-layer-control-container\">\n        <h2>TOC CONTROL</h2>\n        <ul className=\"branch nested-layer-control\">\n          {components}\n        </ul>\n      </div>\n    );\n  }\n}\n\n/**\n * React Component to represent a single NestedLayer\n * @param {object} props Component properties\n * @param {NestedLayer} props.layer The layer to represent\n * @param {function} props.onToggleSelected The callback to change the layer's selected state\n */\nexport class NestedLayerComponent extends React.Component {\n  /**\n   * @param {object} props Component properties\n   * @param {NestedLayer} props.layer The layer to represent\n   * @param {function} props.onToggleSelected The callback to change the layer's selected state\n   */\n  constructor(props) {\n    super(props);\n    this.state = {};\n  }\n\n  /**\n   * Describes the React props object\n   * @type {Object}\n   */\n  static propTypes = {\n    layer: PropTypes.instanceOf(NestedLayer).isRequired,\n    onToggleSelected: PropTypes.func.isRequired,\n    children: PropTypes.any\n  };\n\n  /**\n   * Calls the toggle selected state handler passed by the parent to change the selected state of\n   * the layer\n   */\n  toggleSelected = () => {\n    // updates both the component state and the LayerHierarchy structure\n    this.props.onToggleSelected(this.props.layer);\n  }\n\n  /**\n   * Returns a data URL suitable for use in a the src of an <img /> that contains the base 64\n   * encoded layer swatch\n   * @return {string} data URL containing the swatch\n   */\n  getSwatch = () => {\n    return 'data:image/png;base64,' + this.props.layer.swatch;\n  }\n\n  /**\n   * Renders the component\n   * @return {Component} JSX\n   */\n  render() {\n    const itemClassNames = classnames({\n      leaf: true,\n      enabled: this.props.layer.enabled,\n      disabled: this.props.layer.disabled\n    });\n    return (\n      <li className={itemClassNames}>\n        <input type=\"checkbox\" checked={this.props.layer.selected} />\n        {this.props.layer.swatch.length > 0 &&\n          <img src={this.getSwatch()} className=\"swatch\" />\n        }\n        <span className=\"layer-name\" onClick={this.toggleSelected}>{this.props.layer.name}</span>\n\n        {this.props.children}\n      </li>\n    );\n  }\n}\n\n/**\n * Leaflet plugin to display a hierarchial version of {@link http://leafletjs.com/reference-1.1.0.html#control-layers L.Control.Layers}. Uses React to wrap the\n * NestedLayersComponent.\n * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control\n * @param  {Element} element   The DOM element to bind the control to\n * @param  {object} options   Configuration options that dictate how the control should behave\n */\nexport default class NestedLayers {\n\n  /**\n   * Initialize the plugin and {@link #NestedLayers#attach attaches} to the DOM.\n   * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control\n   * @param  {Element} element   The DOM element to bind the control to\n   * @param  {object} options   Configuration options that dictate how the control should behave\n   * @param  {boolean} [options.followAncestorVisibility=true] Deselecting any ancestor makes its\n   * children invisible (without changing their selected state)\n   * @param {boolean} [options.propogateDeselectToChildren=false] Deselecting a parent also deselects\n   * children (by changing their state)\n   * @param {boolean} [options.followAncestorMutability=true] Deselecting any ancestor disables its\n   * children (cannot change children's selected state)\n   */\n  constructor(hierarchy, element, options) {\n\n    if (typeof hierarchy == 'undefined') {\n      throw new Error('Missing hierarchy when creating NestedLayers control');\n    }\n    this.hierarchy = hierarchy;\n    if (typeof element == 'undefined') {\n      throw new Error('Missing DOM element when creating NestedLayers control');\n    }\n    this.element = element;\n\n    // default options\n    this._options = {\n      followAncestorVisibility: true,\n      propogateDeselectToChildren: false,\n      followAncestorMutability: true\n    };\n\n    // overwrite defaults with passed options\n    Object.assign(this._options, options);\n\n    this._component = <NestedLayersComponent hierarchy={this.hierarchy} />\n\n    this._isAttached = false;\n\n    // bind to the DOM\n    this.attach();\n  }\n\n  /**\n   * The underlying hierarchy of layers the plugin visually represents\n   * @type {LayerHierarchy}\n   */\n  get hierarchy() {\n    return this._hierarchy;\n  }\n  /**\n   * Shorthand accessor for the {@link #NestedLayers#hierarchy hierarchy} property\n   */\n  get h() {\n    return this.hierarchy;\n  }\n  set hierarchy(val) {\n    this._hierarchy = val;\n  }\n\n  /**\n   * The DOM element that the control attaches to\n   * @type {Element}\n   */\n  get element() {\n    return this._element;\n  }\n  /**\n   * Shorthand accessor for the {@link #NestedLayers#element element} property\n   */\n  get el() {\n    return this.element;\n  }\n  set element(val) {\n    this._element = val;\n  }\n\n  /**\n   * The React component under the hood\n   * @type {NestedLayersComponent}\n   */\n  get component() {\n    return this._component;\n  }\n\n  /**\n   * True if the plugin has attached itself to the DOM element\n   * @type {boolean}\n   */\n  get isAttached() {\n    return this._isAttached;\n  }\n  // no direct setting of 'isAttached' from outside the class\n  // the attach() and detach() methods handle this state\n\n  /**\n   * Configuration options\n   * @type {object}\n   */\n  get options() {\n    return this._options;\n  }\n\n  /**\n   * Bind to the DOM. Internally, it checks to see if it has already been attached, and if not,\n   * uses React to render the {@link #NestedLayers#component component} to the specified {@link\n   * #NestedLayers#element element}.\n   */\n  attach() {\n    if (!this.isAttached) {\n      ReactDOM.render(\n        this.component,\n        this.element\n      );\n    }\n    this._isAttached = true;\n  }\n\n  /**\n   * Unbind from the DOM. Releases the {@link #NestedLayers#element element} for reuse.\n   */\n  detach() {\n    if (this.isAttached) {\n      ReactDOM.unmountComponentAtNode(this.element);\n    }\n    this._isAttached = true;\n  }\n\n}\n",
+    "content": "// import chalk from 'chalk';\n\nimport React from 'react';\nimport ReactDOM from 'react-dom';\nimport PropTypes from 'prop-types';\nimport LayerHierarchy from './Leaflet.LayerHierarchy';\nimport NestedLayer from './Leaflet.NestedLayer';\nimport classnames from 'classnames';\n\n/**\n * React component to represent a LayerHierarchy\n * @param {object} props The component's props.\n * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.\n */\nexport class NestedLayersComponent extends React.Component {\n  /**\n   * @param {object} props The component's props.\n   * @param {LayerHierarchy} props.hierarchy The LayerHierarchy the component displays.\n   */\n  constructor(props) {\n    super(props);\n    this.state = {\n      hierarchy: this.props.hierarchy\n    }\n  }\n\n  /**\n   * Describes the React props object\n   * @type {Object}\n   */\n  static propTypes = {\n    hierarchy: PropTypes.instanceOf(LayerHierarchy).isRequired\n  };\n\n  /**\n   * Generates a unique key for rendering a layer in JSX\n   * @param  {NestedLayer} layer The layer to use data from\n   * @return {string}       A string unique to this layer\n   */\n  makeLayerKey(layer) {\n    return (layer.id.toString + layer.name);\n  }\n\n  /**\n   * Event handler to toggle a layer's selected state\n   * @param  {NestedLayer} layer The layer to toggle\n   */\n  handleToggleSelected = (layer) => {\n    const id = layer.id;\n    const newHierarchy = this.state.hierarchy;\n    newHierarchy.getLayerByID(id).toggleSelected();\n    this.setState({\n      hierarchy: newHierarchy\n    });\n  }\n\n  /**\n   * Recursively renders a NestedLayer using NestedLayerComponent. If the NestedLayer has\n   * children, use this function as it not only renders a single NestedLayer, but also the subtree\n   * of layers under the NestedLayer recursively.\n   * @param  {NestedLayer} layer The layer to represent with a React component\n   * @return {NestedLayerComponent}       A react component representing the given NestedLayer.\n   */\n  makeComponentFromLayer = (layer) => {\n    // recursive function\n    // 'leaf' is the base case\n    // property initializer syntax + arrow function keeps the scope of 'this' through recursive calls\n    let componentChildren;\n\n    // branch: this layer has children\n    if (layer.children.length > 0) {\n      // leaves = layer.children.map(this.makeComponentFromLayer)\n      componentChildren = (\n        <ul className=\"branch\">\n          {layer.children.map(this.makeComponentFromLayer)}\n        </ul>\n      );\n    }\n\n    return (\n      <NestedLayerComponent layer={layer} onToggleSelected={this.handleToggleSelected} key={this.makeLayerKey(layer)}>\n        {componentChildren}\n      </NestedLayerComponent>\n    );\n\n  }\n\n  /**\n   * Renders the component\n   * @return {Component} JSX\n   */\n  render() {\n    const roots = this.state.hierarchy.rootLayers;\n    let components = [];\n\n    for (let i = 0; i < roots.length; i++) {\n      components.push(this.makeComponentFromLayer(roots[i]));\n    }\n\n    return (\n      <div className=\"nested-layer-control-container\">\n        <h2>TOC CONTROL</h2>\n        <ul className=\"branch nested-layer-control\">\n          {components}\n        </ul>\n      </div>\n    );\n  }\n}\n\n/**\n * React Component to represent a single NestedLayer\n * @param {object} props Component properties\n * @param {NestedLayer} props.layer The layer to represent\n * @param {function} props.onToggleSelected The callback to change the layer's selected state\n */\nexport class NestedLayerComponent extends React.Component {\n  /**\n   * @param {object} props Component properties\n   * @param {NestedLayer} props.layer The layer to represent\n   * @param {function} props.onToggleSelected The callback to change the layer's selected state\n   */\n  constructor(props) {\n    super(props);\n    this.state = {};\n  }\n\n  /**\n   * Describes the React props object\n   * @type {Object}\n   */\n  static propTypes = {\n    layer: PropTypes.instanceOf(NestedLayer).isRequired,\n    onToggleSelected: PropTypes.func.isRequired,\n    children: PropTypes.any\n  };\n\n  /**\n   * Calls the toggle selected state handler passed by the parent to change the selected state of\n   * the layer\n   */\n  toggleSelected = () => {\n    // updates both the component state and the LayerHierarchy structure\n    this.props.onToggleSelected(this.props.layer);\n  }\n\n  /**\n   * Returns a data URL suitable for use in a the src of an <img /> that contains the base 64\n   * encoded layer swatch\n   * @return {string} data URL containing the swatch\n   */\n  getSwatch = () => {\n    return 'data:image/png;base64,' + this.props.layer.swatch;\n  }\n\n  /**\n   * Renders the component\n   * @return {Component} JSX\n   */\n  render() {\n    const itemClassNames = classnames({\n      leaf: true,\n      enabled: this.props.layer.enabled,\n      disabled: this.props.layer.disabled,\n      selected: this.props.layer.selected,\n      deselected: this.props.layer.deselected\n    });\n    return (\n      <li className={itemClassNames} >\n        <input type=\"checkbox\" checked={this.props.layer.selected} onChange={this.toggleSelected}/>\n        {this.props.layer.swatch.length > 0 &&\n          <img src={this.getSwatch()} className=\"swatch\" />\n        }\n        <span className=\"layer-name\">{this.props.layer.name}</span>\n\n        {this.props.children}\n      </li>\n    );\n  }\n}\n\n/**\n * Leaflet plugin to display a hierarchial version of {@link http://leafletjs.com/reference-1.1.0.html#control-layers L.Control.Layers}. Uses React to wrap the\n * NestedLayersComponent.\n * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control\n * @param  {Element} element   The DOM element to bind the control to\n * @param  {object} options   Configuration options that dictate how the control should behave\n */\nexport default class NestedLayers {\n\n  /**\n   * Initialize the plugin and {@link #NestedLayers#attach attaches} to the DOM.\n   * @param  {LayerHierarchy} hierarchy The hierarchy to display in the control\n   * @param  {Element} element   The DOM element to bind the control to\n   * @param  {object} options   Configuration options that dictate how the control should behave\n   * @param  {boolean} [options.followAncestorVisibility=true] Deselecting any ancestor makes its\n   * children invisible (without changing their selected state)\n   * @param {boolean} [options.propogateDeselectToChildren=false] Deselecting a parent also deselects\n   * children (by changing their state)\n   * @param {boolean} [options.followAncestorMutability=true] Deselecting any ancestor disables its\n   * children (cannot change children's selected state)\n   */\n  constructor(hierarchy, element, options) {\n\n    if (typeof hierarchy == 'undefined') {\n      throw new Error('Missing hierarchy when creating NestedLayers control');\n    }\n    this.hierarchy = hierarchy;\n    if (typeof element == 'undefined') {\n      throw new Error('Missing DOM element when creating NestedLayers control');\n    }\n    this.element = element;\n\n    // default options\n    this._options = {\n      followAncestorVisibility: true,\n      propogateDeselectToChildren: false,\n      followAncestorMutability: true\n    };\n\n    // overwrite defaults with passed options\n    Object.assign(this._options, options);\n\n    this._component = <NestedLayersComponent hierarchy={this.hierarchy} />\n\n    this._isAttached = false;\n\n    // bind to the DOM\n    this.attach();\n  }\n\n  /**\n   * The underlying hierarchy of layers the plugin visually represents\n   * @type {LayerHierarchy}\n   */\n  get hierarchy() {\n    return this._hierarchy;\n  }\n  /**\n   * Shorthand accessor for the {@link #NestedLayers#hierarchy hierarchy} property\n   */\n  get h() {\n    return this.hierarchy;\n  }\n  set hierarchy(val) {\n    this._hierarchy = val;\n  }\n\n  /**\n   * The DOM element that the control attaches to\n   * @type {Element}\n   */\n  get element() {\n    return this._element;\n  }\n  /**\n   * Shorthand accessor for the {@link #NestedLayers#element element} property\n   */\n  get el() {\n    return this.element;\n  }\n  set element(val) {\n    this._element = val;\n  }\n\n  /**\n   * The React component under the hood\n   * @type {NestedLayersComponent}\n   */\n  get component() {\n    return this._component;\n  }\n\n  /**\n   * True if the plugin has attached itself to the DOM element\n   * @type {boolean}\n   */\n  get isAttached() {\n    return this._isAttached;\n  }\n  // no direct setting of 'isAttached' from outside the class\n  // the attach() and detach() methods handle this state\n\n  /**\n   * Configuration options\n   * @type {object}\n   */\n  get options() {\n    return this._options;\n  }\n\n  /**\n   * Bind to the DOM. Internally, it checks to see if it has already been attached, and if not,\n   * uses React to render the {@link #NestedLayers#component component} to the specified {@link\n   * #NestedLayers#element element}.\n   */\n  attach() {\n    if (!this.isAttached) {\n      ReactDOM.render(\n        this.component,\n        this.element\n      );\n    }\n    this._isAttached = true;\n  }\n\n  /**\n   * Unbind from the DOM. Releases the {@link #NestedLayers#element element} for reuse.\n   */\n  detach() {\n    if (this.isAttached) {\n      ReactDOM.unmountComponentAtNode(this.element);\n    }\n    this._isAttached = true;\n  }\n\n}\n",
     "static": true,
     "longname": "src/Leaflet.Control.NestedLayers.js",
     "access": null,
@@ -457,7 +457,7 @@
     "importPath": "leaflet.control.nestedlayers/src/Leaflet.Control.NestedLayers.js",
     "importStyle": "NestedLayers",
     "description": "Leaflet plugin to display a hierarchial version of {@link http://leafletjs.com/reference-1.1.0.html#control-layers L.Control.Layers}. Uses React to wrap the\nNestedLayersComponent.",
-    "lineNumber": 187,
+    "lineNumber": 189,
     "params": [
       {
         "nullable": null,
@@ -503,7 +503,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#constructor",
     "access": null,
     "description": "Initialize the plugin and {@link #NestedLayers#attach attaches} to the DOM.",
-    "lineNumber": 201,
+    "lineNumber": 203,
     "params": [
       {
         "nullable": null,
@@ -582,7 +582,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "access": null,
     "description": null,
-    "lineNumber": 206,
+    "lineNumber": 208,
     "undocument": true,
     "unknown": [
       {
@@ -605,7 +605,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#element",
     "access": null,
     "description": null,
-    "lineNumber": 210,
+    "lineNumber": 212,
     "undocument": true,
     "unknown": [
       {
@@ -628,7 +628,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_options",
     "access": null,
     "description": null,
-    "lineNumber": 213,
+    "lineNumber": 215,
     "undocument": true,
     "unknown": [
       {
@@ -651,7 +651,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_component",
     "access": null,
     "description": null,
-    "lineNumber": 222,
+    "lineNumber": 224,
     "undocument": true,
     "unknown": [
       {
@@ -674,7 +674,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_isAttached",
     "access": null,
     "description": null,
-    "lineNumber": 224,
+    "lineNumber": 226,
     "undocument": true,
     "unknown": [
       {
@@ -699,7 +699,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "access": null,
     "description": "The underlying hierarchy of layers the plugin visually represents",
-    "lineNumber": 234,
+    "lineNumber": 236,
     "type": {
       "nullable": null,
       "types": [
@@ -720,7 +720,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#h",
     "access": null,
     "description": "Shorthand accessor for the {@link #NestedLayers#hierarchy hierarchy} property",
-    "lineNumber": 240,
+    "lineNumber": 242,
     "type": {
       "types": [
         "*"
@@ -738,7 +738,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "access": null,
     "description": null,
-    "lineNumber": 243,
+    "lineNumber": 245,
     "undocument": true,
     "unknown": [
       {
@@ -761,7 +761,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_hierarchy",
     "access": null,
     "description": null,
-    "lineNumber": 244,
+    "lineNumber": 246,
     "undocument": true,
     "unknown": [
       {
@@ -786,7 +786,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#element",
     "access": null,
     "description": "The DOM element that the control attaches to",
-    "lineNumber": 251,
+    "lineNumber": 253,
     "type": {
       "nullable": null,
       "types": [
@@ -807,7 +807,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#el",
     "access": null,
     "description": "Shorthand accessor for the {@link #NestedLayers#element element} property",
-    "lineNumber": 257,
+    "lineNumber": 259,
     "type": {
       "types": [
         "*"
@@ -825,7 +825,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#element",
     "access": null,
     "description": null,
-    "lineNumber": 260,
+    "lineNumber": 262,
     "undocument": true,
     "unknown": [
       {
@@ -848,7 +848,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_element",
     "access": null,
     "description": null,
-    "lineNumber": 261,
+    "lineNumber": 263,
     "undocument": true,
     "unknown": [
       {
@@ -873,7 +873,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#component",
     "access": null,
     "description": "The React component under the hood",
-    "lineNumber": 268,
+    "lineNumber": 270,
     "type": {
       "nullable": null,
       "types": [
@@ -894,7 +894,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#isAttached",
     "access": null,
     "description": "True if the plugin has attached itself to the DOM element",
-    "lineNumber": 276,
+    "lineNumber": 278,
     "type": {
       "nullable": null,
       "types": [
@@ -915,7 +915,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#options",
     "access": null,
     "description": "Configuration options",
-    "lineNumber": 286,
+    "lineNumber": 288,
     "type": {
       "nullable": null,
       "types": [
@@ -936,7 +936,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#attach",
     "access": null,
     "description": "Bind to the DOM. Internally, it checks to see if it has already been attached, and if not,\nuses React to render the {@link #NestedLayers#component component} to the specified {@link\n#NestedLayers#element element}.",
-    "lineNumber": 295,
+    "lineNumber": 297,
     "params": []
   },
   {
@@ -948,7 +948,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_isAttached",
     "access": null,
     "description": null,
-    "lineNumber": 302,
+    "lineNumber": 304,
     "undocument": true,
     "unknown": [
       {
@@ -973,7 +973,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#detach",
     "access": null,
     "description": "Unbind from the DOM. Releases the {@link #NestedLayers#element element} for reuse.",
-    "lineNumber": 308,
+    "lineNumber": 310,
     "params": []
   },
   {
@@ -985,7 +985,7 @@
     "longname": "src/Leaflet.Control.NestedLayers.js~NestedLayers#_isAttached",
     "access": null,
     "description": null,
-    "lineNumber": 312,
+    "lineNumber": 314,
     "undocument": true,
     "unknown": [
       {
@@ -1003,7 +1003,7 @@
     "__docId__": 38,
     "kind": "file",
     "name": "src/Leaflet.LayerHierarchy.MapServerParser.js",
-    "content": "import LayerHierarchy from './Leaflet.LayerHierarchy';\nimport NestedLayer from './Leaflet.NestedLayer';\n\nimport { defaultsDeep as defaults } from 'lodash';\n// superagent mimics the node 'request' library on the client side as an xhr library\nimport superagent from 'superagent';\nimport Promise from 'bluebird';\nimport superagentPromise from 'superagent-promise';\nconst request = superagentPromise(superagent, Promise);\nimport { FeatureLayerService } from 'esri-leaflet';\n\n/**\n * Parses the layer data served by an ArcGIS MapServer\n * @param {string} url A valid and reachable ArcGIS MapServer URL\n * @param {L.Map} map A Leaflet Map object, which will be passed to all\n * the layers in the resulting LayerHierarchy\n * @param {object} [options] An optional configuration object\n */\nexport default class MapServerParser {\n\n  static APISuffixes = {\n    layers: '/layers',\n    legend: '/legend'\n  };\n\n  static QueryParameters = {\n    f: 'json'\n  };\n\n  static Headers = {\n    Accept: 'application/json'\n  };\n\n  /**\n   * Initializes the parser with the given parameters\n   * @param {string} url     A valid and reachable ArcGIS MapServer URL\n   * @param {L.Map} map     A Leaflet Map object, which will be passed to all\n   * the layers in the resulting LayerHierarchy\n   * @param {object} [options] An optional configuration object\n   * @param {object} [options.data] The configuration options related to what data\n   * should be parsed from the MapServer to be included on NestedLayer objects\n   * @param {boolean} [options.data.scale=true] Include minZoom and maxZoom\n   * parameters on the NestedLayer\n   * @param {boolean} [options.data.defaultVisibility=true] Include the\n   * initial selected state of the NestedLayer\n   * @param {object} [options.hierarchyOptions={}] The configuration options\n   * the NestedHierarchy takes on instantiation\n   */\n  constructor(url, map, options) {\n    // ensure required parameters are present\n    if (typeof url == 'undefined') {\n      throw new Error('Missing URL when creating MapServerParser');\n    }\n    if (typeof map == 'undefined') {\n      throw new Error('Missing Leaflet map object when creating MapServerParser');\n    }\n\n    // save url\n    this._url = url;\n\n    // save map\n    this._map = map;\n\n    // set default options\n    this._defaults = {\n      data: {\n        scale: true,\n        defaultVisibility: true,\n        swatch: false\n      },\n      hierarchyOptions: {}\n    }\n\n    // merge options with defaults\n    this._options = {};\n    // https://lodash.com/docs/4.17.4#defaultsDeep\n    defaults(this._options, options, this.defaults);\n  }\n\n  /**\n   * MapServer URL\n   * @type {string}\n   */\n  get url() {\n    return this._url;\n  }\n\n  /**\n   * Leaflet Map object\n   * @type {L.Map}\n   */\n  get map() {\n    return this._map;\n  }\n\n  /**\n   * Configuration options\n   * @type {object}\n   */\n  get options() {\n    return this._options;\n  }\n\n  /**\n   * Default configuration options\n   * @type {object}\n   */\n  get defaults() {\n    return this._defaults;\n  }\n\n  parse() {\n    // we have to wait for both xhr promises to resolve before we can begin processing\n    // note that Promise.join returns a promise that resolves to a LayerHierarchy\n    return Promise.join(this._queryLayers(), this._queryLegend(), (layerRes, legendRes) => {\n      // ensure we hit HTTP 2xx statuses\n      if (!layerRes.ok || !legendRes.ok) {\n        throw new Error('Bad request: HTTP status was not 2xx');\n      }\n\n      // parse the layerdata into JSON\n      let body = layerRes.body;\n      // ArcGIS does not properly set its Content-Type header\n      // so force JSON parsing if superagent did not parse automatically\n      if (layerRes.type !== MapServerParser.Headers.Accept) {\n        body = JSON.parse(layerRes.text);\n      }\n\n      // create the LayerHierarchy\n      var hierarchy = new LayerHierarchy(this.options.hierarchyOptions);\n\n      // move layers down as children of other layers\n      body.layers.forEach((node) => {\n        let layer = this._convertLayerNodeToNestedLayer(node)\n        let parent = (node.parentLayer !== null ? node.parentLayer.id : undefined);\n        // if this layer has no parent, addLayer(...) will add as a root layer\n        hierarchy.addLayer(layer, parent);\n      });\n\n      // resolve the promise with the resulting LayerHierarchy\n      // console.log(hierarchy);\n      return hierarchy;\n    });\n  }\n\n  /**\n   * Queries the layers endpoint of the MapServer for layer data.\n   * @return {Promise} Promise that resolves the request.\n   */\n  _queryLayers() {\n    // assemble layerdata url\n    const layerdataURL = this.url + MapServerParser.APISuffixes.layers;\n\n    // fetch layerdata as JSON\n    return request\n      .get(layerdataURL)\n      .set(MapServerParser.Headers)\n      .query(MapServerParser.QueryParameters)\n      .end();\n  }\n\n  _queryLegend() {\n    // assemble legend url\n    const legendURL = this.url + MapServerParser.APISuffixes.legend;\n\n    // fetch legend as JSON\n    return request\n      .get(legendURL)\n      .set(MapServerParser.Headers)\n      .query(MapServerParser.QueryParameters)\n      .end();\n  }\n\n  _convertLayerNodeToNestedLayer = (node) => {\n    let layerData = {\n      id: node.id,\n      name: node.name,\n      map: this.map\n    };\n    // Leaflet layer data\n    let leafletLayerData = {\n      url: MapServerParser._makeLayerURL(this.url, layerData.id)\n    };\n\n    // get scale/zoom data from layer node\n    if (this.options.data.scale) {\n      // converts scale factor from ArcGIS to Leaflet's zoom factor\n      // http://leafletjs.com/reference-1.1.0.html#crs-scale\n      leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);\n      leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);\n    }\n\n    // attach the Leaflet layer object to the NestedLayer's data\n    layerData.layer = new FeatureLayerService(leafletLayerData);\n\n    // use the provided NestedLayer factory to turn layerData into an owned NestedLayer\n    let layer = new NestedLayer(layerData);\n\n    // set the selected state = to the node's default visibility state\n    if (this.options.data.defaultVisibility) {\n      layer.selected = node.defaultVisibility;\n    }\n\n    // returns a NestedLayer object\n    return layer;\n  }\n\n  static _makeLayerURL(baseURL, layerID) {\n    if (typeof baseURL !== 'string') {\n      throw new Error('Base URL was undefined, null, or was not a string');\n    }\n    if (typeof layerID !== 'number') {\n      throw new Error('ID was undefined, null, or was not a number');\n    }\n\n    return baseURL + '/' + layerID.toString();\n  }\n\n}\n",
+    "content": "import LayerHierarchy from './Leaflet.LayerHierarchy';\nimport NestedLayer from './Leaflet.NestedLayer';\n\nimport { defaultsDeep as defaults } from 'lodash';\n// superagent mimics the node 'request' library on the client side as an xhr library\nimport superagent from 'superagent';\nimport Promise from 'bluebird';\nimport superagentPromise from 'superagent-promise';\nconst request = superagentPromise(superagent, Promise);\nimport { FeatureLayer } from 'esri-leaflet';\n\n/**\n * Parses the layer data served by an ArcGIS MapServer\n * @param {string} url A valid and reachable ArcGIS MapServer URL\n * @param {L.Map} map A Leaflet Map object, which will be passed to all\n * the layers in the resulting LayerHierarchy\n * @param {object} [options] An optional configuration object\n */\nexport default class MapServerParser {\n\n  static APIEndpoints = {\n    layers: '/layers',\n    legend: '/legend'\n  };\n\n  static QueryParameters = {\n    f: 'json'\n  };\n\n  static Headers = {\n    Accept: 'application/json'\n  };\n\n  /**\n   * Initializes the parser with the given parameters\n   * @param {string} url     A valid and reachable ArcGIS MapServer URL\n   * @param {L.Map} map     A Leaflet Map object, which will be passed to all\n   * the layers in the resulting LayerHierarchy\n   * @param {object} [options] An optional configuration object\n   * @param {object} [options.data] The configuration options related to what data\n   * should be parsed from the MapServer to be included on NestedLayer objects\n   * @param {boolean} [options.data.scale=true] Include minZoom and maxZoom\n   * parameters on the NestedLayer\n   * @param {boolean} [options.data.defaultVisibility=true] Include the\n   * initial selected state of the NestedLayer\n   * @param {object} [options.hierarchyOptions={}] The configuration options\n   * the NestedHierarchy takes on instantiation\n   */\n  constructor(url, map, options) {\n    // ensure required parameters are present\n    if (typeof url == 'undefined') {\n      throw new Error('Missing URL when creating MapServerParser');\n    }\n    if (typeof map == 'undefined') {\n      throw new Error('Missing Leaflet map object when creating MapServerParser');\n    }\n\n    // save url\n    this._url = url;\n\n    // save map\n    this._map = map;\n\n    // set default options\n    this._defaults = {\n      data: {\n        scale: true,\n        defaultVisibility: true,\n        swatch: false\n      },\n      hierarchyOptions: {}\n    }\n\n    // merge options with defaults\n    this._options = {};\n    // https://lodash.com/docs/4.17.4#defaultsDeep\n    defaults(this._options, options, this.defaults);\n  }\n\n  /**\n   * MapServer URL\n   * @type {string}\n   */\n  get url() {\n    return this._url;\n  }\n\n  /**\n   * Leaflet Map object\n   * @type {L.Map}\n   */\n  get map() {\n    return this._map;\n  }\n\n  /**\n   * Configuration options\n   * @type {object}\n   */\n  get options() {\n    return this._options;\n  }\n\n  /**\n   * Default configuration options\n   * @type {object}\n   */\n  get defaults() {\n    return this._defaults;\n  }\n\n  parse() {\n    // we have to wait for both xhr promises to resolve before we can begin processing\n    // note that Promise.join returns a promise that resolves to a LayerHierarchy\n    return Promise.join(this._queryLayers(), this._queryLegend(), (layerRes, legendRes) => {\n      // ensure we hit HTTP 2xx statuses\n      if (!layerRes.ok || !legendRes.ok) {\n        throw new Error('Bad request: HTTP status was not 2xx');\n      }\n\n      // parse the layerdata into JSON\n      let body = layerRes.body;\n      // ArcGIS does not properly set its Content-Type header\n      // so force JSON parsing if superagent did not parse automatically\n      if (layerRes.type !== MapServerParser.Headers.Accept) {\n        body = JSON.parse(layerRes.text);\n      }\n\n      // parse the legend into JSON\n      let legend = legendRes.body;\n      // ArcGIS does not properly set its Content-Type header\n      // so force JSON parsing if superagent did not parse automatically\n      if (legendRes.type !== MapServerParser.Headers.Accept) {\n        legend = JSON.parse(legendRes.text);\n      }\n      // the actual legend is located under the 'layers' node\n      legend = legend.layers;\n\n      // create the LayerHierarchy\n      var hierarchy = new LayerHierarchy(this.options.hierarchyOptions);\n\n      // move layers down as children of other layers\n      body.layers.forEach((node) => {\n        let layer = this._convertLayerNodeToNestedLayer(node, legend);\n        let parent = (node.parentLayer !== null ? node.parentLayer.id : undefined);\n        // if this layer has no parent, addLayer(...) will add as a root layer\n        hierarchy.addLayer(layer, parent);\n      });\n\n      // resolve the promise with the resulting LayerHierarchy\n      return hierarchy;\n    });\n  }\n\n  /**\n   * Queries the layers endpoint of the MapServer for layer data.\n   * @return {Promise} Promise that resolves the request.\n   */\n  _queryLayers() {\n    // assemble layerdata url\n    const layerdataURL = this.url + MapServerParser.APIEndpoints.layers;\n\n    // fetch layerdata as JSON\n    return request\n      .get(layerdataURL)\n      .set(MapServerParser.Headers)\n      .query(MapServerParser.QueryParameters)\n      .end();\n  }\n\n  _queryLegend() {\n    // assemble legend url\n    const legendURL = this.url + MapServerParser.APIEndpoints.legend;\n\n    // fetch legend as JSON\n    return request\n      .get(legendURL)\n      .set(MapServerParser.Headers)\n      .query(MapServerParser.QueryParameters)\n      .end();\n  }\n\n  _convertLayerNodeToNestedLayer = (node, legend) => {\n    let nestedLayerData = {\n      id: node.id,\n      name: node.name.trim(),\n      map: this.map\n    };\n    // Leaflet layer data\n    let leafletLayerData = {\n      url: MapServerParser._makeLayerURL(this.url, nestedLayerData.id)\n    };\n\n    // get scale/zoom data from layer node\n    if (this.options.data.scale) {\n      // converts scale factor from ArcGIS to Leaflet's zoom factor\n      // http://leafletjs.com/reference-1.1.0.html#crs-scale\n      // leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);\n      // leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);\n      console.warn('Floor\\'ing maxZoom and ceil\\'ing minZoom');\n      // console.log(nestedLayerData.name, 'minZoom', leafletLayerData.minZoom, 'maxZoom', leafletLayerData.maxZoom)\n      leafletLayerData.maxZoom = Math.floor(this.map.options.crs.zoom(node.maxScale));\n      leafletLayerData.minZoom = Math.ceil(this.map.options.crs.zoom(node.minScale));\n    }\n\n    // attach the swatch data\n    // if (this.options.data.swatch && legend[nestedLayerData.id].legend.length > 0) {\n    //   nestedLayerData.swatch = legend[nestedLayerData.id].legend[0].imageData;\n    //   console.log(nestedLayerData.name, nestedLayerData.id, nestedLayerData.swatch);\n    // }\n    if (this.options.data.swatch) {\n      nestedLayerData.swatch = MapServerParser._findSwatchInLegend(legend, nestedLayerData.id);\n    }\n\n    // attach the Leaflet layer object to the NestedLayer's data\n    nestedLayerData.layer = new FeatureLayer(leafletLayerData);\n\n    // create a new NestedLayer that wraps the Leaflet layer, map, etc.\n    let layer = new NestedLayer(nestedLayerData);\n\n    // set the selected state = to the node's default visibility state\n    if (this.options.data.defaultVisibility) {\n      layer.selected = node.defaultVisibility;\n    }\n\n    // returns a NestedLayer object\n    return layer;\n  }\n\n  static _findSwatchInLegend(legend, layerID) {\n    // if no swatches even exist (e.g. invalid legend)\n    if (legend.length <= 0) { return ''; }\n\n    // loop through to try to find a valid swatch\n    // this algorithm could be optimized from O(n) due to\n    // the sorted nature of the legend\n    // it just must account for the fact that a legend object may not exist for\n    // any given layer\n    for (let i = 0; i < legend.length; i++) {\n      if (legend[i].layerId == layerID && legend[i].legend.length > 0) {\n        return legend[i].legend[0].imageData;\n      }\n    }\n\n    // no swatch found\n    return '';\n  }\n\n  static _makeLayerURL(baseURL, layerID) {\n    if (typeof baseURL !== 'string') {\n      throw new Error('Base URL was undefined, null, or was not a string');\n    }\n    if (typeof layerID !== 'number') {\n      throw new Error('ID was undefined, null, or was not a number');\n    }\n\n    return baseURL + '/' + layerID.toString();\n  }\n\n}\n",
     "static": true,
     "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js",
     "access": null,
@@ -1086,10 +1086,10 @@
   {
     "__docId__": 41,
     "kind": "member",
-    "name": "APISuffixes",
+    "name": "APIEndpoints",
     "memberof": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser",
     "static": true,
-    "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.APISuffixes",
+    "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.APIEndpoints",
     "access": null,
     "description": null,
     "lineNumber": 21,
@@ -1456,7 +1456,7 @@
     "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser#_queryLayers",
     "access": null,
     "description": "Queries the layers endpoint of the MapServer for layer data.",
-    "lineNumber": 150,
+    "lineNumber": 159,
     "params": [],
     "return": {
       "nullable": null,
@@ -1478,7 +1478,7 @@
     "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser#_queryLegend",
     "access": null,
     "description": null,
-    "lineNumber": 162,
+    "lineNumber": 171,
     "undocument": true,
     "unknown": [
       {
@@ -1502,7 +1502,7 @@
     "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser#_convertLayerNodeToNestedLayer",
     "access": null,
     "description": null,
-    "lineNumber": 174,
+    "lineNumber": 183,
     "undocument": true,
     "unknown": [
       {
@@ -1519,6 +1519,45 @@
   {
     "__docId__": 57,
     "kind": "method",
+    "name": "_findSwatchInLegend",
+    "memberof": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser._findSwatchInLegend",
+    "access": null,
+    "description": null,
+    "lineNumber": 230,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "legend",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "layerID",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "method",
     "name": "_makeLayerURL",
     "memberof": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser",
     "generator": false,
@@ -1527,7 +1566,7 @@
     "longname": "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser._makeLayerURL",
     "access": null,
     "description": null,
-    "lineNumber": 208,
+    "lineNumber": 249,
     "undocument": true,
     "unknown": [
       {
@@ -1556,7 +1595,7 @@
     }
   },
   {
-    "__docId__": 58,
+    "__docId__": 59,
     "kind": "file",
     "name": "src/Leaflet.LayerHierarchy.js",
     "content": "import NestedLayer from './Leaflet.NestedLayer';\n\n/**\n * Represents a non-rooted tree structure of NestedLayer objects\n * @param {object} options Configuration options that dictate how the tree\n * should behave\n */\nexport default class LayerHierarchy {\n\n  /**\n   * @param {object} options Configuration options\n   * @param {NestedLayer[]} [options.layers=[]] Layers to include at the root\n   * level\n   * @param {boolean} [options.followAncestorVisibility=true] {@link\n   * #NestedLayers#constructor See the plugin constructor.}\n   * @param {boolean} [options.propogateDeselectToChildren=false] {@link\n   * #NestedLayers#constructor See the plugin constructor.}\n   * @param {boolean} [options.followAncestorMutability=true] {@link\n   * #NestedLayers#constructor See the plugin constructor.}\n   */\n  constructor(options) {\n    // for the layers parameter, ensure that we are at least passed an array\n    // otherwise, default to empty array\n\n    // default options\n    this._options = {\n      // 'layers' will be deleted by the end of the constructor\n      layers: [],\n      followAncestorVisibility: true,\n      propogateDeselectToChildren: false,\n      followAncestorMutability: true\n    };\n\n    // overwrite defaults with passed options\n    Object.assign(this._options, options);\n\n    // extract the 'layers' property from 'options' into its own property\n    this._layers = this.options.layers;\n    delete this._options.layers;\n\n    this.validateEnabledStates();\n\n    this.ownAllLayers(this.layers);\n  }\n\n  /**\n   * Configuration options\n   * @type {object}\n   */\n  get options() {\n    return this._options;\n  }\n\n  /**\n   * Adds a new layer into the tree. Defaults to insertion at the root of the\n   * tree, but passing a the ID of another layer will insert the layer as a\n   * child of that parent.\n   * @param {NestedLayer} layer    The layer to insert\n   * @param {?number} [parentID=null] The ID of a parent to insert underneath\n   */\n  addLayer(layer, parentID) {\n    // id, name, layer, defaultVisibility, minScale, maxScale, children\n    // layer should be a NestedLayer\n\n    if (!(layer instanceof NestedLayer)) {\n      throw new TypeError('layer is not a NestedLayer');\n    }\n\n    // take ownership of the layer\n    this.ownLayer(layer);\n\n    if (typeof parentID != 'undefined') {\n      // add as child\n      this.getLayerByID(parentID).addChild(layer);\n    } else {\n      // no parent, add at root level\n      this._layers.push(layer);\n    }\n  }\n\n  /**\n   * Finds a layer in the tree by ID. Traverses the tree recurisvely until it\n   * is found. Don't pass children unless you want to search a specific\n   * subtree.\n   * @param  {number}          id       The layer ID to search for\n   * @param  {NestedLayer[]}   [children=this.layers] A subtree to search\n   * @return {?NestedLayer}     The layer if found, or null otherwise.\n   */\n  getLayerByID(id, children) {\n\n    // if the function was not called recursively\n    if (!children) {\n      children = this._layers;\n    }\n\n    for (let i = 0; i < children.length; i++) {\n\n      // if the child matches\n      if (children[i].id == id) {\n        // return the child\n        return children[i];\n\n      } else {\n\n        // if the child has its own children\n        if (children[i].children && children[i].children.length > 0) {\n\n          // reucrisvely check them\n          let recursiveResult = this.getLayerByID(id, children[i].children);\n          if (recursiveResult !== null) {\n            return recursiveResult;\n          }\n\n        }\n      }\n\n    }\n\n    // if execution reaches here, no layers in this tree or subtree have the requested id\n    return null;\n  }\n\n  /**\n   * Root-level NestedLayer layers\n   * @type {NestedLayer[]}\n   */\n  get layers() {\n    return this._layers;\n  }\n  /**\n   * {@link #LayerHierarchy#layers Root-level NestedLayer layers}\n   * @type {NestedLayer[]}\n   */\n  get rootLayers() {\n    return this.layers;\n  }\n\n  // check all the children to ensure that they are all enabled/disabled as appropriate\n  // the highest layer takes precedence over lower layers\n  // i.e. if a root-level layer is disabled, then all its children will be disabled as well\n  // parameters should be undefined when called the first time; the function is recursive\n  validateEnabledStates(layers, newEnabledValue) {\n    // first call? then layers = the whole true\n    if (typeof layers === 'undefined') {\n      // console.log('validateEnabledStates: first call');\n      layers = this.rootLayers;\n    }\n\n    for (let i = 0; i < layers.length; i++) {\n      // console.log('validateEnabledStates: checking', layers[i].name);\n\n      // if we have a specific enabled value, set the children to that\n      if (typeof newEnabledValue !== 'undefined') {\n        // console.log('validateEnabledStates: setting', layers[i].name, 'to', newEnabledValue);\n        layers[i].enabled = newEnabledValue;\n      }\n\n      // if the layer has children, repeat this process on them\n      // console.log('validateEnabledStates: does', layers[i].name, 'have children?', (layers[i].hasChildren ? 'yes' : 'no'));\n      if (layers[i].hasChildren) {\n        // console.log('validateEnabledStates: setting children of', layers[i].name, 'to', layers[i].enabled);\n        this.validateEnabledStates(layers[i].children, layers[i].enabled)\n      }\n\n    }\n\n  }\n\n  /**\n   * Checks if this LayerHierarchy owns the provided layer\n   * @param  {NestedLayer} layer The layer to check\n   * @return {boolean}       True if the layer is owned by this hierarchy; false otherwise\n   */\n  ownsLayer(layer) {\n    return layer.owner === this;\n  }\n\n  /**\n   * Factory method for making a new NestedLayer that is owned by this hierarchy\n   * @param  {object} layerData The same object you would provide to the {@link #NestedLayer#constructor constructor of NestedLayer}\n   * @return {NestedLayer}           A NestedLayer owned by this hierarchy\n   */\n  makeLayer(layerData) {\n    const l = new NestedLayer(layerData);\n    l.owner = this;\n    return l;\n  }\n\n  /**\n   * Take ownership of a layer\n   * @param  {NestedLayer} layer The layer to become the owner of\n   */\n  ownLayer(layer) {\n    layer.owner = this;\n  }\n\n  /**\n   * Take ownership of a layer subtree AND those layers' children\n   * @param  {NestedLayer[]} layers The layers to become the owner of\n   */\n  ownAllLayers(layers) {\n    for (let i = 0; i < layers.length; i++) {\n      this.ownLayer(layers[i]);\n      layers[i].ownChildren();\n    }\n  }\n\n}\n",
@@ -1567,7 +1606,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 59,
+    "__docId__": 60,
     "kind": "class",
     "name": "LayerHierarchy",
     "memberof": "src/Leaflet.LayerHierarchy.js",
@@ -1594,7 +1633,7 @@
     "interface": false
   },
   {
-    "__docId__": 60,
+    "__docId__": 61,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1667,7 +1706,7 @@
     ]
   },
   {
-    "__docId__": 61,
+    "__docId__": 62,
     "kind": "member",
     "name": "_options",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1690,7 +1729,7 @@
     }
   },
   {
-    "__docId__": 62,
+    "__docId__": 63,
     "kind": "member",
     "name": "_layers",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1713,7 +1752,7 @@
     }
   },
   {
-    "__docId__": 63,
+    "__docId__": 64,
     "kind": "get",
     "name": "options",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1734,7 +1773,7 @@
     }
   },
   {
-    "__docId__": 64,
+    "__docId__": 65,
     "kind": "method",
     "name": "addLayer",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1771,7 +1810,7 @@
     ]
   },
   {
-    "__docId__": 65,
+    "__docId__": 66,
     "kind": "method",
     "name": "getLayerByID",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1816,7 +1855,7 @@
     }
   },
   {
-    "__docId__": 66,
+    "__docId__": 67,
     "kind": "get",
     "name": "layers",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1837,7 +1876,7 @@
     }
   },
   {
-    "__docId__": 67,
+    "__docId__": 68,
     "kind": "get",
     "name": "rootLayers",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1858,7 +1897,7 @@
     }
   },
   {
-    "__docId__": 68,
+    "__docId__": 69,
     "kind": "method",
     "name": "validateEnabledStates",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1892,7 +1931,7 @@
     ]
   },
   {
-    "__docId__": 69,
+    "__docId__": 70,
     "kind": "method",
     "name": "ownsLayer",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1925,7 +1964,7 @@
     }
   },
   {
-    "__docId__": 70,
+    "__docId__": 71,
     "kind": "method",
     "name": "makeLayer",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1958,7 +1997,7 @@
     }
   },
   {
-    "__docId__": 71,
+    "__docId__": 72,
     "kind": "method",
     "name": "ownLayer",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -1983,7 +2022,7 @@
     ]
   },
   {
-    "__docId__": 72,
+    "__docId__": 73,
     "kind": "method",
     "name": "ownAllLayers",
     "memberof": "src/Leaflet.LayerHierarchy.js~LayerHierarchy",
@@ -2008,10 +2047,10 @@
     ]
   },
   {
-    "__docId__": 73,
+    "__docId__": 74,
     "kind": "file",
     "name": "src/Leaflet.NestedLayer.js",
-    "content": "/**\n * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet\n * layer} to allow that layer to be the \"parent\" of other layers by having\n * \"child\" layers\n * @param {object} props The layer data\n */\nexport default class NestedLayer {\n\n  /**\n   *\n   * @param {object} props The layer data\n   * @param {number} props.id The layer's unique ID number\n   * @param {string} props.name The layer's unique name\n   * @param {L.Layer} props.layer A {@link\n   * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}\n   * @param {L.Map} props.map {@link\n   * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to\n   * @param {boolean} [props.enabled=true] Initial enabled state of the layer\n   * @param {boolean} [props.selected=false] Initial selected state of the layer\n   * @param {string} [props.swatch=''] Base64 encoded swatch PNG\n   * @param {NestedLayer[]} [props.children=[]] Child layers\n   * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible\n   * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible\n   */\n  constructor(props) {\n    // set default props for optional props\n    this._props = { children: [], enabled: true, selected: false, swatch: '' };\n    this._isAttached = false;\n\n    // verify that all required arguments are present\n    if (typeof props.id == 'undefined') {\n      throw new Error('Missing ID when creating NestedLayer');\n    }\n    if (typeof props.name == 'undefined') {\n      throw new Error('Missing name when creating NestedLayer');\n    }\n    if (typeof props.layer == 'undefined') {\n      throw new Error('Missing layer object when creating NestedLayer');\n    }\n    if (typeof props.map == 'undefined') {\n      throw new Error('Missing map object when creating NestedLayer');\n    }\n\n    Object.assign(this._props, props);\n\n    // if this layer is starting off selected, attach to the map\n    // calling this.select() ensures that we follow any other attachment rules\n    // built into the 'selected' setter\n    if (this.selected) {\n      this.select();\n    }\n\n    // if the zoom properties are on the leaflet layer object, copy them up to the\n    // NestedLayer object\n    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {\n      this._props.minZoom = this.layer.minZoom;\n      this._props.maxZoom = this.layer.maxZoom;\n    }\n\n    // if this layer has zoom data, we need to handle the case where the user zooms to a level where\n    // our layer should be disabled according to the minZoom/maxZoom contained in the layer object\n    if (this.minZoom !== undefined && this.maxZoom !== undefined) {\n      this.map.on('zoomend', this._handleMapZoom);\n    }\n  }\n\n  /**\n   * Layer ID\n   * @type {number}\n   */\n  get id() {\n    return this._props.id;\n  }\n\n  /**\n   * Layer name\n   * @type {string}\n   */\n  get name() {\n    return this._props.name;\n  }\n\n  /**\n   * Underlying Leaflet layer\n   * @type {L.Layer}\n   */\n  get layer() {\n    return this._props.layer;\n  }\n\n  /**\n   * Leaflet Map to attach to\n   * @type {L.Map}\n   */\n  get map() {\n    return this._props.map;\n  }\n\n  /**\n   * Base64 encoded swatch PNG\n   * @type {string}\n   */\n  get swatch() {\n    return this._props.swatch;\n  }\n\n  /**\n   * Child layers\n   * @type {NestedLayer[]}\n   */\n  get children() {\n    return this._props.children;\n  }\n\n  /**\n   * Minimum zoom level for this layer to be visible\n   * @type {number}\n   */\n  get minZoom() {\n    return this._props.minZoom;\n  }\n\n  /**\n   * Maximum zoom level for this layer to be visible\n   * @type {number}\n   */\n  get maxZoom() {\n    return this._props.maxZoom;\n  }\n\n  // enabled = user may freely toggle this layer on and off\n  // disabled = user may not toggle the layer\n  // disabling always deselects the layer, but the selected state is persisted, so that if\n  // the layer is re-enabled, the selected state is what it was prior to disabling\n  // i.e. if disabled, always deselected\n  // this logic is handled in the .selected getter\n\n  /**\n   * Whether the user may freely toggle this layer on and off\n   * @type {boolean}\n   */\n  get enabled() {\n    return this._props.enabled;\n  }\n  set enabled(val) {\n    this._props.enabled = val;\n\n    // if disabling, detach from map\n    if (!val) {\n      this._detach();\n\n    // if enabling, and marked selected (i.e. \"re-enabling\"), attach to map\n    } else if (this._props.selected) {\n      this._attach();\n    }\n  }\n  /**\n   * The inverse of #enabled\n   * @type {boolean}\n   */\n  get disabled() {\n    return !this.enabled;\n  }\n\n  /** Enable the layer */\n  enable() {\n    this.enabled = true;\n  }\n  /** Disable the layer */\n  disable() {\n    this.enabled = false;\n  }\n  /** Toggle the layer's enabled state */\n  toggleEnabled() {\n    this.enabled = !this.enabled;\n  }\n\n  // selected = layer present on the map\n  // deselected = layer not present on the map\n  get selected() {\n    if (this.disabled) {\n      return false;\n    } else {\n      return this._props.selected;\n    }\n  }\n  set selected(val) {\n    this._props.selected = val;\n\n    // attach/detach from map when needed\n    // disable children from selection when unselected\n    if (this.selected) {\n      this._attach();\n      this.enableChildren();\n    } else {\n      this._detach();\n      this.disableChildren();\n    }\n  }\n  get deselected() {\n    return !this.selected;\n  }\n  select() {\n    this.selected = true;\n  }\n  deselect() {\n    this.selected = false;\n  }\n  toggleSelected() {\n    this.selected = !this.selected;\n  }\n\n  // this is used to track what programmatic object owns this NestedLayer\n  get owner() {\n    return this._owner;\n  }\n  set owner(val) {\n    this._owner = val;\n  }\n  // checks ownership\n  isOwnedBy(owner) {\n    return this.owner === owner;\n  }\n\n  // options come from the layers owner\n  // will return null if there is no owner\n  get options() {\n    if (typeof this.owner === 'undefined') {\n      return null;\n    } else {\n      return this.owner.options;\n    }\n  }\n\n  // true if the layer has children\n  get hasChildren() {\n    return this.children.length > 0;\n  }\n\n  // add a child NestedLayer object\n  addChild(child) {\n    if (!(child instanceof NestedLayer)) {\n      throw new TypeError('child is not a NestedLayer');\n    }\n    this._props.children.push(child);\n  }\n\n  enableChildren() {\n    this._applyStateChangeToAllChildren('enabled', true, this.children);\n  }\n\n  disableChildren() {\n    this._applyStateChangeToAllChildren('enabled', false, this.children);\n  }\n\n  ownChildren() {\n    this._applyStateChangeToAllChildren('owner', this.owner, this.children);\n  }\n\n  _applyStateChangeToAllChildren(prop, val, children) {\n    // utility to recursively loop through children (and their children, etc.)\n    // to change their state\n    // IDEA: convert to a \"deep map\" function\n    for (let i = 0; i < children.length; i++) {\n      // make the state change\n      children[i][prop] = val;\n\n      // loop through children/subtrees when necessary\n      if (children[i].hasChildren) {\n        this._applyStateChangeToAllChildren(prop, val, children[i].children);\n      }\n    }\n  }\n\n  _handleMapZoom = () => {\n    const zoom = this.map.getZoom();\n\n    if (zoom < this.minZoom || zoom > this.maxZoom) {\n      this._detach();\n    } else {\n      this._attach()\n    }\n  }\n\n  // display on map\n  _attach() {\n    if (!this._isAttached) {\n      // console.log(this.layer);\n      this.map.addLayer(this.layer);\n      // this.layer.addTo(this.map);\n      this._isAttached = true;\n    }\n  }\n\n  // remove from map\n  _detach() {\n    if (this._isAttached) {\n      this.map.removeLayer(this.layer);\n      // this.layer.removeFrom(this.map);\n      this._isAttached = false;\n    }\n  }\n}\n\n\n",
+    "content": "/**\n * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet\n * layer} to allow that layer to be the \"parent\" of other layers by having\n * \"child\" layers\n * @param {object} props The layer data\n */\nexport default class NestedLayer {\n\n  /**\n   *\n   * @param {object} props The layer data\n   * @param {number} props.id The layer's unique ID number\n   * @param {string} props.name The layer's unique name\n   * @param {L.Layer} props.layer A {@link\n   * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}\n   * @param {L.Map} props.map {@link\n   * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to\n   * @param {boolean} [props.enabled=true] Initial enabled state of the layer\n   * @param {boolean} [props.selected=false] Initial selected state of the layer\n   * @param {string} [props.swatch=''] Base64 encoded swatch PNG\n   * @param {NestedLayer[]} [props.children=[]] Child layers\n   * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible\n   * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible\n   */\n  constructor(props) {\n    // set default props for optional props\n    this._props = { children: [], enabled: true, selected: false, swatch: '' };\n    this._isAttached = false;\n\n    // verify that all required arguments are present\n    if (typeof props.id == 'undefined') {\n      throw new Error('Missing ID when creating NestedLayer');\n    }\n    if (typeof props.name == 'undefined') {\n      throw new Error('Missing name when creating NestedLayer');\n    }\n    if (typeof props.layer == 'undefined') {\n      throw new Error('Missing layer object when creating NestedLayer');\n    }\n    if (typeof props.map == 'undefined') {\n      throw new Error('Missing map object when creating NestedLayer');\n    }\n\n    Object.assign(this._props, props);\n\n    // if this layer is starting off selected, attach to the map\n    // calling this.select() ensures that we follow any other attachment rules\n    // built into the 'selected' setter\n    if (this.selected) {\n      this.select();\n    }\n\n    // if the zoom properties are on the leaflet layer object, copy them up to the\n    // NestedLayer object\n    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {\n      this._props.minZoom = this.layer.minZoom;\n      this._props.maxZoom = this.layer.maxZoom;\n    }\n\n    // if this layer has zoom data, we need to handle the case where the user zooms to a level where\n    // our layer should be disabled according to the minZoom/maxZoom contained in the layer object\n    if (this.minZoom !== undefined && this.maxZoom !== undefined) {\n      this.map.on('zoomend', this._handleMapZoom);\n    }\n  }\n\n  /**\n   * Layer ID\n   * @type {number}\n   */\n  get id() {\n    return this._props.id;\n  }\n\n  /**\n   * Layer name\n   * @type {string}\n   */\n  get name() {\n    return this._props.name;\n  }\n\n  /**\n   * Underlying Leaflet layer\n   * @type {L.Layer}\n   */\n  get layer() {\n    return this._props.layer;\n  }\n\n  /**\n   * Leaflet Map to attach to\n   * @type {L.Map}\n   */\n  get map() {\n    return this._props.map;\n  }\n\n  /**\n   * Base64 encoded swatch PNG\n   * @type {string}\n   */\n  get swatch() {\n    return this._props.swatch;\n  }\n\n  /**\n   * Child layers\n   * @type {NestedLayer[]}\n   */\n  get children() {\n    return this._props.children;\n  }\n\n  /**\n   * Minimum zoom level for this layer to be visible\n   * @type {number}\n   */\n  get minZoom() {\n    return this._props.minZoom;\n  }\n\n  /**\n   * Maximum zoom level for this layer to be visible\n   * @type {number}\n   */\n  get maxZoom() {\n    return this._props.maxZoom;\n  }\n\n  // enabled = user may freely toggle this layer on and off\n  // disabled = user may not toggle the layer\n  // disabling always deselects the layer, but the selected state is persisted, so that if\n  // the layer is re-enabled, the selected state is what it was prior to disabling\n  // i.e. if disabled, always deselected\n  // this logic is handled in the .selected getter\n\n  /**\n   * Whether the user may freely toggle this layer on and off\n   * @type {boolean}\n   */\n  get enabled() {\n    return this._props.enabled;\n  }\n  set enabled(val) {\n    this._props.enabled = val;\n\n    // if disabling, detach from map\n    if (!val) {\n      this._detach();\n\n    // if enabling, and marked selected (i.e. \"re-enabling\"), attach to map\n    } else if (this._props.selected) {\n      this._attach();\n    }\n  }\n  /**\n   * The inverse of #enabled\n   * @type {boolean}\n   */\n  get disabled() {\n    return !this.enabled;\n  }\n\n  /** Enable the layer */\n  enable() {\n    this.enabled = true;\n  }\n  /** Disable the layer */\n  disable() {\n    this.enabled = false;\n  }\n  /** Toggle the layer's enabled state */\n  toggleEnabled() {\n    this.enabled = !this.enabled;\n  }\n\n  // selected = layer present on the map\n  // deselected = layer not present on the map\n  get selected() {\n    if (this.disabled) {\n      return false;\n    } else {\n      return this._props.selected;\n    }\n  }\n  set selected(val) {\n    this._props.selected = val;\n\n    // attach/detach from map when needed\n    // disable children from selection when unselected\n    if (this.selected) {\n      this._attach();\n      this.enableChildren();\n    } else {\n      this._detach();\n      this.disableChildren();\n    }\n  }\n  get deselected() {\n    return !this.selected;\n  }\n  select() {\n    this.selected = true;\n  }\n  deselect() {\n    this.selected = false;\n  }\n  toggleSelected() {\n    this.selected = !this.selected;\n  }\n\n  // this is used to track what programmatic object owns this NestedLayer\n  get owner() {\n    return this._owner;\n  }\n  set owner(val) {\n    this._owner = val;\n  }\n  // checks ownership\n  isOwnedBy(owner) {\n    return this.owner === owner;\n  }\n\n  // options come from the layers owner\n  // will return null if there is no owner\n  get options() {\n    if (typeof this.owner === 'undefined') {\n      return null;\n    } else {\n      return this.owner.options;\n    }\n  }\n\n  // true if the layer has children\n  get hasChildren() {\n    return this.children.length > 0;\n  }\n\n  // add a child NestedLayer object\n  addChild(child) {\n    if (!(child instanceof NestedLayer)) {\n      throw new TypeError('child is not a NestedLayer');\n    }\n    this._props.children.push(child);\n  }\n\n  enableChildren() {\n    this._applyStateChangeToAllChildren('enabled', true, this.children);\n  }\n\n  disableChildren() {\n    this._applyStateChangeToAllChildren('enabled', false, this.children);\n  }\n\n  ownChildren() {\n    this._applyStateChangeToAllChildren('owner', this.owner, this.children);\n  }\n\n  _applyStateChangeToAllChildren(prop, val, children) {\n    // utility to recursively loop through children (and their children, etc.)\n    // to change their state\n    // IDEA: convert to a \"deep map\" function\n    for (let i = 0; i < children.length; i++) {\n      // make the state change\n      children[i][prop] = val;\n\n      // loop through children/subtrees when necessary\n      if (children[i].hasChildren) {\n        this._applyStateChangeToAllChildren(prop, val, children[i].children);\n      }\n    }\n  }\n\n  _handleMapZoom = () => {\n    const zoom = this.map.getZoom();\n\n    if (zoom < this.minZoom || zoom > this.maxZoom) {\n      this._detach();\n    } else {\n      this._attach()\n    }\n  }\n\n  // display on map\n  _attach() {\n    if (!this._isAttached) {\n      this.map.addLayer(this.layer);\n      // this.layer.addTo(this.map);\n      this._isAttached = true;\n    }\n  }\n\n  // remove from map\n  _detach() {\n    if (this._isAttached) {\n      this.map.removeLayer(this.layer);\n      // this.layer.removeFrom(this.map);\n      this._isAttached = false;\n    }\n  }\n}\n\n\n",
     "static": true,
     "longname": "src/Leaflet.NestedLayer.js",
     "access": null,
@@ -2019,7 +2058,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 74,
+    "__docId__": 75,
     "kind": "class",
     "name": "NestedLayer",
     "memberof": "src/Leaflet.NestedLayer.js",
@@ -2046,7 +2085,7 @@
     "interface": false
   },
   {
-    "__docId__": 75,
+    "__docId__": 76,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2179,7 +2218,7 @@
     ]
   },
   {
-    "__docId__": 76,
+    "__docId__": 77,
     "kind": "member",
     "name": "_props",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2202,7 +2241,7 @@
     }
   },
   {
-    "__docId__": 77,
+    "__docId__": 78,
     "kind": "member",
     "name": "_isAttached",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2225,7 +2264,7 @@
     }
   },
   {
-    "__docId__": 78,
+    "__docId__": 79,
     "kind": "get",
     "name": "id",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2246,7 +2285,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 80,
     "kind": "get",
     "name": "name",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2267,7 +2306,7 @@
     }
   },
   {
-    "__docId__": 80,
+    "__docId__": 81,
     "kind": "get",
     "name": "layer",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2288,7 +2327,7 @@
     }
   },
   {
-    "__docId__": 81,
+    "__docId__": 82,
     "kind": "get",
     "name": "map",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2309,7 +2348,7 @@
     }
   },
   {
-    "__docId__": 82,
+    "__docId__": 83,
     "kind": "get",
     "name": "swatch",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2330,7 +2369,7 @@
     }
   },
   {
-    "__docId__": 83,
+    "__docId__": 84,
     "kind": "get",
     "name": "children",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2351,7 +2390,7 @@
     }
   },
   {
-    "__docId__": 84,
+    "__docId__": 85,
     "kind": "get",
     "name": "minZoom",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2372,7 +2411,7 @@
     }
   },
   {
-    "__docId__": 85,
+    "__docId__": 86,
     "kind": "get",
     "name": "maxZoom",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2393,7 +2432,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 87,
     "kind": "get",
     "name": "enabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2414,7 +2453,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 88,
     "kind": "set",
     "name": "enabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2439,7 +2478,7 @@
     }
   },
   {
-    "__docId__": 88,
+    "__docId__": 89,
     "kind": "get",
     "name": "disabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2460,7 +2499,7 @@
     }
   },
   {
-    "__docId__": 89,
+    "__docId__": 90,
     "kind": "method",
     "name": "enable",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2474,7 +2513,7 @@
     "params": []
   },
   {
-    "__docId__": 90,
+    "__docId__": 91,
     "kind": "member",
     "name": "enabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2497,7 +2536,7 @@
     }
   },
   {
-    "__docId__": 91,
+    "__docId__": 92,
     "kind": "method",
     "name": "disable",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2511,7 +2550,7 @@
     "params": []
   },
   {
-    "__docId__": 92,
+    "__docId__": 93,
     "kind": "member",
     "name": "enabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2534,7 +2573,7 @@
     }
   },
   {
-    "__docId__": 93,
+    "__docId__": 94,
     "kind": "method",
     "name": "toggleEnabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2548,7 +2587,7 @@
     "params": []
   },
   {
-    "__docId__": 94,
+    "__docId__": 95,
     "kind": "member",
     "name": "enabled",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2571,7 +2610,7 @@
     }
   },
   {
-    "__docId__": 95,
+    "__docId__": 96,
     "kind": "get",
     "name": "selected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2596,7 +2635,7 @@
     }
   },
   {
-    "__docId__": 96,
+    "__docId__": 97,
     "kind": "set",
     "name": "selected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2621,7 +2660,7 @@
     }
   },
   {
-    "__docId__": 97,
+    "__docId__": 98,
     "kind": "get",
     "name": "deselected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2646,7 +2685,7 @@
     }
   },
   {
-    "__docId__": 98,
+    "__docId__": 99,
     "kind": "method",
     "name": "select",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2667,7 +2706,7 @@
     "params": []
   },
   {
-    "__docId__": 99,
+    "__docId__": 100,
     "kind": "member",
     "name": "selected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2690,7 +2729,7 @@
     }
   },
   {
-    "__docId__": 100,
+    "__docId__": 101,
     "kind": "method",
     "name": "deselect",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2711,7 +2750,7 @@
     "params": []
   },
   {
-    "__docId__": 101,
+    "__docId__": 102,
     "kind": "member",
     "name": "selected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2734,7 +2773,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 103,
     "kind": "method",
     "name": "toggleSelected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2755,7 +2794,7 @@
     "params": []
   },
   {
-    "__docId__": 103,
+    "__docId__": 104,
     "kind": "member",
     "name": "selected",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2778,7 +2817,7 @@
     }
   },
   {
-    "__docId__": 104,
+    "__docId__": 105,
     "kind": "get",
     "name": "owner",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2803,7 +2842,7 @@
     }
   },
   {
-    "__docId__": 105,
+    "__docId__": 106,
     "kind": "set",
     "name": "owner",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2828,7 +2867,7 @@
     }
   },
   {
-    "__docId__": 106,
+    "__docId__": 107,
     "kind": "member",
     "name": "_owner",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2851,7 +2890,7 @@
     }
   },
   {
-    "__docId__": 107,
+    "__docId__": 108,
     "kind": "method",
     "name": "isOwnedBy",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2884,7 +2923,7 @@
     }
   },
   {
-    "__docId__": 108,
+    "__docId__": 109,
     "kind": "get",
     "name": "options",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2909,7 +2948,7 @@
     }
   },
   {
-    "__docId__": 109,
+    "__docId__": 110,
     "kind": "get",
     "name": "hasChildren",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2934,7 +2973,7 @@
     }
   },
   {
-    "__docId__": 110,
+    "__docId__": 111,
     "kind": "method",
     "name": "addChild",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2962,7 +3001,7 @@
     ]
   },
   {
-    "__docId__": 111,
+    "__docId__": 112,
     "kind": "method",
     "name": "enableChildren",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -2983,7 +3022,7 @@
     "params": []
   },
   {
-    "__docId__": 112,
+    "__docId__": 113,
     "kind": "method",
     "name": "disableChildren",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3004,7 +3043,7 @@
     "params": []
   },
   {
-    "__docId__": 113,
+    "__docId__": 114,
     "kind": "method",
     "name": "ownChildren",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3025,7 +3064,7 @@
     "params": []
   },
   {
-    "__docId__": 114,
+    "__docId__": 115,
     "kind": "method",
     "name": "_applyStateChangeToAllChildren",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3065,7 +3104,7 @@
     ]
   },
   {
-    "__docId__": 115,
+    "__docId__": 116,
     "kind": "member",
     "name": "_handleMapZoom",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3088,7 +3127,7 @@
     }
   },
   {
-    "__docId__": 116,
+    "__docId__": 117,
     "kind": "method",
     "name": "_attach",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3109,7 +3148,7 @@
     "params": []
   },
   {
-    "__docId__": 117,
+    "__docId__": 118,
     "kind": "member",
     "name": "_isAttached",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3117,7 +3156,7 @@
     "longname": "src/Leaflet.NestedLayer.js~NestedLayer#_isAttached",
     "access": null,
     "description": null,
-    "lineNumber": 291,
+    "lineNumber": 290,
     "undocument": true,
     "unknown": [
       {
@@ -3132,7 +3171,7 @@
     }
   },
   {
-    "__docId__": 118,
+    "__docId__": 119,
     "kind": "method",
     "name": "_detach",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3142,7 +3181,7 @@
     "longname": "src/Leaflet.NestedLayer.js~NestedLayer#_detach",
     "access": null,
     "description": null,
-    "lineNumber": 296,
+    "lineNumber": 295,
     "undocument": true,
     "unknown": [
       {
@@ -3153,7 +3192,7 @@
     "params": []
   },
   {
-    "__docId__": 119,
+    "__docId__": 120,
     "kind": "member",
     "name": "_isAttached",
     "memberof": "src/Leaflet.NestedLayer.js~NestedLayer",
@@ -3161,7 +3200,7 @@
     "longname": "src/Leaflet.NestedLayer.js~NestedLayer#_isAttached",
     "access": null,
     "description": null,
-    "lineNumber": 300,
+    "lineNumber": 299,
     "undocument": true,
     "unknown": [
       {
@@ -3176,7 +3215,233 @@
     }
   },
   {
-    "__docId__": 120,
+    "__docId__": 121,
+    "kind": "file",
+    "name": "src/Leaflet.Symbology.js",
+    "content": "import { defaultsDeep as defaults } from 'lodash';\n\nexport default class Symbology {\n\n  static _defaults = {\n\n  }\n\n  constructor(props) {\n    // merge props with defaults\n    this._props = {};\n    // https://lodash.com/docs/4.17.4#defaultsDeep\n    defaults(this._props, props, this.defaults);\n  }\n\n  get label() {\n    return this._props.label;\n  }\n  set label(val) {\n    this._props.label = val;\n  }\n\n  get defaults() {\n    // uses reflection to return the static _defaults property on the class\n    return this.constructor._defaults;\n  }\n}\n",
+    "static": true,
+    "longname": "src/Leaflet.Symbology.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 122,
+    "kind": "class",
+    "name": "Symbology",
+    "memberof": "src/Leaflet.Symbology.js",
+    "static": true,
+    "longname": "src/Leaflet.Symbology.js~Symbology",
+    "access": null,
+    "export": true,
+    "importPath": "leaflet.control.nestedlayers/src/Leaflet.Symbology.js",
+    "importStyle": "Symbology",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 123,
+    "kind": "member",
+    "name": "_defaults",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "static": true,
+    "longname": "src/Leaflet.Symbology.js~Symbology._defaults",
+    "access": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 124,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Leaflet.Symbology.js~Symbology#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "props",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 125,
+    "kind": "member",
+    "name": "_props",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "static": false,
+    "longname": "src/Leaflet.Symbology.js~Symbology#_props",
+    "access": null,
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 126,
+    "kind": "get",
+    "name": "label",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Leaflet.Symbology.js~Symbology#label",
+    "access": null,
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 127,
+    "kind": "set",
+    "name": "label",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Leaflet.Symbology.js~Symbology#label",
+    "access": null,
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 128,
+    "kind": "get",
+    "name": "defaults",
+    "memberof": "src/Leaflet.Symbology.js~Symbology",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Leaflet.Symbology.js~Symbology#defaults",
+    "access": null,
+    "description": null,
+    "lineNumber": 23,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 129,
+    "kind": "file",
+    "name": "src/components/LeafletTOC.js",
+    "content": "",
+    "static": true,
+    "longname": "src/components/LeafletTOC.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 130,
+    "kind": "file",
+    "name": "src/components/MapSymbol.js",
+    "content": "",
+    "static": true,
+    "longname": "src/components/MapSymbol.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 131,
+    "kind": "file",
+    "name": "src/components/MapSymbology.js",
+    "content": "",
+    "static": true,
+    "longname": "src/components/MapSymbology.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 132,
+    "kind": "file",
+    "name": "src/components/NestedLayer.js",
+    "content": "",
+    "static": true,
+    "longname": "src/components/NestedLayer.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 133,
     "kind": "file",
     "name": "src/index.js",
     "content": "import L from 'leaflet-headless';\nimport NestedLayer from './Leaflet.NestedLayer';\nimport LayerHierarchy from './Leaflet.LayerHierarchy';\nimport MapServerParser from './Leaflet.LayerHierarchy.MapServerParser';\nimport NestedLayers from './Leaflet.Control.NestedLayers';\n\nlet exports = {\n  NestedLayer,\n  LayerHierarchy,\n  MapServerParser,\n  NestedLayers\n}\n\nif (typeof window !== 'undefined' && typeof L !== 'undefined') {\n  L.NestedLayer = exports.NestedLayer;\n  L.LayerHierarchy = exports.LayerHierarchy;\n  L.MapServerParser = exports.MapServerParser;\n  L.Control.NestedLayers = exports.NestedLayers;\n\n  L.nestedLayer = function nestedLayer(options) {\n    return new exports.NestedLayer(options);\n  };\n  L.layerHierarchy = function layerHierarchy(options) {\n    return new exports.LayerHierarchy(options);\n  };\n  L.mapServerParser = function mapServerParser(url, map, options) {\n    return new exports.MapServerParser(url, map, options);\n  };\n  L.control.nestedLayers = function nestedLayers(hierarchy, element, options) {\n    return new exports.NestedLayers(hierarchy, element, options);\n  };\n}\n\nmodule.exports = exports;\n",
@@ -3187,7 +3452,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 121,
+    "__docId__": 134,
     "kind": "variable",
     "name": "exports",
     "memberof": "src/index.js",
@@ -3213,7 +3478,7 @@
     }
   },
   {
-    "__docId__": 123,
+    "__docId__": 136,
     "kind": "external",
     "name": "Infinity",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
@@ -3225,7 +3490,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 137,
     "kind": "external",
     "name": "NaN",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
@@ -3237,7 +3502,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 138,
     "kind": "external",
     "name": "undefined",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
@@ -3249,7 +3514,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 139,
     "kind": "external",
     "name": "null",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
@@ -3261,7 +3526,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 140,
     "kind": "external",
     "name": "Object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -3273,7 +3538,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 141,
     "kind": "external",
     "name": "object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -3285,7 +3550,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 142,
     "kind": "external",
     "name": "Function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -3297,7 +3562,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 143,
     "kind": "external",
     "name": "function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -3309,7 +3574,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 144,
     "kind": "external",
     "name": "Boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -3321,7 +3586,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 145,
     "kind": "external",
     "name": "boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -3333,7 +3598,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 146,
     "kind": "external",
     "name": "Symbol",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
@@ -3345,7 +3610,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 147,
     "kind": "external",
     "name": "Error",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
@@ -3357,7 +3622,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 148,
     "kind": "external",
     "name": "EvalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
@@ -3369,7 +3634,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 149,
     "kind": "external",
     "name": "InternalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
@@ -3381,7 +3646,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 150,
     "kind": "external",
     "name": "RangeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
@@ -3393,7 +3658,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 151,
     "kind": "external",
     "name": "ReferenceError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
@@ -3405,7 +3670,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 139,
+    "__docId__": 152,
     "kind": "external",
     "name": "SyntaxError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
@@ -3417,7 +3682,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 153,
     "kind": "external",
     "name": "TypeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
@@ -3429,7 +3694,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 154,
     "kind": "external",
     "name": "URIError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
@@ -3441,7 +3706,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 155,
     "kind": "external",
     "name": "Number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -3453,7 +3718,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 156,
     "kind": "external",
     "name": "number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -3465,7 +3730,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 157,
     "kind": "external",
     "name": "Date",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
@@ -3477,7 +3742,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 158,
     "kind": "external",
     "name": "String",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -3489,7 +3754,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 159,
     "kind": "external",
     "name": "string",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -3501,7 +3766,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 160,
     "kind": "external",
     "name": "RegExp",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
@@ -3513,7 +3778,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 148,
+    "__docId__": 161,
     "kind": "external",
     "name": "Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
@@ -3525,7 +3790,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 149,
+    "__docId__": 162,
     "kind": "external",
     "name": "Int8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
@@ -3537,7 +3802,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 150,
+    "__docId__": 163,
     "kind": "external",
     "name": "Uint8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
@@ -3549,7 +3814,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 151,
+    "__docId__": 164,
     "kind": "external",
     "name": "Uint8ClampedArray",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
@@ -3561,7 +3826,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 152,
+    "__docId__": 165,
     "kind": "external",
     "name": "Int16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
@@ -3573,7 +3838,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 153,
+    "__docId__": 166,
     "kind": "external",
     "name": "Uint16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
@@ -3585,7 +3850,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 154,
+    "__docId__": 167,
     "kind": "external",
     "name": "Int32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
@@ -3597,7 +3862,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 155,
+    "__docId__": 168,
     "kind": "external",
     "name": "Uint32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
@@ -3609,7 +3874,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 156,
+    "__docId__": 169,
     "kind": "external",
     "name": "Float32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
@@ -3621,7 +3886,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 157,
+    "__docId__": 170,
     "kind": "external",
     "name": "Float64Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
@@ -3633,7 +3898,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 158,
+    "__docId__": 171,
     "kind": "external",
     "name": "Map",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
@@ -3645,7 +3910,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 159,
+    "__docId__": 172,
     "kind": "external",
     "name": "Set",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -3657,7 +3922,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 160,
+    "__docId__": 173,
     "kind": "external",
     "name": "WeakMap",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
@@ -3669,7 +3934,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 161,
+    "__docId__": 174,
     "kind": "external",
     "name": "WeakSet",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
@@ -3681,7 +3946,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 162,
+    "__docId__": 175,
     "kind": "external",
     "name": "ArrayBuffer",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
@@ -3693,7 +3958,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 163,
+    "__docId__": 176,
     "kind": "external",
     "name": "DataView",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
@@ -3705,7 +3970,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 164,
+    "__docId__": 177,
     "kind": "external",
     "name": "JSON",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
@@ -3717,7 +3982,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 165,
+    "__docId__": 178,
     "kind": "external",
     "name": "Promise",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
@@ -3729,7 +3994,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 166,
+    "__docId__": 179,
     "kind": "external",
     "name": "Generator",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
@@ -3741,7 +4006,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 167,
+    "__docId__": 180,
     "kind": "external",
     "name": "GeneratorFunction",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
@@ -3753,7 +4018,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 168,
+    "__docId__": 181,
     "kind": "external",
     "name": "Reflect",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
@@ -3765,7 +4030,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 169,
+    "__docId__": 182,
     "kind": "external",
     "name": "Proxy",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
@@ -3778,7 +4043,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 171,
+    "__docId__": 184,
     "kind": "external",
     "name": "CanvasRenderingContext2D",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
@@ -3790,7 +4055,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 172,
+    "__docId__": 185,
     "kind": "external",
     "name": "DocumentFragment",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
@@ -3802,7 +4067,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 173,
+    "__docId__": 186,
     "kind": "external",
     "name": "Element",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
@@ -3814,7 +4079,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 174,
+    "__docId__": 187,
     "kind": "external",
     "name": "Event",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
@@ -3826,7 +4091,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 175,
+    "__docId__": 188,
     "kind": "external",
     "name": "Node",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
@@ -3838,7 +4103,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 176,
+    "__docId__": 189,
     "kind": "external",
     "name": "NodeList",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
@@ -3850,7 +4115,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 177,
+    "__docId__": 190,
     "kind": "external",
     "name": "XMLHttpRequest",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
@@ -3862,7 +4127,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 178,
+    "__docId__": 191,
     "kind": "external",
     "name": "AudioContext",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
@@ -3875,7 +4140,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 179,
+    "__docId__": 192,
     "kind": "testFile",
     "name": "test/Leaflet.Control.NestedLayers.spec.js",
     "content": "/*global describe, expect, it, beforeEach*/\nimport NestedLayers from './../src/Leaflet.Control.NestedLayers';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\nimport jsdom from 'jsdom';\n\ndescribe( 'NestedLayers', () => {\n\n  let control, h, el;\n  const { JSDOM } = jsdom;\n\n  beforeEach(() => {\n    h = new LayerHierarchy();\n    el = JSDOM.fragment('<div id=\"test-element\"></div>');\n    control = new NestedLayers(h, el);\n  });\n\n  afterEach(() => {\n    control.detach();\n  });\n\n  it('should have required arguments on construction', () => {\n    expect(() => {\n      let invalidControl = new NestedLayers(undefined, undefined);\n    }).to.throw();\n    expect(() => {\n      let invalidControl = new NestedLayers(undefined, el);\n    }).to.throw('hierarchy');\n    expect(() => {\n      let invalidControl = new NestedLayers(h, undefined);\n    }).to.throw('element');\n  });\n\n  it('should have default (configuration) options', () => {\n    // expect(control.options).to.be.an('object').that.is.not.empty;\n    expect(control.options).to.have.all.keys([\n      'followAncestorVisibility',\n      'followAncestorMutability',\n      'propogateDeselectToChildren'\n    ]);\n  });\n\n\n\n  // it('should have better tests written', () => {\n  //   let betterTestsWritten = false;\n  //   expect(betterTestsWritten).to.be.true;\n  // });\n\n} );\n",
@@ -3886,7 +4151,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 180,
+    "__docId__": 193,
     "kind": "testDescribe",
     "name": "describe0",
     "testId": 0,
@@ -3899,7 +4164,7 @@
     "lineNumber": 7
   },
   {
-    "__docId__": 181,
+    "__docId__": 194,
     "kind": "testIt",
     "name": "it1",
     "testId": 1,
@@ -3912,7 +4177,7 @@
     "lineNumber": 22
   },
   {
-    "__docId__": 182,
+    "__docId__": 195,
     "kind": "testIt",
     "name": "it2",
     "testId": 2,
@@ -3925,10 +4190,10 @@
     "lineNumber": 34
   },
   {
-    "__docId__": 183,
+    "__docId__": 196,
     "kind": "testFile",
     "name": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js",
-    "content": "/*global describe, expect, it, beforeEach*/\n// this package must be imported before MapServerParser\n// MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when\n// run in a headless environment\nimport 'leaflet-headless';\n\nimport MapServerParser from './../src/Leaflet.LayerHierarchy.MapServerParser';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\nimport Promise from 'bluebird';\nimport { Map } from 'leaflet-headless';\n\n// import chalk from 'chalk';\nimport sinon from 'sinon';\n\ndescribe( 'MapServerParser', () => {\n\n  let url, map, options, parser;\n  before( () => {\n    // setup fixture data\n    url = 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer';\n    // stubbing Leaflet's Map prevents us from actually calling the Map constructor, which would require\n    // a HTMLElement to use; getting JSDOM to work with Map is more trouble that it's worth\n    // however, checks like `map instanceof Map` still pass with the stub\n    map = sinon.createStubInstance(Map);\n    options = {\n      data: {\n        scale: false,\n        defaultVisibility: false,\n        swatch: true\n      },\n      hierarchyOptions: {\n        followAncestorVisibility: false,\n        propogateDeselectToChildren: true,\n        followAncestorMutability: false\n      }\n    };\n    parser = new MapServerParser(url, map, options);\n  } );\n\n  describe('#url', () => {\n    it('should be able to get the MapServer url', () => {\n      expect(parser.url).to.be.a('string').that.has.string(url);\n    });\n  })\n\n  describe('#map', () => {\n    it('should be able to get the Leaflet map object', () => {\n      expect(parser.map).to.be.an.instanceof(Map).and.to.equal(map);\n    });\n  })\n\n  describe('#options', () => {\n    it('should be able to get configuration options', () => {\n      expect(parser.options).to.be.an('object').that.has.all.deep.keys(options);\n    })\n  })\n\n  describe('#defaults', () => {\n    it('should have default configuration options accessible always', () => {\n      expect(parser.defaults).to.be.an('object').that.has.all.deep.keys(options);\n    })\n  })\n\n  describe('#constructor', () => {\n    it('should throw errors if required arguments are missing', () => {\n      expect(() => {\n        let p = new MapServerParser();\n      }).to.throw();\n      expect(() => {\n        let p = new MapServerParser(undefined, map, options);\n      }).to.throw('URL');\n      expect(() => {\n        let p = new MapServerParser(url, undefined, options);\n      }).to.throw('map');\n    });\n\n    it('should have default (configuration) options', () => {\n      // create a new parser without any options passed\n      // so we can assert that it uses default options of some sort\n      let p = new MapServerParser(url, map);\n      expect(p.options).to.be.an('object').that.has.all.deep.keys(options)\n    });\n\n    it('should merge options with defaults', () => {\n      const o = { data: { scale: false } };\n      let p = new MapServerParser(url, map, o);\n      expect(p.options).to.be.an('object').that.has.all.deep.keys(options);\n      expect(p.options.data.scale).to.be.false;\n      expect(p.options.data.defaultVisibility).to.exist.and.to.equal(p.defaults.data.defaultVisibility);\n    });\n  })\n\n  describe('#parse', () => {\n\n    let promise;\n    before(() => {\n      promise = parser.parse();\n    });\n\n    it('should return a promise', () => {\n      expect(promise).to.be.an.instanceof(Promise);\n    });\n\n    it('should resolve the promise', () => {\n      return expect(promise).to.be.fulfilled;\n    });\n\n    it.skip('should resolve the promise with a LayerHierarchy', () => {\n      return expect(promise).to.eventually.be.an.instanceof(LayerHierarchy);\n    });\n  })\n\n  describe('#_queryLayers', () => {\n    it('should return a promise', () => {\n      expect(parser._queryLayers()).to.be.an.instanceof(Promise);\n    });\n  })\n\n  describe('#_queryLegend', () => {\n    it('should return a promise', () => {\n      expect(parser._queryLayers()).to.be.an.instanceof(Promise);\n    });\n  })\n\n  describe('._makeLayerURL', () => {\n    it('should require valid parameters', () => {\n      expect(function noParams() {\n        MapServerParser._makeLayerURL()\n      }).to.throw();\n      expect(function missingURL() {\n        MapServerParser._makeLayerURL(undefined, 0)\n      }).to.throw('URL');\n      expect(function invalidURLType() {\n        MapServerParser._makeLayerURL({}, 0)\n      }).to.throw('URL');\n      expect(function missingID() {\n        MapServerParser._makeLayerURL('foo', undefined);\n      }).to.throw('ID');\n      expect(function invalidIDType() {\n        MapServerParser._makeLayerURL('foo', {});\n      }).to.throw('ID');\n    });\n\n    it('should make valid URLs', () => {\n      const fixture1 = {\n        base: 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer',\n        id: 0,\n        result: 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer/0'\n      };\n      const fixture2 = {\n        base: 'MapServer',\n        id: 42,\n        result: 'MapServer/42'\n      }\n\n      expect(MapServerParser._makeLayerURL(fixture1.base, fixture1.id)).to.equal(fixture1.result);\n      expect(MapServerParser._makeLayerURL(fixture2.base, fixture2.id)).to.equal(fixture2.result);\n    });\n  })\n\n\n} );\n",
+    "content": "/*global describe, expect, it, beforeEach*/\n// this package must be imported before MapServerParser for testing purposes\n// MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when\n// run in a headless environment\nimport 'leaflet-headless';\n\nimport MapServerParser from './../src/Leaflet.LayerHierarchy.MapServerParser';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\nimport Promise from 'bluebird';\nimport { Map } from 'leaflet-headless';\n\n// import chalk from 'chalk';\nimport sinon from 'sinon';\n\ndescribe( 'MapServerParser', () => {\n\n  let url, map, options, parser;\n  before( () => {\n    // setup fixture data\n    url = 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer';\n    // stubbing Leaflet's Map prevents us from actually calling the Map constructor, which would require\n    // a HTMLElement to use; getting JSDOM to work with Map is more trouble that it's worth\n    // however, checks like `map instanceof Map` still pass with the stub\n    map = sinon.createStubInstance(Map);\n    options = {\n      data: {\n        scale: false,\n        defaultVisibility: false,\n        swatch: true\n      },\n      hierarchyOptions: {\n        followAncestorVisibility: false,\n        propogateDeselectToChildren: true,\n        followAncestorMutability: false\n      }\n    };\n    parser = new MapServerParser(url, map, options);\n  } );\n\n  describe('#url', () => {\n    it('should be able to get the MapServer url', () => {\n      expect(parser.url).to.be.a('string').that.has.string(url);\n    });\n  })\n\n  describe('#map', () => {\n    it('should be able to get the Leaflet map object', () => {\n      expect(parser.map).to.be.an.instanceof(Map).and.to.equal(map);\n    });\n  })\n\n  describe('#options', () => {\n    it('should be able to get configuration options', () => {\n      expect(parser.options).to.be.an('object').that.has.all.deep.keys(options);\n    })\n  })\n\n  describe('#defaults', () => {\n    it('should have default configuration options accessible always', () => {\n      expect(parser.defaults).to.be.an('object').that.has.all.deep.keys(options);\n    })\n  })\n\n  describe('#constructor', () => {\n    it('should throw errors if required arguments are missing', () => {\n      expect(() => {\n        let p = new MapServerParser();\n      }).to.throw();\n      expect(() => {\n        let p = new MapServerParser(undefined, map, options);\n      }).to.throw('URL');\n      expect(() => {\n        let p = new MapServerParser(url, undefined, options);\n      }).to.throw('map');\n    });\n\n    it('should have default (configuration) options', () => {\n      // create a new parser without any options passed\n      // so we can assert that it uses default options of some sort\n      let p = new MapServerParser(url, map);\n      expect(p.options).to.be.an('object').that.has.all.deep.keys(options)\n    });\n\n    it('should merge options with defaults', () => {\n      const o = { data: { scale: false } };\n      let p = new MapServerParser(url, map, o);\n      expect(p.options).to.be.an('object').that.has.all.deep.keys(options);\n      expect(p.options.data.scale).to.be.false;\n      expect(p.options.data.defaultVisibility).to.exist.and.to.equal(p.defaults.data.defaultVisibility);\n    });\n  })\n\n  describe('#parse', () => {\n\n    let promise;\n    before(() => {\n      promise = parser.parse();\n    });\n\n    it('should return a promise', () => {\n      expect(promise).to.be.an.instanceof(Promise);\n    });\n\n    it('should resolve the promise', () => {\n      return expect(promise).to.be.fulfilled;\n    });\n\n    it.skip('should resolve the promise with a LayerHierarchy', () => {\n      return expect(promise).to.eventually.be.an.instanceof(LayerHierarchy);\n    });\n  })\n\n  describe('#_queryLayers', () => {\n    it('should return a promise', () => {\n      expect(parser._queryLayers()).to.be.an.instanceof(Promise);\n    });\n  })\n\n  describe('#_queryLegend', () => {\n    it('should return a promise', () => {\n      expect(parser._queryLayers()).to.be.an.instanceof(Promise);\n    });\n  })\n\n  describe('._makeLayerURL', () => {\n    it('should require valid parameters', () => {\n      expect(function noParams() {\n        MapServerParser._makeLayerURL()\n      }).to.throw();\n      expect(function missingURL() {\n        MapServerParser._makeLayerURL(undefined, 0)\n      }).to.throw('URL');\n      expect(function invalidURLType() {\n        MapServerParser._makeLayerURL({}, 0)\n      }).to.throw('URL');\n      expect(function missingID() {\n        MapServerParser._makeLayerURL('foo', undefined);\n      }).to.throw('ID');\n      expect(function invalidIDType() {\n        MapServerParser._makeLayerURL('foo', {});\n      }).to.throw('ID');\n    });\n\n    it('should make valid URLs', () => {\n      const fixture1 = {\n        base: 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer',\n        id: 0,\n        result: 'https://gis.worldviewsolutions.com/arcgis/rest/services/accomack/public/MapServer/0'\n      };\n      const fixture2 = {\n        base: 'MapServer',\n        id: 42,\n        result: 'MapServer/42'\n      }\n\n      expect(MapServerParser._makeLayerURL(fixture1.base, fixture1.id)).to.equal(fixture1.result);\n      expect(MapServerParser._makeLayerURL(fixture2.base, fixture2.id)).to.equal(fixture2.result);\n    });\n  })\n\n  describe('#_convertLayerNodeToNestedLayer)', () => {\n      // fixture node data\n    let node = {\"currentVersion\":10.31,\"id\":26,\"name\":\"County Resources\",\"type\":\"Group Layer\",\"description\":\"\",\"geometryType\":null,\"copyrightText\":\"\",\"parentLayer\":null,\"subLayers\":[{\"id\":27,\"name\":\"Fire and Rescue Stations\"},{\"id\":28,\"name\":\"Fire Response\"},{\"id\":29,\"name\":\"Rescue Response\"},{\"id\":30,\"name\":\"Fire Districts\"},{\"id\":31,\"name\":\"Rescue Districts\"},{\"id\":32,\"name\":\"County Administration Building\"},{\"id\":33,\"name\":\"Airports\"},{\"id\":34,\"name\":\"Schools\"},{\"id\":35,\"name\":\"Solid Waste Disposal Facilities\"},{\"id\":36,\"name\":\"Boating Public Access Sites\"},{\"id\":37,\"name\":\"Polling Places\"}],\"minScale\":0,\"maxScale\":0,\"defaultVisibility\":true,\"extent\":{\"xmin\":-8465355.1356,\"ymin\":4501816.1559,\"xmax\":-8375617.3878,\"ymax\":4583811.349899999,\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"hasAttachments\":false,\"htmlPopupType\":\"esriServerHTMLPopupTypeNone\",\"displayField\":\"\",\"typeIdField\":null,\"fields\":null,\"relationships\":[],\"canModifyLayer\":false,\"canScaleSymbols\":false,\"hasLabels\":false,\"capabilities\":\"Map,Query\",\"supportsStatistics\":false,\"supportsAdvancedQueries\":false,\"supportedQueryFormats\":\"JSON, AMF\",\"ownershipBasedAccessControlForFeatures\":{\"allowOthersToQuery\":true},\"useStandardizedQueries\":true,\"advancedQueryCapabilities\":{\"useStandardizedQueries\":true,\"supportsStatistics\":false,\"supportsOrderBy\":false,\"supportsDistinct\":false,\"supportsPagination\":false,\"supportsTrueCurve\":true,\"supportsReturningQueryExtent\":true,\"supportsQueryWithDistance\":true}};\n    const fakeLegend = [];\n\n    it('should trim whitespace around a layer name', () => {\n      node.name = '  TEST  \\t\\n';\n      let l = parser._convertLayerNodeToNestedLayer(node, fakeLegend);\n      expect(l.name).to.equal('TEST');\n    });\n  })\n\n} );\n",
     "static": true,
     "longname": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js",
     "access": null,
@@ -3936,7 +4201,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 184,
+    "__docId__": 197,
     "kind": "testDescribe",
     "name": "describe3",
     "testId": 3,
@@ -3949,7 +4214,7 @@
     "lineNumber": 16
   },
   {
-    "__docId__": 185,
+    "__docId__": 198,
     "kind": "testDescribe",
     "name": "describe4",
     "testId": 4,
@@ -3962,7 +4227,7 @@
     "lineNumber": 41
   },
   {
-    "__docId__": 186,
+    "__docId__": 199,
     "kind": "testIt",
     "name": "it5",
     "testId": 5,
@@ -3975,7 +4240,7 @@
     "lineNumber": 42
   },
   {
-    "__docId__": 187,
+    "__docId__": 200,
     "kind": "testDescribe",
     "name": "describe6",
     "testId": 6,
@@ -3988,7 +4253,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 188,
+    "__docId__": 201,
     "kind": "testIt",
     "name": "it7",
     "testId": 7,
@@ -4001,7 +4266,7 @@
     "lineNumber": 48
   },
   {
-    "__docId__": 189,
+    "__docId__": 202,
     "kind": "testDescribe",
     "name": "describe8",
     "testId": 8,
@@ -4014,7 +4279,7 @@
     "lineNumber": 53
   },
   {
-    "__docId__": 190,
+    "__docId__": 203,
     "kind": "testIt",
     "name": "it9",
     "testId": 9,
@@ -4027,7 +4292,7 @@
     "lineNumber": 54
   },
   {
-    "__docId__": 191,
+    "__docId__": 204,
     "kind": "testDescribe",
     "name": "describe10",
     "testId": 10,
@@ -4040,7 +4305,7 @@
     "lineNumber": 59
   },
   {
-    "__docId__": 192,
+    "__docId__": 205,
     "kind": "testIt",
     "name": "it11",
     "testId": 11,
@@ -4053,7 +4318,7 @@
     "lineNumber": 60
   },
   {
-    "__docId__": 193,
+    "__docId__": 206,
     "kind": "testDescribe",
     "name": "describe12",
     "testId": 12,
@@ -4066,7 +4331,7 @@
     "lineNumber": 65
   },
   {
-    "__docId__": 194,
+    "__docId__": 207,
     "kind": "testIt",
     "name": "it13",
     "testId": 13,
@@ -4079,7 +4344,7 @@
     "lineNumber": 66
   },
   {
-    "__docId__": 195,
+    "__docId__": 208,
     "kind": "testIt",
     "name": "it14",
     "testId": 14,
@@ -4092,7 +4357,7 @@
     "lineNumber": 78
   },
   {
-    "__docId__": 196,
+    "__docId__": 209,
     "kind": "testIt",
     "name": "it15",
     "testId": 15,
@@ -4105,7 +4370,7 @@
     "lineNumber": 85
   },
   {
-    "__docId__": 197,
+    "__docId__": 210,
     "kind": "testDescribe",
     "name": "describe16",
     "testId": 16,
@@ -4118,7 +4383,7 @@
     "lineNumber": 94
   },
   {
-    "__docId__": 198,
+    "__docId__": 211,
     "kind": "testIt",
     "name": "it17",
     "testId": 17,
@@ -4131,7 +4396,7 @@
     "lineNumber": 101
   },
   {
-    "__docId__": 199,
+    "__docId__": 212,
     "kind": "testIt",
     "name": "it18",
     "testId": 18,
@@ -4144,7 +4409,7 @@
     "lineNumber": 105
   },
   {
-    "__docId__": 200,
+    "__docId__": 213,
     "kind": "testDescribe",
     "name": "describe19",
     "testId": 19,
@@ -4157,7 +4422,7 @@
     "lineNumber": 114
   },
   {
-    "__docId__": 201,
+    "__docId__": 214,
     "kind": "testIt",
     "name": "it20",
     "testId": 20,
@@ -4170,7 +4435,7 @@
     "lineNumber": 115
   },
   {
-    "__docId__": 202,
+    "__docId__": 215,
     "kind": "testDescribe",
     "name": "describe21",
     "testId": 21,
@@ -4183,7 +4448,7 @@
     "lineNumber": 120
   },
   {
-    "__docId__": 203,
+    "__docId__": 216,
     "kind": "testIt",
     "name": "it22",
     "testId": 22,
@@ -4196,7 +4461,7 @@
     "lineNumber": 121
   },
   {
-    "__docId__": 204,
+    "__docId__": 217,
     "kind": "testDescribe",
     "name": "describe23",
     "testId": 23,
@@ -4209,7 +4474,7 @@
     "lineNumber": 126
   },
   {
-    "__docId__": 205,
+    "__docId__": 218,
     "kind": "testIt",
     "name": "it24",
     "testId": 24,
@@ -4222,7 +4487,7 @@
     "lineNumber": 127
   },
   {
-    "__docId__": 206,
+    "__docId__": 219,
     "kind": "testIt",
     "name": "it25",
     "testId": 25,
@@ -4235,7 +4500,33 @@
     "lineNumber": 145
   },
   {
-    "__docId__": 207,
+    "__docId__": 220,
+    "kind": "testDescribe",
+    "name": "describe26",
+    "testId": 26,
+    "memberof": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js~describe3",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js~describe3.describe26",
+    "access": null,
+    "description": "#_convertLayerNodeToNestedLayer)",
+    "lineNumber": 162
+  },
+  {
+    "__docId__": 221,
+    "kind": "testIt",
+    "name": "it27",
+    "testId": 27,
+    "memberof": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js~describe3.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "test/Leaflet.LayerHierarchy.MapServerParser.spec.js~describe3.describe26.it27",
+    "access": null,
+    "description": "should trim whitespace around a layer name",
+    "lineNumber": 167
+  },
+  {
+    "__docId__": 222,
     "kind": "testFile",
     "name": "test/Leaflet.LayerHierarchy.spec.js",
     "content": "/*global describe, expect, it, beforeEach*/\nimport NestedLayer from './../src/Leaflet.NestedLayer';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\ndescribe( 'LayerHierarchy', () => {\n\n  function stubLayer(id) {\n    return {\n      id,\n      addTo: function() {},\n      removeFrom: function() {},\n      remove: function() {},\n      on: function() {}\n    }\n  }\n\n  let h, layers, l, layerData, ownedLayer,\n      l0,     l1,     l2,     l3,     l4,\n      layer0, layer1, layer2, layer3, layer4;\n  beforeEach( () => {\n    layerData = {\n      id: 999,\n      name: 'Layer 999',\n      layer: stubLayer(999),\n      map: {}\n    };\n    l = new NestedLayer(layerData);\n\n    l2 = {\n      id: 2,\n      name: 'Layer 2',\n      layer: stubLayer(2),\n      map: {},\n      children: []\n    };\n    l3 = {\n      id: 3,\n      name: 'Layer 3',\n      layer: stubLayer(3),\n      map: {},\n      children: []\n    }\n    layer2 = new NestedLayer(l2);\n    layer3 = new NestedLayer(l3);\n\n    l1 = {\n      id: 1,\n      name: 'Layer 1',\n      layer: stubLayer(1),\n      map: {},\n      children: [layer2, layer3]\n    }\n    layer1 = new NestedLayer(l1);\n\n    l0 = {\n      id: 0,\n      name: 'Layer 0',\n      layer: stubLayer(0),\n      map: {},\n      children: [layer1]\n    }\n    layer0 = new NestedLayer(l0);\n\n    l4 = {\n      id: 4,\n      name: 'Layer 4',\n      layer: stubLayer(4),\n      map: {},\n      children: []\n    }\n    layer4 = new NestedLayer(l4);\n\n    layers = [layer0, layer4];\n    h = new LayerHierarchy({layers});\n\n    ownedLayer = h.makeLayer(layerData);\n  } );\n\n  it('should have default (configuration) options', () => {\n    // expect(control.options).to.be.an('object').that.is.not.empty;\n    expect(h.options).to.have.all.keys([\n      'followAncestorVisibility',\n      'followAncestorMutability',\n      'propogateDeselectToChildren'\n    ]);\n  });\n\n  it('should be able to make layers with a factory method', () => {\n    expect(ownedLayer).to.be.an.instanceOf(NestedLayer);\n  });\n\n  it('should be able own layers', () => {\n    expect(ownedLayer.owner).to.equal(h);\n    expect(ownedLayer.isOwnedBy(h)).to.be.true;\n\n    const nonOwner = {};\n    expect(ownedLayer.owner).to.not.equal(nonOwner);\n    expect(ownedLayer.isOwnedBy(nonOwner)).to.be.false;\n  });\n\n  it('should be able to check if it owns a layer', () => {\n    expect(h.ownsLayer(ownedLayer)).to.be.true;\n\n    const nonOwner = new LayerHierarchy();\n    expect(nonOwner.ownsLayer(ownedLayer)).to.be.false;\n  });\n\n  it('should be able to get layers by id', () => {\n    expect(h.getLayerByID(0), 'hierarchy getLayerByID').to.equal(layer0);\n    expect(h.getLayerByID(1), 'hierarchy getLayerByID').to.equal(layer1);\n    expect(h.getLayerByID(2), 'hierarchy getLayerByID').to.equal(layer2);\n    expect(h.getLayerByID(3), 'hierarchy getLayerByID').to.equal(layer3);\n    expect(h.getLayerByID(4), 'hierarchy getLayerByID').to.equal(layer4);\n  });\n\n  it('should not be able to add non-NestedLayer layers', () => {\n    const badLayer = {};\n    expect(() => {\n      h.addLayer(badLayer);\n    }).to.throw(TypeError, 'NestedLayer');\n  });\n\n  it('should be able to add layers at the root level', () => {\n    expect(() => {\n      h.addLayer(l);\n    }).to.not.throw();\n\n    expect(h.getLayerByID(l.id)).to.equal(l);\n    expect(h._layers).to.include(l);\n  });\n\n  it('should be able to add layers below the root level to other layers', () => {\n    expect(() => {\n      h.addLayer(l, layer0.id)\n    }).to.not.throw();\n\n    expect(h.getLayerByID(l.id)).to.equal(l);\n    expect(layer0.children).to.include(l);\n  });\n\n  it('should ensure that layers it adds at the root level are owned by it', () => {\n    h.addLayer(l);\n    expect(l.isOwnedBy(h)).to.be.true;\n  });\n\n  it('should ensure that layers it adds below the root level are owned by it', () => {\n    h.addLayer(l, layer0.id)\n    expect(l.isOwnedBy(h)).to.be.true;\n  });\n\n  it('should own all layers it was created with', () => {\n    expect(layer0.isOwnedBy(h)).to.be.true;\n    // expect(layer1.isOwnedBy(h)).to.be.true;\n    // expect(layer2.isOwnedBy(h)).to.be.true;\n    // expect(layer3.isOwnedBy(h)).to.be.true;\n    // expect(layer4.isOwnedBy(h)).to.be.true;\n  })\n\n  it('should have valid enabled states upon creation', () => {\n    // use a customized subset of the fixtures for this test\n    // layers 1 and 2 are enabled and children of layer 0, which is disabled\n    // layer 3 is enabled and a child of layer 2\n    // layer 4 is disabled and a child of layer 2\n    // at the start of the test\n    l3.enabled = true;\n    layer3 = new NestedLayer(l3);\n    l4.enabled = false;\n    layer4 = new NestedLayer(l4);\n    l1.children = [];\n    l2.children = [layer3, layer4];\n    l1.enabled = l2.enabled = true;\n    layer1 = new NestedLayer(l1);\n    layer2 = new NestedLayer(l2);\n    l0.children = [layer1, layer2];\n    l0.enabled = false;\n    layer0 = new NestedLayer(l0);\n    layers = [layer0];\n    let hierarchy = new LayerHierarchy({layers});\n\n    // the constructor should have validated the enabled state of all the layers\n    // layers 1 and 2 shoud now be disabled\n\n    expect(layer1.disabled).to.be.true;\n    expect(layer2.disabled).to.be.true;\n    expect(layer3.disabled).to.be.true;\n    expect(layer4.disabled).to.be.true;\n  });\n\n} );\n",
@@ -4246,179 +4537,179 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 208,
+    "__docId__": 223,
     "kind": "testDescribe",
-    "name": "describe26",
-    "testId": 26,
+    "name": "describe28",
+    "testId": 28,
     "memberof": "test/Leaflet.LayerHierarchy.spec.js",
     "testDepth": 0,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "access": null,
     "description": "LayerHierarchy",
     "lineNumber": 5
   },
   {
-    "__docId__": 209,
+    "__docId__": 224,
     "kind": "testIt",
-    "name": "it27",
-    "testId": 27,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it29",
+    "testId": 29,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it27",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it29",
     "access": null,
     "description": "should have default (configuration) options",
     "lineNumber": 79
   },
   {
-    "__docId__": 210,
+    "__docId__": 225,
     "kind": "testIt",
-    "name": "it28",
-    "testId": 28,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it30",
+    "testId": 30,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it28",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it30",
     "access": null,
     "description": "should be able to make layers with a factory method",
     "lineNumber": 88
   },
   {
-    "__docId__": 211,
+    "__docId__": 226,
     "kind": "testIt",
-    "name": "it29",
-    "testId": 29,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it31",
+    "testId": 31,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it29",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it31",
     "access": null,
     "description": "should be able own layers",
     "lineNumber": 92
   },
   {
-    "__docId__": 212,
+    "__docId__": 227,
     "kind": "testIt",
-    "name": "it30",
-    "testId": 30,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it32",
+    "testId": 32,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it30",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it32",
     "access": null,
     "description": "should be able to check if it owns a layer",
     "lineNumber": 101
   },
   {
-    "__docId__": 213,
+    "__docId__": 228,
     "kind": "testIt",
-    "name": "it31",
-    "testId": 31,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it33",
+    "testId": 33,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it31",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it33",
     "access": null,
     "description": "should be able to get layers by id",
     "lineNumber": 108
   },
   {
-    "__docId__": 214,
+    "__docId__": 229,
     "kind": "testIt",
-    "name": "it32",
-    "testId": 32,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it34",
+    "testId": 34,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it32",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it34",
     "access": null,
     "description": "should not be able to add non-NestedLayer layers",
     "lineNumber": 116
   },
   {
-    "__docId__": 215,
+    "__docId__": 230,
     "kind": "testIt",
-    "name": "it33",
-    "testId": 33,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it35",
+    "testId": 35,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it33",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it35",
     "access": null,
     "description": "should be able to add layers at the root level",
     "lineNumber": 123
   },
   {
-    "__docId__": 216,
+    "__docId__": 231,
     "kind": "testIt",
-    "name": "it34",
-    "testId": 34,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it36",
+    "testId": 36,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it34",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it36",
     "access": null,
     "description": "should be able to add layers below the root level to other layers",
     "lineNumber": 132
   },
   {
-    "__docId__": 217,
+    "__docId__": 232,
     "kind": "testIt",
-    "name": "it35",
-    "testId": 35,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it37",
+    "testId": 37,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it35",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it37",
     "access": null,
     "description": "should ensure that layers it adds at the root level are owned by it",
     "lineNumber": 141
   },
   {
-    "__docId__": 218,
+    "__docId__": 233,
     "kind": "testIt",
-    "name": "it36",
-    "testId": 36,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it38",
+    "testId": 38,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it36",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it38",
     "access": null,
     "description": "should ensure that layers it adds below the root level are owned by it",
     "lineNumber": 146
   },
   {
-    "__docId__": 219,
+    "__docId__": 234,
     "kind": "testIt",
-    "name": "it37",
-    "testId": 37,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it39",
+    "testId": 39,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it37",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it39",
     "access": null,
     "description": "should own all layers it was created with",
     "lineNumber": 151
   },
   {
-    "__docId__": 220,
+    "__docId__": 235,
     "kind": "testIt",
-    "name": "it38",
-    "testId": 38,
-    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe26",
+    "name": "it40",
+    "testId": 40,
+    "memberof": "test/Leaflet.LayerHierarchy.spec.js~describe28",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe26.it38",
+    "longname": "test/Leaflet.LayerHierarchy.spec.js~describe28.it40",
     "access": null,
     "description": "should have valid enabled states upon creation",
     "lineNumber": 159
   },
   {
-    "__docId__": 221,
+    "__docId__": 236,
     "kind": "testFile",
     "name": "test/Leaflet.NestedLayer.spec.js",
-    "content": "/*global describe, expect, it, beforeEach*/\nimport NestedLayer from './../src/Leaflet.NestedLayer';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\nimport L from 'leaflet-headless';\nimport sinon from 'sinon';\n\ndescribe( 'NestedLayer', () => {\n\n  function stubLayer(id, options) {\n    if (typeof options === 'undefined') {\n      options = {};\n    }\n    return {\n      id,\n      addTo: function() {},\n      removeFrom: function() {},\n      remove: function() {},\n      on: function() {},\n      minZoom: options.minZoom,\n      maxZoom: options.maxZoom\n    }\n  }\n\n  // layer1 and layer2 are both children of layer0\n  // l is for testing other non-nested layer features\n  let l, l0, l1, l2, layer0, layer1, layer2,\n      layerAddSpy, layerRemoveSpy;\n\n  beforeEach(() => {\n    l = new NestedLayer({\n      id: 999,\n      name: 'Layer 999',\n      layer: stubLayer(999),\n      map: {},\n      enabled: true,\n      selected: false\n    });\n\n    l1 = {\n      id: 1,\n      name: 'Layer 1',\n      layer: stubLayer(1),\n      map: {},\n      children: []\n    };\n    l2 = {\n      id: 2,\n      name: 'Layer 2',\n      layer: stubLayer(2),\n      map: {},\n      children: []\n    }\n    layer1 = new NestedLayer(l1);\n    layer2 = new NestedLayer(l2);\n\n    l0 = {\n      id: 0,\n      name: 'Layer 0',\n      layer: stubLayer(0),\n      map: {},\n      children: [layer1, layer2]\n    }\n    layer0 = new NestedLayer(l0);\n\n    layerAddSpy = sinon.spy(l.layer, 'addTo');\n    layerRemoveSpy = sinon.spy(l.layer, 'removeFrom');\n  });\n\n  afterEach(() => {\n    l._attach.restore;\n    l._detach.restore;\n  });\n\n  it('should accept props on construction', () => {\n    expect(layer1._props).to.have.property('id');\n    expect(layer1._props).to.have.property('name');\n    expect(layer1._props).to.have.property('layer');\n    expect(layer1._props).to.have.property('children');\n  });\n\n  it('should have defaults for optional arguments in the constructor', () => {\n\n\n    // children\n    expect(l._props).to.have.property('children');\n    expect(l.children).to.be.empty;\n\n    // swatch\n    expect(l._props).to.have.property('swatch');\n    expect(l.swatch).to.equal('');\n\n    // enabled + selected\n    expect(l.enabled).to.be.true;\n    expect(l.selected).to.be.false;\n  });\n\n  it('should throw errors when missing required arguments on construction', () => {\n    expect(function() {\n      new NestedLayer({\n        name: 'Layer 999',\n        layer: {id: 999},\n        map: {}\n      });\n    }).to.throw('ID');\n\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        layer: {id: 999},\n        map: {}\n      });\n    }).to.throw('name');\n\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        name: 'Layer 999',\n        map: {}\n      });\n    }).to.throw('layer object');\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        name: 'Layer 999',\n        layer: {id:999},\n      });\n    }).to.throw('map object');\n  });\n\n  it('should have a name', () => {\n    expect(l.name).to.equal('Layer 999');\n  })\n\n  it('should be selectable', () => {\n    l.select();\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n\n    l.selected = true;\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n  });\n\n  it('should be deselectable', () => {\n    l.deselect();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n\n    l.selected = false;\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n  })\n\n  it('should permit toggling the selected state', () => {\n    l.selected = false;\n    l.toggleSelected();\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n  })\n\n  it('should be enableable', () => {\n    l.enable();\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n\n    l.enabled = true;\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n  });\n\n  it('should be disableable', () => {\n    l.disable();\n    expect(l.enabled).to.be.false;\n    expect(l.disabled).to.be.true;\n\n    l.enabled = false;\n    expect(l.enabled).to.be.false;\n    expect(l.disabled).to.be.true;\n  })\n\n  it('should permit toggling the enabled state', () => {\n    l.enabled = false;\n    l.toggleEnabled();\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n  })\n\n  it('should always be deselected if disabled', () => {\n    l.disable();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n\n    l.select();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n  });\n\n  it('should retain selected state if disabled then re-enabled', () => {\n    l.select();\n    l.disable();\n    expect(l.selected).to.be.false;\n\n    l.enable();\n    expect(l.selected).to.be.true;\n\n    l.deselect();\n    l.disable();\n    expect(l.selected).to.be.false;\n\n    l.enable();\n    expect(l.selected).to.be.false;\n  });\n\n  it('should know who its owner is', () => {\n    expect(l.owner).to.be.undefined;\n\n    const owner = new LayerHierarchy();\n    l.owner = owner;\n    expect(l.owner).to.equal(owner);\n    expect(l.isOwnedBy(owner)).to.be.true;\n\n    const nonOwner = {};\n    expect(l.owner).to.not.equal(nonOwner);\n    expect(l.isOwnedBy(nonOwner)).to.be.false;\n  })\n\n  it('should have access to its owner\\'s configuration properties when owned', () => {\n    // trying to fetch the options of an unowned layer should give null (no options)\n    expect(layer0.options).to.be.null;\n\n    const owner = new LayerHierarchy({ layers: [layer0] });\n    expect(layer0.options).to.have.all.keys([\n      'followAncestorVisibility',\n      'followAncestorMutability',\n      'propogateDeselectToChildren'\n    ]);\n  })\n\n  it('should be able to add valid child layers', () => {\n    expect(layer0.children).to.not.contain(l);\n\n    layer0.addChild(l)\n    expect(layer0.children).to.contain(l);\n\n    // try adding an invalid child layer\n    let notALayer = 42;\n    expect(() => {\n      layer0.addChild(notALayer);\n    }).to.throw(TypeError);\n  });\n\n  it('should know if it has children', () => {\n    expect(layer0.hasChildren).to.be.true;\n    expect(layer1.hasChildren).to.be.false;\n  })\n\n  it('should be able to enable its children', () => {\n    layer2.addChild(l);\n\n    layer1.disable();\n    layer2.disable();\n    l.disable();\n\n    layer0.enableChildren();\n\n    expect(layer1.enabled).to.be.true;\n    expect(layer2.enabled).to.be.true;\n\n    layer1.enable();\n    layer2.enable();\n\n    expect(() => {\n      layer0.enableChildren()\n    }).to.not.throw();\n  })\n\n  it('should be able to disable its children', () => {\n    layer2.addChild(l);\n\n    layer1.enable();\n    layer2.enable();\n    l.enable();\n\n    layer0.disableChildren();\n\n    expect(layer1.disabled).to.be.true;\n    expect(layer2.disabled).to.be.true;\n\n    layer1.disable();\n    layer2.disable();\n\n    expect(() => {\n      layer0.disableChildren()\n    }).to.not.throw();\n  })\n\n  it('should be able to take ownership of all its children', () => {\n    const owner = {};\n    expect(layer0.owner).to.be.undefined;\n    expect(layer1.owner).to.be.undefined;\n    expect(layer2.owner).to.be.undefined;\n\n    layer0.owner = owner;\n    expect(layer0.isOwnedBy(owner)).to.be.true;\n    // child layers are not owned until ownChildren() is called\n    expect(layer1.owner).to.be.undefined;\n    expect(layer2.owner).to.be.undefined;\n\n    layer0.ownChildren();\n    expect(layer0.isOwnedBy(owner)).to.be.true;\n    expect(layer1.isOwnedBy(owner)).to.be.true;\n    expect(layer2.isOwnedBy(owner)).to.be.true;\n  })\n\n  it('should attach to the map when selected', () => {\n    l.select();\n    expect(layerAddSpy).to.have.been.called;\n  });\n\n  it('should not attach to the map if it is already attached', () => {\n    l.select();\n    l.select();\n    expect(layerAddSpy).to.have.been.calledOnce;\n    expect(layerRemoveSpy).to.not.have.been.called;\n  });\n\n  it('should detach from the map when deselected', () => {\n    // start by attaching it through selection\n    l.select();\n    l.deselect();\n    expect(layerRemoveSpy).to.have.been.called;\n  });\n\n  it('should detach from the map when disabled', () => {\n    l.select();\n    l.disable();\n    expect(layerRemoveSpy).to.have.been.called;\n  })\n\n  it('should re-attach to the map after being re-enabled (if selected)', () => {\n    l.select(); // mark layer as \"selected\"\n    l.disable(); // layer should persist selected state even when disabled\n    l.enable(); // layer should remember that it was selected before it was disabled\n    expect(layerAddSpy).to.have.been.calledTwice; // layer should re-attach to the map\n  })\n\n  it('should not detach from the map if it is already detached', () => {\n    l.select();\n    l.deselect();\n    l.deselect();\n    expect(layerRemoveSpy).to.have.been.calledOnce;\n  });\n\n  it('should disable itself if the map is zoomed beyond its zoom boundaries', () => {\n    const minZoom = 5, maxZoom = 15;\n    const map = L.map(document.createElement('div')).setView([52, 4], 10);\n    const layer = new NestedLayer({\n      id: 888,\n      name: 'Layer 888',\n      layer: stubLayer(888, {minZoom, maxZoom}),\n      map,\n      enabled: true,\n      selected: true\n    });\n    expect(layer.minZoom).to.equal(minZoom);\n    expect(layer.maxZoom).to.equal(maxZoom);\n\n    const removeSpy = sinon.spy(layer.layer, 'removeFrom');\n    map.setZoom(4);\n    expect(removeSpy).to.have.been.calledOnce;\n\n    map.setZoom(10); // this ensures the layer is reattached to the map\n    map.setZoom(16);\n    expect(removeSpy).to.have.been.calledTwice;\n  })\n\n} );\n",
+    "content": "/*global describe, expect, it, beforeEach*/\nimport NestedLayer from './../src/Leaflet.NestedLayer';\nimport LayerHierarchy from './../src/Leaflet.LayerHierarchy';\n\nimport L from 'leaflet-headless';\nimport sinon from 'sinon';\n\ndescribe( 'NestedLayer', () => {\n\n  function stubLayer(id, options) {\n    if (typeof options === 'undefined') {\n      options = {};\n    }\n    return {\n      id,\n      addTo: function() {},\n      removeFrom: function() {},\n      remove: function() {},\n      on: function() {},\n      minZoom: options.minZoom,\n      maxZoom: options.maxZoom\n    }\n  }\n\n  // layer1 and layer2 are both children of layer0\n  // l is for testing other non-nested layer features\n  let l, l0, l1, l2, layer0, layer1, layer2;\n\n  beforeEach(() => {\n    const mapStub = sinon.createStubInstance(L.Map);\n\n    l = new NestedLayer({\n      id: 999,\n      name: 'Layer 999',\n      layer: stubLayer(999),\n      map: mapStub,\n      enabled: true,\n      selected: false\n    });\n\n    l1 = {\n      id: 1,\n      name: 'Layer 1',\n      layer: stubLayer(1),\n      map: mapStub,\n      children: []\n    };\n    l2 = {\n      id: 2,\n      name: 'Layer 2',\n      layer: stubLayer(2),\n      map: mapStub,\n      children: []\n    }\n    layer1 = new NestedLayer(l1);\n    layer2 = new NestedLayer(l2);\n\n    l0 = {\n      id: 0,\n      name: 'Layer 0',\n      layer: stubLayer(0),\n      map: mapStub,\n      children: [layer1, layer2]\n    }\n    layer0 = new NestedLayer(l0);\n\n  });\n\n  afterEach(() => {\n    l._attach.restore;\n    l._detach.restore;\n  });\n\n  it('should accept props on construction', () => {\n    expect(layer1._props).to.have.property('id');\n    expect(layer1._props).to.have.property('name');\n    expect(layer1._props).to.have.property('layer');\n    expect(layer1._props).to.have.property('children');\n  });\n\n  it('should have defaults for optional arguments in the constructor', () => {\n    // children\n    expect(l._props).to.have.property('children');\n    expect(l.children).to.be.empty;\n\n    // swatch\n    expect(l._props).to.have.property('swatch');\n    expect(l.swatch).to.equal('');\n\n    // enabled + selected\n    expect(l.enabled).to.be.true;\n    expect(l.selected).to.be.false;\n  });\n\n  it('should throw errors when missing required arguments on construction', () => {\n    expect(function() {\n      new NestedLayer({\n        name: 'Layer 999',\n        layer: {id: 999},\n        map: {}\n      });\n    }).to.throw('ID');\n\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        layer: {id: 999},\n        map: {}\n      });\n    }).to.throw('name');\n\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        name: 'Layer 999',\n        map: {}\n      });\n    }).to.throw('layer object');\n    expect(function() {\n      new NestedLayer({\n        id: 999,\n        name: 'Layer 999',\n        layer: {id:999},\n      });\n    }).to.throw('map object');\n  });\n\n  it('should have a name', () => {\n    expect(l.name).to.equal('Layer 999');\n  })\n\n  it('should be selectable', () => {\n    l.select();\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n\n    l.selected = true;\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n  });\n\n  it('should be deselectable', () => {\n    l.deselect();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n\n    l.selected = false;\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n  })\n\n  it('should permit toggling the selected state', () => {\n    l.selected = false;\n    l.toggleSelected();\n    expect(l.selected).to.be.true;\n    expect(l.deselected).to.be.false;\n  })\n\n  it('should be enableable', () => {\n    l.enable();\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n\n    l.enabled = true;\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n  });\n\n  it('should be disableable', () => {\n    l.disable();\n    expect(l.enabled).to.be.false;\n    expect(l.disabled).to.be.true;\n\n    l.enabled = false;\n    expect(l.enabled).to.be.false;\n    expect(l.disabled).to.be.true;\n  })\n\n  it('should permit toggling the enabled state', () => {\n    l.enabled = false;\n    l.toggleEnabled();\n    expect(l.enabled).to.be.true;\n    expect(l.disabled).to.be.false;\n  })\n\n  it('should always be deselected if disabled', () => {\n    l.disable();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n\n    l.select();\n    expect(l.selected).to.be.false;\n    expect(l.deselected).to.be.true;\n  });\n\n  it('should retain selected state if disabled then re-enabled', () => {\n    l.select();\n    l.disable();\n    expect(l.selected).to.be.false;\n\n    l.enable();\n    expect(l.selected).to.be.true;\n\n    l.deselect();\n    l.disable();\n    expect(l.selected).to.be.false;\n\n    l.enable();\n    expect(l.selected).to.be.false;\n  });\n\n  it('should know who its owner is', () => {\n    expect(l.owner).to.be.undefined;\n\n    const owner = new LayerHierarchy();\n    l.owner = owner;\n    expect(l.owner).to.equal(owner);\n    expect(l.isOwnedBy(owner)).to.be.true;\n\n    const nonOwner = {};\n    expect(l.owner).to.not.equal(nonOwner);\n    expect(l.isOwnedBy(nonOwner)).to.be.false;\n  })\n\n  it('should have access to its owner\\'s configuration properties when owned', () => {\n    // trying to fetch the options of an unowned layer should give null (no options)\n    expect(layer0.options).to.be.null;\n\n    const owner = new LayerHierarchy({ layers: [layer0] });\n    expect(layer0.options).to.have.all.keys([\n      'followAncestorVisibility',\n      'followAncestorMutability',\n      'propogateDeselectToChildren'\n    ]);\n  })\n\n  it('should be able to add valid child layers', () => {\n    expect(layer0.children).to.not.contain(l);\n\n    layer0.addChild(l)\n    expect(layer0.children).to.contain(l);\n\n    // try adding an invalid child layer\n    let notALayer = 42;\n    expect(() => {\n      layer0.addChild(notALayer);\n    }).to.throw(TypeError);\n  });\n\n  it('should know if it has children', () => {\n    expect(layer0.hasChildren).to.be.true;\n    expect(layer1.hasChildren).to.be.false;\n  })\n\n  it('should be able to enable its children', () => {\n    layer2.addChild(l);\n\n    layer1.disable();\n    layer2.disable();\n    l.disable();\n\n    layer0.enableChildren();\n\n    expect(layer1.enabled).to.be.true;\n    expect(layer2.enabled).to.be.true;\n\n    layer1.enable();\n    layer2.enable();\n\n    expect(() => {\n      layer0.enableChildren()\n    }).to.not.throw();\n  })\n\n  it('should be able to disable its children', () => {\n    layer2.addChild(l);\n\n    layer1.enable();\n    layer2.enable();\n    l.enable();\n\n    layer0.disableChildren();\n\n    expect(layer1.disabled).to.be.true;\n    expect(layer2.disabled).to.be.true;\n\n    layer1.disable();\n    layer2.disable();\n\n    expect(() => {\n      layer0.disableChildren()\n    }).to.not.throw();\n  })\n\n  it('should be able to take ownership of all its children', () => {\n    const owner = {};\n    expect(layer0.owner).to.be.undefined;\n    expect(layer1.owner).to.be.undefined;\n    expect(layer2.owner).to.be.undefined;\n\n    layer0.owner = owner;\n    expect(layer0.isOwnedBy(owner)).to.be.true;\n    // child layers are not owned until ownChildren() is called\n    expect(layer1.owner).to.be.undefined;\n    expect(layer2.owner).to.be.undefined;\n\n    layer0.ownChildren();\n    expect(layer0.isOwnedBy(owner)).to.be.true;\n    expect(layer1.isOwnedBy(owner)).to.be.true;\n    expect(layer2.isOwnedBy(owner)).to.be.true;\n  })\n\n  it('should attach to the map when selected', () => {\n    l.select();\n    expect(l.map.addLayer).to.have.been.called;\n  });\n\n  it('should not attach to the map if it is already attached', () => {\n    l.select();\n    l.select();\n    expect(l.map.addLayer).to.have.been.calledOnce;\n    expect(l.map.removeLayer).to.not.have.been.called;\n  });\n\n  it('should detach from the map when deselected', () => {\n    // start by attaching it through selection\n    l.select();\n    l.deselect();\n    expect(l.map.removeLayer).to.have.been.called;\n  });\n\n  it('should detach from the map when disabled', () => {\n    l.select();\n    l.disable();\n    expect(l.map.removeLayer).to.have.been.called;\n  })\n\n  it('should re-attach to the map after being re-enabled (if selected)', () => {\n    l.select(); // mark layer as \"selected\"\n    l.disable(); // layer should persist selected state even when disabled\n    l.enable(); // layer should remember that it was selected before it was disabled\n    expect(l.map.addLayer).to.have.been.calledTwice; // layer should re-attach to the map\n  })\n\n  it('should not detach from the map if it is already detached', () => {\n    l.select();\n    l.deselect();\n    l.deselect();\n    expect(l.map.removeLayer).to.have.been.calledOnce;\n  });\n\n  it.skip('should disable itself if the map is zoomed beyond its zoom boundaries', () => {\n    console.log(document.createElement);\n    const minZoom = 5, maxZoom = 15;\n    const map = L.map(document.createElement('div')).setView([52, 4], 10);\n    const layer = new NestedLayer({\n      id: 888,\n      name: 'Layer 888',\n      layer: stubLayer(888, {minZoom, maxZoom}),\n      map,\n      enabled: true,\n      selected: true\n    });\n    expect(layer.minZoom).to.equal(minZoom);\n    expect(layer.maxZoom).to.equal(maxZoom);\n\n    const removeSpy = sinon.spy(layer.layer, 'removeFrom');\n    map.setZoom(4);\n    expect(removeSpy).to.have.been.calledOnce;\n\n    map.setZoom(10); // this ensures the layer is reattached to the map\n    map.setZoom(16);\n    expect(removeSpy).to.have.been.calledTwice;\n  })\n\n} );\n",
     "static": true,
     "longname": "test/Leaflet.NestedLayer.spec.js",
     "access": null,
@@ -4426,354 +4717,404 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 222,
+    "__docId__": 237,
     "kind": "testDescribe",
-    "name": "describe39",
-    "testId": 39,
+    "name": "describe41",
+    "testId": 41,
     "memberof": "test/Leaflet.NestedLayer.spec.js",
     "testDepth": 0,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41",
     "access": null,
     "description": "NestedLayer",
     "lineNumber": 8
   },
   {
-    "__docId__": 223,
-    "kind": "testIt",
-    "name": "it40",
-    "testId": 40,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it40",
-    "access": null,
-    "description": "should accept props on construction",
-    "lineNumber": 75
-  },
-  {
-    "__docId__": 224,
-    "kind": "testIt",
-    "name": "it41",
-    "testId": 41,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it41",
-    "access": null,
-    "description": "should have defaults for optional arguments in the constructor",
-    "lineNumber": 82
-  },
-  {
-    "__docId__": 225,
+    "__docId__": 238,
     "kind": "testIt",
     "name": "it42",
     "testId": 42,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it42",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it42",
     "access": null,
-    "description": "should throw errors when missing required arguments on construction",
-    "lineNumber": 98
-  },
-  {
-    "__docId__": 226,
-    "kind": "testIt",
-    "name": "it43",
-    "testId": 43,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it43",
-    "access": null,
-    "description": "should have a name",
-    "lineNumber": 131
-  },
-  {
-    "__docId__": 227,
-    "kind": "testIt",
-    "name": "it44",
-    "testId": 44,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it44",
-    "access": null,
-    "description": "should be selectable",
-    "lineNumber": 135
-  },
-  {
-    "__docId__": 228,
-    "kind": "testIt",
-    "name": "it45",
-    "testId": 45,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it45",
-    "access": null,
-    "description": "should be deselectable",
-    "lineNumber": 145
-  },
-  {
-    "__docId__": 229,
-    "kind": "testIt",
-    "name": "it46",
-    "testId": 46,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it46",
-    "access": null,
-    "description": "should permit toggling the selected state",
-    "lineNumber": 155
-  },
-  {
-    "__docId__": 230,
-    "kind": "testIt",
-    "name": "it47",
-    "testId": 47,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it47",
-    "access": null,
-    "description": "should be enableable",
-    "lineNumber": 162
-  },
-  {
-    "__docId__": 231,
-    "kind": "testIt",
-    "name": "it48",
-    "testId": 48,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it48",
-    "access": null,
-    "description": "should be disableable",
-    "lineNumber": 172
-  },
-  {
-    "__docId__": 232,
-    "kind": "testIt",
-    "name": "it49",
-    "testId": 49,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it49",
-    "access": null,
-    "description": "should permit toggling the enabled state",
-    "lineNumber": 182
-  },
-  {
-    "__docId__": 233,
-    "kind": "testIt",
-    "name": "it50",
-    "testId": 50,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it50",
-    "access": null,
-    "description": "should always be deselected if disabled",
-    "lineNumber": 189
-  },
-  {
-    "__docId__": 234,
-    "kind": "testIt",
-    "name": "it51",
-    "testId": 51,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it51",
-    "access": null,
-    "description": "should retain selected state if disabled then re-enabled",
-    "lineNumber": 199
-  },
-  {
-    "__docId__": 235,
-    "kind": "testIt",
-    "name": "it52",
-    "testId": 52,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it52",
-    "access": null,
-    "description": "should know who its owner is",
-    "lineNumber": 215
-  },
-  {
-    "__docId__": 236,
-    "kind": "testIt",
-    "name": "it53",
-    "testId": 53,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it53",
-    "access": null,
-    "description": "should have access to its owner's configuration properties when owned",
-    "lineNumber": 228
-  },
-  {
-    "__docId__": 237,
-    "kind": "testIt",
-    "name": "it54",
-    "testId": 54,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it54",
-    "access": null,
-    "description": "should be able to add valid child layers",
-    "lineNumber": 240
-  },
-  {
-    "__docId__": 238,
-    "kind": "testIt",
-    "name": "it55",
-    "testId": 55,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
-    "testDepth": 1,
-    "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it55",
-    "access": null,
-    "description": "should know if it has children",
-    "lineNumber": 253
+    "description": "should accept props on construction",
+    "lineNumber": 74
   },
   {
     "__docId__": 239,
     "kind": "testIt",
-    "name": "it56",
-    "testId": 56,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it43",
+    "testId": 43,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it56",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it43",
     "access": null,
-    "description": "should be able to enable its children",
-    "lineNumber": 258
+    "description": "should have defaults for optional arguments in the constructor",
+    "lineNumber": 81
   },
   {
     "__docId__": 240,
     "kind": "testIt",
-    "name": "it57",
-    "testId": 57,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it44",
+    "testId": 44,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it57",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it44",
     "access": null,
-    "description": "should be able to disable its children",
-    "lineNumber": 278
+    "description": "should throw errors when missing required arguments on construction",
+    "lineNumber": 95
   },
   {
     "__docId__": 241,
     "kind": "testIt",
-    "name": "it58",
-    "testId": 58,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it45",
+    "testId": 45,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it58",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it45",
     "access": null,
-    "description": "should be able to take ownership of all its children",
-    "lineNumber": 298
+    "description": "should have a name",
+    "lineNumber": 128
   },
   {
     "__docId__": 242,
     "kind": "testIt",
-    "name": "it59",
-    "testId": 59,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it46",
+    "testId": 46,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it59",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it46",
     "access": null,
-    "description": "should attach to the map when selected",
-    "lineNumber": 316
+    "description": "should be selectable",
+    "lineNumber": 132
   },
   {
     "__docId__": 243,
     "kind": "testIt",
-    "name": "it60",
-    "testId": 60,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it47",
+    "testId": 47,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it60",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it47",
     "access": null,
-    "description": "should not attach to the map if it is already attached",
-    "lineNumber": 321
+    "description": "should be deselectable",
+    "lineNumber": 142
   },
   {
     "__docId__": 244,
     "kind": "testIt",
-    "name": "it61",
-    "testId": 61,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it48",
+    "testId": 48,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it61",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it48",
     "access": null,
-    "description": "should detach from the map when deselected",
-    "lineNumber": 328
+    "description": "should permit toggling the selected state",
+    "lineNumber": 152
   },
   {
     "__docId__": 245,
     "kind": "testIt",
-    "name": "it62",
-    "testId": 62,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it49",
+    "testId": 49,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it62",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it49",
     "access": null,
-    "description": "should detach from the map when disabled",
-    "lineNumber": 335
+    "description": "should be enableable",
+    "lineNumber": 159
   },
   {
     "__docId__": 246,
     "kind": "testIt",
-    "name": "it63",
-    "testId": 63,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it50",
+    "testId": 50,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it63",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it50",
     "access": null,
-    "description": "should re-attach to the map after being re-enabled (if selected)",
-    "lineNumber": 341
+    "description": "should be disableable",
+    "lineNumber": 169
   },
   {
     "__docId__": 247,
     "kind": "testIt",
-    "name": "it64",
-    "testId": 64,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it51",
+    "testId": 51,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it64",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it51",
     "access": null,
-    "description": "should not detach from the map if it is already detached",
-    "lineNumber": 348
+    "description": "should permit toggling the enabled state",
+    "lineNumber": 179
   },
   {
     "__docId__": 248,
     "kind": "testIt",
-    "name": "it65",
-    "testId": 65,
-    "memberof": "test/Leaflet.NestedLayer.spec.js~describe39",
+    "name": "it52",
+    "testId": 52,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
     "testDepth": 1,
     "static": true,
-    "longname": "test/Leaflet.NestedLayer.spec.js~describe39.it65",
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it52",
     "access": null,
-    "description": "should disable itself if the map is zoomed beyond its zoom boundaries",
-    "lineNumber": 355
+    "description": "should always be deselected if disabled",
+    "lineNumber": 186
+  },
+  {
+    "__docId__": 249,
+    "kind": "testIt",
+    "name": "it53",
+    "testId": 53,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it53",
+    "access": null,
+    "description": "should retain selected state if disabled then re-enabled",
+    "lineNumber": 196
+  },
+  {
+    "__docId__": 250,
+    "kind": "testIt",
+    "name": "it54",
+    "testId": 54,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it54",
+    "access": null,
+    "description": "should know who its owner is",
+    "lineNumber": 212
+  },
+  {
+    "__docId__": 251,
+    "kind": "testIt",
+    "name": "it55",
+    "testId": 55,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it55",
+    "access": null,
+    "description": "should have access to its owner's configuration properties when owned",
+    "lineNumber": 225
+  },
+  {
+    "__docId__": 252,
+    "kind": "testIt",
+    "name": "it56",
+    "testId": 56,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it56",
+    "access": null,
+    "description": "should be able to add valid child layers",
+    "lineNumber": 237
+  },
+  {
+    "__docId__": 253,
+    "kind": "testIt",
+    "name": "it57",
+    "testId": 57,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it57",
+    "access": null,
+    "description": "should know if it has children",
+    "lineNumber": 250
+  },
+  {
+    "__docId__": 254,
+    "kind": "testIt",
+    "name": "it58",
+    "testId": 58,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it58",
+    "access": null,
+    "description": "should be able to enable its children",
+    "lineNumber": 255
+  },
+  {
+    "__docId__": 255,
+    "kind": "testIt",
+    "name": "it59",
+    "testId": 59,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it59",
+    "access": null,
+    "description": "should be able to disable its children",
+    "lineNumber": 275
+  },
+  {
+    "__docId__": 256,
+    "kind": "testIt",
+    "name": "it60",
+    "testId": 60,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it60",
+    "access": null,
+    "description": "should be able to take ownership of all its children",
+    "lineNumber": 295
+  },
+  {
+    "__docId__": 257,
+    "kind": "testIt",
+    "name": "it61",
+    "testId": 61,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it61",
+    "access": null,
+    "description": "should attach to the map when selected",
+    "lineNumber": 313
+  },
+  {
+    "__docId__": 258,
+    "kind": "testIt",
+    "name": "it62",
+    "testId": 62,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it62",
+    "access": null,
+    "description": "should not attach to the map if it is already attached",
+    "lineNumber": 318
+  },
+  {
+    "__docId__": 259,
+    "kind": "testIt",
+    "name": "it63",
+    "testId": 63,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it63",
+    "access": null,
+    "description": "should detach from the map when deselected",
+    "lineNumber": 325
+  },
+  {
+    "__docId__": 260,
+    "kind": "testIt",
+    "name": "it64",
+    "testId": 64,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it64",
+    "access": null,
+    "description": "should detach from the map when disabled",
+    "lineNumber": 332
+  },
+  {
+    "__docId__": 261,
+    "kind": "testIt",
+    "name": "it65",
+    "testId": 65,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it65",
+    "access": null,
+    "description": "should re-attach to the map after being re-enabled (if selected)",
+    "lineNumber": 338
+  },
+  {
+    "__docId__": 262,
+    "kind": "testIt",
+    "name": "it66",
+    "testId": 66,
+    "memberof": "test/Leaflet.NestedLayer.spec.js~describe41",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.NestedLayer.spec.js~describe41.it66",
+    "access": null,
+    "description": "should not detach from the map if it is already detached",
+    "lineNumber": 345
+  },
+  {
+    "__docId__": 263,
+    "kind": "testFile",
+    "name": "test/Leaflet.Symbology.spec.js",
+    "content": "/*global describe, expect, it, beforeEach*/\nimport Symbology from './../src/Leaflet.Symbology';\n\ndescribe.skip('Symbology', () => {\n\n  let sym;\n  const fixture = {\n    label: 'ADVERTISED',\n\n  }\n\n  beforeEach(() => {\n    sym = new Symbology();\n  })\n\n  it('should pass', () => {\n    expect(sym).to.be.null;\n  })\n\n  describe('getters and setters', () => {\n    describe('label', () => {\n      it('should be able to get a label')\n    })\n  })\n})\n",
+    "static": true,
+    "longname": "test/Leaflet.Symbology.spec.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 264,
+    "kind": "testIt",
+    "name": "it67",
+    "testId": 67,
+    "memberof": "test/Leaflet.Symbology.spec.js",
+    "testDepth": 0,
+    "static": true,
+    "longname": "test/Leaflet.Symbology.spec.js~it67",
+    "access": null,
+    "description": "should pass",
+    "lineNumber": 16
+  },
+  {
+    "__docId__": 265,
+    "kind": "testDescribe",
+    "name": "describe68",
+    "testId": 68,
+    "memberof": "test/Leaflet.Symbology.spec.js",
+    "testDepth": 0,
+    "static": true,
+    "longname": "test/Leaflet.Symbology.spec.js~describe68",
+    "access": null,
+    "description": "getters and setters",
+    "lineNumber": 20
+  },
+  {
+    "__docId__": 266,
+    "kind": "testDescribe",
+    "name": "describe69",
+    "testId": 69,
+    "memberof": "test/Leaflet.Symbology.spec.js~describe68",
+    "testDepth": 1,
+    "static": true,
+    "longname": "test/Leaflet.Symbology.spec.js~describe68.describe69",
+    "access": null,
+    "description": "label",
+    "lineNumber": 21
+  },
+  {
+    "__docId__": 267,
+    "kind": "testIt",
+    "name": "it70",
+    "testId": 70,
+    "memberof": "test/Leaflet.Symbology.spec.js~describe68.describe69",
+    "testDepth": 2,
+    "static": true,
+    "longname": "test/Leaflet.Symbology.spec.js~describe68.describe69.it70",
+    "access": null,
+    "description": "should be able to get a label",
+    "lineNumber": 22
   }
 ]

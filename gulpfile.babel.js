@@ -1,6 +1,11 @@
 import gulp from 'gulp';
 import sourceMaps from 'gulp-sourcemaps';
 import babel from 'gulp-babel';
+import esdoc from 'gulp-esdoc';
+import plumber from 'gulp-plumber';
+import newer from 'gulp-newer';
+import connect from 'gulp-connect';
+import fs from 'fs';
 import path from 'path';
 import del from 'del';
 
@@ -39,5 +44,43 @@ gulp.task( 'copy:nonJs', () => {
 gulp.task( 'watch', [ 'build' ], () => {
   gulp.watch( paths.es6, [ 'build' ] );
 } );
+
+function getESDocConfig() {
+  let esdocConfigPath = path.join(process.cwd(), '.esdoc.json'), data, esdocConfig;
+  if (fs.existsSync(esdocConfigPath)) {
+    data = fs.readFileSync(esdocConfigPath, { encoding: 'utf8' });
+    esdocConfig = !data ? {} : JSON.parse(data);
+    console.log('Found ESDoc config in .esdoc.json!');
+  } else {
+    esdocConfig  = {};
+  }
+  return esdocConfig;
+}
+// heavily inspired by https://gist.github.com/psyrendust/37844bd8e0f2dea0c8ea
+gulp.task('docs', () => {
+  const esdocConfig = getESDocConfig();
+
+  return gulp.src(paths.es6)
+    .pipe(plumber())
+    .pipe(newer(esdocConfig.destination))
+    .pipe(esdoc(esdocConfig));
+});
+
+gulp.task('docs:watch', () => {
+  const esdocConfig = getESDocConfig();
+
+  gulp.watch(paths.es6, ['docs']);
+  // .on('change', evt => console.log('Watching', evt, 'docs'))
+
+  const name = 'Docs server';
+  const port = 4001;
+  const root = esdocConfig.destination;
+  const uri = 'http://localhost:' + port;
+  connect.server({
+    name,
+    port,
+    root
+  })
+});
 
 gulp.task( 'default', [ 'watch' ] );

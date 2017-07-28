@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -52,7 +53,7 @@ import superagent from &apos;superagent&apos;;
 import Promise from &apos;bluebird&apos;;
 import superagentPromise from &apos;superagent-promise&apos;;
 const request = superagentPromise(superagent, Promise);
-import { FeatureLayerService } from &apos;esri-leaflet&apos;;
+import { FeatureLayer } from &apos;esri-leaflet&apos;;
 
 /**
  * Parses the layer data served by an ArcGIS MapServer
@@ -63,7 +64,7 @@ import { FeatureLayerService } from &apos;esri-leaflet&apos;;
  */
 export default class MapServerParser {
 
-  static APISuffixes = {
+  static APIEndpoints = {
     layers: &apos;/layers&apos;,
     legend: &apos;/legend&apos;
   };
@@ -171,19 +172,28 @@ export default class MapServerParser {
         body = JSON.parse(layerRes.text);
       }
 
+      // parse the legend into JSON
+      let legend = legendRes.body;
+      // ArcGIS does not properly set its Content-Type header
+      // so force JSON parsing if superagent did not parse automatically
+      if (legendRes.type !== MapServerParser.Headers.Accept) {
+        legend = JSON.parse(legendRes.text);
+      }
+      // the actual legend is located under the &apos;layers&apos; node
+      legend = legend.layers;
+
       // create the LayerHierarchy
       var hierarchy = new LayerHierarchy(this.options.hierarchyOptions);
 
       // move layers down as children of other layers
       body.layers.forEach((node) =&gt; {
-        let layer = this._convertLayerNodeToNestedLayer(node)
+        let layer = this._convertLayerNodeToNestedLayer(node, legend);
         let parent = (node.parentLayer !== null ? node.parentLayer.id : undefined);
         // if this layer has no parent, addLayer(...) will add as a root layer
         hierarchy.addLayer(layer, parent);
       });
 
       // resolve the promise with the resulting LayerHierarchy
-      // console.log(hierarchy);
       return hierarchy;
     });
   }
@@ -194,7 +204,7 @@ export default class MapServerParser {
    */
   _queryLayers() {
     // assemble layerdata url
-    const layerdataURL = this.url + MapServerParser.APISuffixes.layers;
+    const layerdataURL = this.url + MapServerParser.APIEndpoints.layers;
 
     // fetch layerdata as JSON
     return request
@@ -206,7 +216,7 @@ export default class MapServerParser {
 
   _queryLegend() {
     // assemble legend url
-    const legendURL = this.url + MapServerParser.APISuffixes.legend;
+    const legendURL = this.url + MapServerParser.APIEndpoints.legend;
 
     // fetch legend as JSON
     return request
@@ -216,30 +226,43 @@ export default class MapServerParser {
       .end();
   }
 
-  _convertLayerNodeToNestedLayer = (node) =&gt; {
-    let layerData = {
+  _convertLayerNodeToNestedLayer = (node, legend) =&gt; {
+    let nestedLayerData = {
       id: node.id,
-      name: node.name,
+      name: node.name.trim(),
       map: this.map
     };
     // Leaflet layer data
     let leafletLayerData = {
-      url: MapServerParser._makeLayerURL(this.url, layerData.id)
+      url: MapServerParser._makeLayerURL(this.url, nestedLayerData.id)
     };
 
     // get scale/zoom data from layer node
     if (this.options.data.scale) {
       // converts scale factor from ArcGIS to Leaflet&apos;s zoom factor
       // http://leafletjs.com/reference-1.1.0.html#crs-scale
-      leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);
-      leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);
+      // leafletLayerData.maxZoom = this.map.options.crs.zoom(node.maxScale);
+      // leafletLayerData.minZoom = this.map.options.crs.zoom(node.minScale);
+      console.warn(&apos;Floor\&apos;ing maxZoom and ceil\&apos;ing minZoom&apos;);
+      // console.log(nestedLayerData.name, &apos;minZoom&apos;, leafletLayerData.minZoom, &apos;maxZoom&apos;, leafletLayerData.maxZoom)
+      leafletLayerData.maxZoom = Math.floor(this.map.options.crs.zoom(node.maxScale));
+      leafletLayerData.minZoom = Math.ceil(this.map.options.crs.zoom(node.minScale));
+    }
+
+    // attach the swatch data
+    // if (this.options.data.swatch &amp;&amp; legend[nestedLayerData.id].legend.length &gt; 0) {
+    //   nestedLayerData.swatch = legend[nestedLayerData.id].legend[0].imageData;
+    //   console.log(nestedLayerData.name, nestedLayerData.id, nestedLayerData.swatch);
+    // }
+    if (this.options.data.swatch) {
+      nestedLayerData.swatch = MapServerParser._findSwatchInLegend(legend, nestedLayerData.id);
     }
 
     // attach the Leaflet layer object to the NestedLayer&apos;s data
-    layerData.layer = new FeatureLayerService(leafletLayerData);
+    nestedLayerData.layer = new FeatureLayer(leafletLayerData);
 
-    // use the provided NestedLayer factory to turn layerData into an owned NestedLayer
-    let layer = new NestedLayer(layerData);
+    // create a new NestedLayer that wraps the Leaflet layer, map, etc.
+    let layer = new NestedLayer(nestedLayerData);
 
     // set the selected state = to the node&apos;s default visibility state
     if (this.options.data.defaultVisibility) {
@@ -248,6 +271,25 @@ export default class MapServerParser {
 
     // returns a NestedLayer object
     return layer;
+  }
+
+  static _findSwatchInLegend(legend, layerID) {
+    // if no swatches even exist (e.g. invalid legend)
+    if (legend.length &lt;= 0) { return &apos;&apos;; }
+
+    // loop through to try to find a valid swatch
+    // this algorithm could be optimized from O(n) due to
+    // the sorted nature of the legend
+    // it just must account for the fact that a legend object may not exist for
+    // any given layer
+    for (let i = 0; i &lt; legend.length; i++) {
+      if (legend[i].layerId == layerID &amp;&amp; legend[i].legend.length &gt; 0) {
+        return legend[i].legend[0].imageData;
+      }
+    }
+
+    // no swatch found
+    return &apos;&apos;;
   }
 
   static _makeLayerURL(baseURL, layerID) {

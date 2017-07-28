@@ -36,6 +36,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "leaflet.control.nestedlayers/src/leaflet.symbology.js~symbology",
+    "class/src/Leaflet.Symbology.js~Symbology.html",
+    "<span>Symbology</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.Symbology.js</span>",
+    "class"
+  ],
+  [
     "builtinexternal/ecmascriptexternal.js~array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
     "BuiltinExternal/ECMAScriptExternal.js~Array",
@@ -451,6 +457,18 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber162",
+    "MapServerParser #_convertLayerNodeToNestedLayer)",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber167",
+    "MapServerParser #_convertLayerNodeToNestedLayer) should trim whitespace around a layer name",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber114",
     "MapServerParser #_queryLayers",
     "test"
@@ -589,157 +607,151 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber75",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber74",
     "NestedLayer should accept props on construction",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber189",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber186",
     "NestedLayer should always be deselected if disabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber316",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber313",
     "NestedLayer should attach to the map when selected",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber240",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber237",
     "NestedLayer should be able to add valid child layers",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber278",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber275",
     "NestedLayer should be able to disable its children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber258",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber255",
     "NestedLayer should be able to enable its children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber298",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber295",
     "NestedLayer should be able to take ownership of all its children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber145",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber142",
     "NestedLayer should be deselectable",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber172",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber169",
     "NestedLayer should be disableable",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber162",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber159",
     "NestedLayer should be enableable",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber135",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber132",
     "NestedLayer should be selectable",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber328",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber325",
     "NestedLayer should detach from the map when deselected",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber335",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber332",
     "NestedLayer should detach from the map when disabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber355",
-    "NestedLayer should disable itself if the map is zoomed beyond its zoom boundaries",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber131",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber128",
     "NestedLayer should have a name",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber228",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber225",
     "NestedLayer should have access to its owner's configuration properties when owned",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber82",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber81",
     "NestedLayer should have defaults for optional arguments in the constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber253",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber250",
     "NestedLayer should know if it has children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber215",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber212",
     "NestedLayer should know who its owner is",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber321",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber318",
     "NestedLayer should not attach to the map if it is already attached",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber348",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber345",
     "NestedLayer should not detach from the map if it is already detached",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber182",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber179",
     "NestedLayer should permit toggling the enabled state",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber155",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber152",
     "NestedLayer should permit toggling the selected state",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber341",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber338",
     "NestedLayer should re-attach to the map after being re-enabled (if selected)",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber199",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber196",
     "NestedLayer should retain selected state if disabled then re-enabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber98",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber95",
     "NestedLayer should throw errors when missing required arguments on construction",
     "test"
   ],
@@ -759,6 +771,30 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber22",
     "NestedLayers should have required arguments on construction",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.Symbology.spec.js.html#lineNumber20",
+    "getters and setters",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.Symbology.spec.js.html#lineNumber21",
+    "getters and setters label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.Symbology.spec.js.html#lineNumber22",
+    "getters and setters label should be able to get a label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.Symbology.spec.js.html#lineNumber16",
+    "should pass",
     "test"
   ],
   [
@@ -853,13 +889,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-hierarchy",
+    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-hierarchy",
     "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "member"
   ],
   [
     "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-hierarchy",
+    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-hierarchy",
     "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "member"
   ],
@@ -960,9 +996,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/leaflet.layerhierarchy.mapserverparser.js~mapserverparser.apisuffixes",
-    "class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html#static-member-APISuffixes",
-    "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.APISuffixes",
+    "src/leaflet.layerhierarchy.mapserverparser.js~mapserverparser.apiendpoints",
+    "class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html#static-member-APIEndpoints",
+    "src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.APIEndpoints",
     "member"
   ],
   [
@@ -1117,13 +1153,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-enabled",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-enabled",
     "src/Leaflet.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
   [
     "src/leaflet.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-enabled",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-enabled",
     "src/Leaflet.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
@@ -1189,13 +1225,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.nestedlayer.js~nestedlayer#owner",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-owner",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-owner",
     "src/Leaflet.NestedLayer.js~NestedLayer#owner",
     "member"
   ],
   [
     "src/leaflet.nestedlayer.js~nestedlayer#owner",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-owner",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-owner",
     "src/Leaflet.NestedLayer.js~NestedLayer#owner",
     "member"
   ],
@@ -1236,6 +1272,60 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/leaflet.symbology.js",
+    "file/src/Leaflet.Symbology.js.html",
+    "src/Leaflet.Symbology.js",
+    "file"
+  ],
+  [
+    "src/leaflet.symbology.js~symbology#constructor",
+    "class/src/Leaflet.Symbology.js~Symbology.html#instance-constructor-constructor",
+    "src/Leaflet.Symbology.js~Symbology#constructor",
+    "method"
+  ],
+  [
+    "src/leaflet.symbology.js~symbology#defaults",
+    "class/src/Leaflet.Symbology.js~Symbology.html#instance-get-defaults",
+    "src/Leaflet.Symbology.js~Symbology#defaults",
+    "member"
+  ],
+  [
+    "src/leaflet.symbology.js~symbology#label",
+    "class/src/Leaflet.Symbology.js~Symbology.html#instance-get-label",
+    "src/Leaflet.Symbology.js~Symbology#label",
+    "member"
+  ],
+  [
+    "src/leaflet.symbology.js~symbology#label",
+    "class/src/Leaflet.Symbology.js~Symbology.html#instance-set-label",
+    "src/Leaflet.Symbology.js~Symbology#label",
+    "member"
+  ],
+  [
+    "src/components/leaflettoc.js",
+    "file/src/components/LeafletTOC.js.html",
+    "src/components/LeafletTOC.js",
+    "file"
+  ],
+  [
+    "src/components/mapsymbol.js",
+    "file/src/components/MapSymbol.js.html",
+    "src/components/MapSymbol.js",
+    "file"
+  ],
+  [
+    "src/components/mapsymbology.js",
+    "file/src/components/MapSymbology.js.html",
+    "src/components/MapSymbology.js",
+    "file"
+  ],
+  [
+    "src/components/nestedlayer.js",
+    "file/src/components/NestedLayer.js.html",
+    "src/components/NestedLayer.js",
+    "file"
+  ],
+  [
     "src/index.js",
     "file/src/index.js.html",
     "src/index.js",
@@ -1263,6 +1353,12 @@ window.esdocSearchIndex = [
     "test/leaflet.nestedlayer.spec.js",
     "test-file/test/Leaflet.NestedLayer.spec.js.html",
     "test/Leaflet.NestedLayer.spec.js",
+    "testFile"
+  ],
+  [
+    "test/leaflet.symbology.spec.js",
+    "test-file/test/Leaflet.Symbology.spec.js.html",
+    "test/Leaflet.Symbology.spec.js",
     "testFile"
   ]
 ]

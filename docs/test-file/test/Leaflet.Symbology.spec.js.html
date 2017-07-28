@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">test/Leaflet.Control.NestedLayers.spec.js | API Document</title>
+  <title data-ice="title">test/Leaflet.Symbology.spec.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -43,57 +43,32 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.Control.NestedLayers.spec.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.Symbology.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
-import NestedLayers from &apos;./../src/Leaflet.Control.NestedLayers&apos;;
-import LayerHierarchy from &apos;./../src/Leaflet.LayerHierarchy&apos;;
+import Symbology from &apos;./../src/Leaflet.Symbology&apos;;
 
-import jsdom from &apos;jsdom&apos;;
+describe.skip(&apos;Symbology&apos;, () =&gt; {
 
-describe( &apos;NestedLayers&apos;, () =&gt; {
+  let sym;
+  const fixture = {
+    label: &apos;ADVERTISED&apos;,
 
-  let control, h, el;
-  const { JSDOM } = jsdom;
+  }
 
   beforeEach(() =&gt; {
-    h = new LayerHierarchy();
-    el = JSDOM.fragment(&apos;&lt;div id=&quot;test-element&quot;&gt;&lt;/div&gt;&apos;);
-    control = new NestedLayers(h, el);
-  });
+    sym = new Symbology();
+  })
 
-  afterEach(() =&gt; {
-    control.detach();
-  });
+  it(&apos;should pass&apos;, () =&gt; {
+    expect(sym).to.be.null;
+  })
 
-  it(&apos;should have required arguments on construction&apos;, () =&gt; {
-    expect(() =&gt; {
-      let invalidControl = new NestedLayers(undefined, undefined);
-    }).to.throw();
-    expect(() =&gt; {
-      let invalidControl = new NestedLayers(undefined, el);
-    }).to.throw(&apos;hierarchy&apos;);
-    expect(() =&gt; {
-      let invalidControl = new NestedLayers(h, undefined);
-    }).to.throw(&apos;element&apos;);
-  });
-
-  it(&apos;should have default (configuration) options&apos;, () =&gt; {
-    // expect(control.options).to.be.an(&apos;object&apos;).that.is.not.empty;
-    expect(control.options).to.have.all.keys([
-      &apos;followAncestorVisibility&apos;,
-      &apos;followAncestorMutability&apos;,
-      &apos;propogateDeselectToChildren&apos;
-    ]);
-  });
-
-
-
-  // it(&apos;should have better tests written&apos;, () =&gt; {
-  //   let betterTestsWritten = false;
-  //   expect(betterTestsWritten).to.be.true;
-  // });
-
-} );
+  describe(&apos;getters and setters&apos;, () =&gt; {
+    describe(&apos;label&apos;, () =&gt; {
+      it(&apos;should be able to get a label&apos;)
+    })
+  })
+})
 </code></pre>
 
 </div>

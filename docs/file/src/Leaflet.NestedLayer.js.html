@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -330,7 +331,6 @@ export default class NestedLayer {
   // display on map
   _attach() {
     if (!this._isAttached) {
-      // console.log(this.layer);
       this.map.addLayer(this.layer);
       // this.layer.addTo(this.map);
       this._isAttached = true;

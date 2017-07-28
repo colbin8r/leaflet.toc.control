@@ -38,13 +38,14 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.LayerHierarchy.MapServerParser.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
-// this package must be imported before MapServerParser
+// this package must be imported before MapServerParser for testing purposes
 // MapServerParser imports esri-leaflet, which imports Leaflet, which throws errors when
 // run in a headless environment
 import &apos;leaflet-headless&apos;;
@@ -204,6 +205,17 @@ describe( &apos;MapServerParser&apos;, () =&gt; {
     });
   })
 
+  describe(&apos;#_convertLayerNodeToNestedLayer)&apos;, () =&gt; {
+      // fixture node data
+    let node = {&quot;currentVersion&quot;:10.31,&quot;id&quot;:26,&quot;name&quot;:&quot;County Resources&quot;,&quot;type&quot;:&quot;Group Layer&quot;,&quot;description&quot;:&quot;&quot;,&quot;geometryType&quot;:null,&quot;copyrightText&quot;:&quot;&quot;,&quot;parentLayer&quot;:null,&quot;subLayers&quot;:[{&quot;id&quot;:27,&quot;name&quot;:&quot;Fire and Rescue Stations&quot;},{&quot;id&quot;:28,&quot;name&quot;:&quot;Fire Response&quot;},{&quot;id&quot;:29,&quot;name&quot;:&quot;Rescue Response&quot;},{&quot;id&quot;:30,&quot;name&quot;:&quot;Fire Districts&quot;},{&quot;id&quot;:31,&quot;name&quot;:&quot;Rescue Districts&quot;},{&quot;id&quot;:32,&quot;name&quot;:&quot;County Administration Building&quot;},{&quot;id&quot;:33,&quot;name&quot;:&quot;Airports&quot;},{&quot;id&quot;:34,&quot;name&quot;:&quot;Schools&quot;},{&quot;id&quot;:35,&quot;name&quot;:&quot;Solid Waste Disposal Facilities&quot;},{&quot;id&quot;:36,&quot;name&quot;:&quot;Boating Public Access Sites&quot;},{&quot;id&quot;:37,&quot;name&quot;:&quot;Polling Places&quot;}],&quot;minScale&quot;:0,&quot;maxScale&quot;:0,&quot;defaultVisibility&quot;:true,&quot;extent&quot;:{&quot;xmin&quot;:-8465355.1356,&quot;ymin&quot;:4501816.1559,&quot;xmax&quot;:-8375617.3878,&quot;ymax&quot;:4583811.349899999,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100,&quot;latestWkid&quot;:3857}},&quot;hasAttachments&quot;:false,&quot;htmlPopupType&quot;:&quot;esriServerHTMLPopupTypeNone&quot;,&quot;displayField&quot;:&quot;&quot;,&quot;typeIdField&quot;:null,&quot;fields&quot;:null,&quot;relationships&quot;:[],&quot;canModifyLayer&quot;:false,&quot;canScaleSymbols&quot;:false,&quot;hasLabels&quot;:false,&quot;capabilities&quot;:&quot;Map,Query&quot;,&quot;supportsStatistics&quot;:false,&quot;supportsAdvancedQueries&quot;:false,&quot;supportedQueryFormats&quot;:&quot;JSON, AMF&quot;,&quot;ownershipBasedAccessControlForFeatures&quot;:{&quot;allowOthersToQuery&quot;:true},&quot;useStandardizedQueries&quot;:true,&quot;advancedQueryCapabilities&quot;:{&quot;useStandardizedQueries&quot;:true,&quot;supportsStatistics&quot;:false,&quot;supportsOrderBy&quot;:false,&quot;supportsDistinct&quot;:false,&quot;supportsPagination&quot;:false,&quot;supportsTrueCurve&quot;:true,&quot;supportsReturningQueryExtent&quot;:true,&quot;supportsQueryWithDistance&quot;:true}};
+    const fakeLegend = [];
+
+    it(&apos;should trim whitespace around a layer name&apos;, () =&gt; {
+      node.name = &apos;  TEST  \t\n&apos;;
+      let l = parser._convertLayerNodeToNestedLayer(node, fakeLegend);
+      expect(l.name).to.equal(&apos;TEST&apos;);
+    });
+  })
 
 } );
 </code></pre>

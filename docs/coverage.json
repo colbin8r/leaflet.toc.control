@@ -1,6 +1,6 @@
 {
-  "coverage": "69.13%",
-  "expectCount": 81,
+  "coverage": "65.11%",
+  "expectCount": 86,
   "actualCount": 56,
   "files": {
     "src/Leaflet.LayerHierarchy.MapServerParser.js": {
@@ -34,8 +34,8 @@
         221,
         227,
         256,
-        217,
         214,
+        217,
         203,
         187,
         180,
@@ -46,10 +46,21 @@
       "expectCount": 28,
       "actualCount": 24,
       "undocumentLines": [
-        260,
-        243,
-        125,
-        22
+        262,
+        245,
+        22,
+        125
+      ]
+    },
+    "src/Leaflet.Symbology.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        9,
+        23,
+        16,
+        19
       ]
     }
   }
