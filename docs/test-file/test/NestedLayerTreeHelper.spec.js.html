@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/components/MapSymbology.js | API Document</title>
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/NestedLayerTreeHelper.spec.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -49,9 +49,102 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/components/MapSymbology.js</h1>
-<pre class="source-code line-number raw-source-code"></pre>
-<p data-ice="emptySourceCode">Sorry, this documentation does not provide source code.</p>
+<div class="content" data-ice="content"><h1 data-ice="title">test/NestedLayerTreeHelper.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
+import * as NestedLayerTreeHelper from &apos;./../src/Leaflet.NestedLayerTreeHelper&apos;;
+import NestedLayer from &apos;./../src/Leaflet.NestedLayer&apos;;
+
+import L from &apos;leaflet-headless&apos;;
+import sinon from &apos;sinon&apos;;
+
+describe(&apos;NestedLayerTreeHelper&apos;, () =&gt; {
+  let layer;
+  let root1, root2, root3;
+  let child1, child2; // children of root 2
+  let tree;
+  let layerStub = sinon.createStubInstance(L.Layer);
+  let mapStub = sinon.createStubInstance(L.Map);
+  const options = { rules: { alwaysDeselectedWhenDisabled: false } };
+
+  beforeEach(&apos;create tree fixture&apos;, () =&gt; {
+    // layer is an alias for root1
+    layer = root1;
+    root1 =   new NestedLayer(111, &apos;Layer 111&apos;, layerStub, mapStub, options);
+    root2 =   new NestedLayer(222, &apos;Layer 222&apos;, layerStub, mapStub, options);
+    root3 =   new NestedLayer(333, &apos;Layer 333&apos;, layerStub, mapStub, options);
+    child1 =  new NestedLayer(444, &apos;Layer 444&apos;, layerStub, mapStub, options);
+    child2 =  new NestedLayer(555, &apos;Layer 555&apos;, layerStub, mapStub, options);
+    root3.addChild(child1);
+    root3.addChild(child2);
+    tree = [root1, root2, root3];
+  })
+
+  describe(&apos;#getLayerByID&apos;, () =&gt; {
+    it(&apos;should find layers by ID&apos;, () =&gt; {
+      const target = child2;
+      const id = target.id;
+
+      expect(NestedLayerTreeHelper.getLayerByID(tree, id)).to.equal(target);
+    })
+
+    it(&apos;should return null if the layer is not found&apos;, () =&gt; {
+      const id = 12345;
+
+      expect(NestedLayerTreeHelper.getLayerByID(tree, id)).to.be.null;
+    })
+  })
+
+  describe(&apos;#getLayerByLayerID&apos;, () =&gt; {
+    it(&apos;should find layers by server ID&apos;, () =&gt; {
+      const target = child2;
+      const id = target.layerID;
+
+      expect(NestedLayerTreeHelper.getLayerByLayerID(tree, id)).to.equal(target);
+    })
+
+    it(&apos;should return null if the layer is not found&apos;, () =&gt; {
+      const id = 12345;
+
+      expect(NestedLayerTreeHelper.getLayerByLayerID(tree, id)).to.be.null;
+    })
+  })
+
+  describe(&apos;#applyStateChangeToLayer&apos;, () =&gt; {
+    it(&apos;should apply valid state changes&apos;, () =&gt; {
+      const change = {
+        selected: !layer.defaults.selected,
+        enabled: !layer.defaults.enabled
+      };
+      NestedLayerTreeHelper.applyStateChangeToLayer(layer, change);
+
+      expect(layer.selected).to.equal(change.selected);
+      expect(layer.enabled).to.equal(change.enabled);
+    })
+  })
+
+  describe(&apos;#applyStateChangeToTree&apos;, () =&gt; {
+    it(&apos;should apply valid state changes&apos;, () =&gt; {
+      const change = {
+        selected: !layer.defaults.selected,
+        enabled: !layer.defaults.enabled
+      };
+      NestedLayerTreeHelper.applyStateChangeToTree(tree, change);
+
+      expect(root1.selected).to.equal(change.selected);
+      expect(root2.selected).to.equal(change.selected);
+      expect(root3.selected).to.equal(change.selected);
+      expect(child1.selected).to.equal(change.selected);
+      expect(child2.selected).to.equal(change.selected);
+      expect(root1.enabled).to.equal(change.enabled);
+      expect(root2.enabled).to.equal(change.enabled);
+      expect(root3.enabled).to.equal(change.enabled);
+      expect(child1.enabled).to.equal(change.enabled);
+      expect(child2.enabled).to.equal(change.enabled);
+    })
+  })
+})
+</code></pre>
+
 </div>
 
 <footer class="footer">

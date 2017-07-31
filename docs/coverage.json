@@ -1,7 +1,7 @@
 {
-  "coverage": "65.11%",
-  "expectCount": 86,
-  "actualCount": 56,
+  "coverage": "67.04%",
+  "expectCount": 88,
+  "actualCount": 59,
   "files": {
     "src/Leaflet.LayerHierarchy.MapServerParser.js": {
       "expectCount": 10,
@@ -21,25 +21,20 @@
       ]
     },
     "src/Leaflet.NestedLayer.js": {
-      "expectCount": 31,
-      "actualCount": 15,
+      "expectCount": 28,
+      "actualCount": 17,
       "undocumentLines": [
-        241,
-        206,
-        200,
-        252,
-        248,
-        145,
-        236,
-        221,
-        227,
-        256,
-        214,
-        217,
-        203,
-        187,
-        180,
-        209
+        283,
+        39,
+        270,
+        264,
+        209,
+        278,
+        183,
+        267,
+        244,
+        251,
+        273
       ]
     },
     "src/Leaflet.Control.NestedLayers.js": {
@@ -48,8 +43,8 @@
       "undocumentLines": [
         262,
         245,
-        22,
-        125
+        125,
+        22
       ]
     },
     "src/Leaflet.Symbology.js": {
@@ -61,6 +56,16 @@
         23,
         16,
         19
+      ]
+    },
+    "src/Leaflet.NestedLayerTreeHelper.js": {
+      "expectCount": 5,
+      "actualCount": 1,
+      "undocumentLines": [
+        38,
+        30,
+        34,
+        6
       ]
     }
   }

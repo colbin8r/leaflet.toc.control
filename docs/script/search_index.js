@@ -1,5 +1,167 @@
 window.esdocSearchIndex = [
   [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber162",
+    "#_convertLayerNodeToNestedLayer)",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber167",
+    "#_convertLayerNodeToNestedLayer) should trim whitespace around a layer name",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber114",
+    "#_queryLayers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber115",
+    "#_queryLayers should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber120",
+    "#_queryLegend",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber121",
+    "#_queryLegend should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber65",
+    "#constructor",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber78",
+    "#constructor should have default (configuration) options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber85",
+    "#constructor should merge options with defaults",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber66",
+    "#constructor should throw errors if required arguments are missing",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber59",
+    "#defaults",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber60",
+    "#defaults should have default configuration options accessible always",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber9",
+    "#generateID",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber10",
+    "#generateID should return numbers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber14",
+    "#generateID shouldn't generate the same ID twice",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber47",
+    "#map",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber48",
+    "#map should be able to get the Leaflet map object",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber53",
+    "#options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber54",
+    "#options should be able to get configuration options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber94",
+    "#parse",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber105",
+    "#parse should resolve the promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber101",
+    "#parse should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber41",
+    "#url",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber42",
+    "#url should be able to get the MapServer url",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber126",
+    "._makeLayerURL",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber145",
+    "._makeLayerURL should make valid URLs",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber127",
+    "._makeLayerURL should require valid parameters",
+    "test"
+  ],
+  [
     "leaflet.control.nestedlayers/src/leaflet.layerhierarchy.js~layerhierarchy",
     "class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html",
     "<span>LayerHierarchy</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.LayerHierarchy.js</span>",
@@ -40,6 +202,42 @@ window.esdocSearchIndex = [
     "class/src/Leaflet.Symbology.js~Symbology.html",
     "<span>Symbology</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.Symbology.js</span>",
     "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayertreehelper.js~applystatechangetolayer",
+    "function/index.html#static-function-applyStateChangeToLayer",
+    "<span>applyStateChangeToLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayerTreeHelper.js</span>",
+    "function"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayertreehelper.js~applystatechangetotree",
+    "function/index.html#static-function-applyStateChangeToTree",
+    "<span>applyStateChangeToTree</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayerTreeHelper.js</span>",
+    "function"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayer.js~generateid",
+    "function/index.html#static-function-generateID",
+    "<span>generateID</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayer.js</span>",
+    "function"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayertreehelper.js~getlayerbyid",
+    "function/index.html#static-function-getLayerByID",
+    "<span>getLayerByID</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayerTreeHelper.js</span>",
+    "function"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayertreehelper.js~getlayerbylayerid",
+    "function/index.html#static-function-getLayerByLayerID",
+    "<span>getLayerByLayerID</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayerTreeHelper.js</span>",
+    "function"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.nestedlayertreehelper.js~getlayerbyuniqueprop",
+    "function/index.html#static-function-getLayerByUniqueProp",
+    "<span>getLayerByUniqueProp</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.NestedLayerTreeHelper.js</span>",
+    "function"
   ],
   [
     "builtinexternal/ecmascriptexternal.js~array",
@@ -373,403 +571,175 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber5",
-    "LayerHierarchy",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber92",
-    "LayerHierarchy should be able own layers",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber123",
-    "LayerHierarchy should be able to add layers at the root level",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber132",
-    "LayerHierarchy should be able to add layers below the root level to other layers",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber101",
-    "LayerHierarchy should be able to check if it owns a layer",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber108",
-    "LayerHierarchy should be able to get layers by id",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber88",
-    "LayerHierarchy should be able to make layers with a factory method",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber141",
-    "LayerHierarchy should ensure that layers it adds at the root level are owned by it",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber146",
-    "LayerHierarchy should ensure that layers it adds below the root level are owned by it",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber79",
-    "LayerHierarchy should have default (configuration) options",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber159",
-    "LayerHierarchy should have valid enabled states upon creation",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber116",
-    "LayerHierarchy should not be able to add non-NestedLayer layers",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber151",
-    "LayerHierarchy should own all layers it was created with",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber16",
-    "MapServerParser",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber162",
-    "MapServerParser #_convertLayerNodeToNestedLayer)",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber167",
-    "MapServerParser #_convertLayerNodeToNestedLayer) should trim whitespace around a layer name",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber114",
-    "MapServerParser #_queryLayers",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber115",
-    "MapServerParser #_queryLayers should return a promise",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber120",
-    "MapServerParser #_queryLegend",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber121",
-    "MapServerParser #_queryLegend should return a promise",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber65",
-    "MapServerParser #constructor",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber78",
-    "MapServerParser #constructor should have default (configuration) options",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber85",
-    "MapServerParser #constructor should merge options with defaults",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber66",
-    "MapServerParser #constructor should throw errors if required arguments are missing",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber59",
-    "MapServerParser #defaults",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber60",
-    "MapServerParser #defaults should have default configuration options accessible always",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber47",
-    "MapServerParser #map",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber48",
-    "MapServerParser #map should be able to get the Leaflet map object",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber53",
-    "MapServerParser #options",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber54",
-    "MapServerParser #options should be able to get configuration options",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber94",
-    "MapServerParser #parse",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber105",
-    "MapServerParser #parse should resolve the promise",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber101",
-    "MapServerParser #parse should return a promise",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber41",
-    "MapServerParser #url",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber42",
-    "MapServerParser #url should be able to get the MapServer url",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber126",
-    "MapServerParser ._makeLayerURL",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber145",
-    "MapServerParser ._makeLayerURL should make valid URLs",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber127",
-    "MapServerParser ._makeLayerURL should require valid parameters",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber8",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber20",
     "NestedLayer",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber74",
-    "NestedLayer should accept props on construction",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber186",
-    "NestedLayer should always be deselected if disabled",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber313",
-    "NestedLayer should attach to the map when selected",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber237",
-    "NestedLayer should be able to add valid child layers",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber275",
-    "NestedLayer should be able to disable its children",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber255",
-    "NestedLayer should be able to enable its children",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber295",
-    "NestedLayer should be able to take ownership of all its children",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber142",
-    "NestedLayer should be deselectable",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber147",
+    "NestedLayer #children",
     "test"
   ],
   [
     "",
     "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber169",
-    "NestedLayer should be disableable",
+    "NestedLayer #children #hasChildren",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber159",
-    "NestedLayer should be enableable",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber155",
+    "NestedLayer #children should be able to add children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber132",
-    "NestedLayer should be selectable",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber162",
+    "NestedLayer #children should only be able to add NestedLayers as children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber325",
-    "NestedLayer should detach from the map when deselected",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber43",
+    "NestedLayer #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber332",
-    "NestedLayer should detach from the map when disabled",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber64",
+    "NestedLayer #constructor should have defaults for optional arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber128",
-    "NestedLayer should have a name",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber44",
+    "NestedLayer #constructor should throw errors when missing required arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber225",
-    "NestedLayer should have access to its owner's configuration properties when owned",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber76",
+    "NestedLayer #enabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber81",
-    "NestedLayer should have defaults for optional arguments in the constructor",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber250",
-    "NestedLayer should know if it has children",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber212",
-    "NestedLayer should know who its owner is",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber318",
-    "NestedLayer should not attach to the map if it is already attached",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber345",
-    "NestedLayer should not detach from the map if it is already detached",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber179",
-    "NestedLayer should permit toggling the enabled state",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber152",
-    "NestedLayer should permit toggling the selected state",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber338",
-    "NestedLayer should re-attach to the map after being re-enabled (if selected)",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber196",
-    "NestedLayer should retain selected state if disabled then re-enabled",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber101",
+    "NestedLayer #enabled should attach when enabled and selected and enableTriggersAttach is true",
     "test"
   ],
   [
     "",
     "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber95",
-    "NestedLayer should throw errors when missing required arguments on construction",
+    "NestedLayer #enabled should detach when disabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber7",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber111",
+    "NestedLayer #selected",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber126",
+    "NestedLayer #selected should always return the selected state when alwaysDeselectedWhenDisabled is false",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber112",
+    "NestedLayer #selected should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber29",
+    "NestedLayer should have accessible properties",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber8",
+    "NestedLayerTreeHelper",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber60",
+    "NestedLayerTreeHelper #applyStateChangeToLayer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber61",
+    "NestedLayerTreeHelper #applyStateChangeToLayer should apply valid state changes",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber73",
+    "NestedLayerTreeHelper #applyStateChangeToTree",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber74",
+    "NestedLayerTreeHelper #applyStateChangeToTree should apply valid state changes",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber30",
+    "NestedLayerTreeHelper #getLayerByID",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber31",
+    "NestedLayerTreeHelper #getLayerByID should find layers by ID",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber38",
+    "NestedLayerTreeHelper #getLayerByID should return null if the layer is not found",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber45",
+    "NestedLayerTreeHelper #getLayerByLayerID",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber46",
+    "NestedLayerTreeHelper #getLayerByLayerID should find layers by server ID",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber53",
+    "NestedLayerTreeHelper #getLayerByLayerID should return null if the layer is not found",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber19",
     "NestedLayers",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber34",
+    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber46",
     "NestedLayers should have default (configuration) options",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber22",
+    "test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber34",
     "NestedLayers should have required arguments on construction",
     "test"
   ],
@@ -789,6 +759,78 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/Leaflet.Symbology.spec.js.html#lineNumber22",
     "getters and setters label should be able to get a label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber92",
+    "should be able own layers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber123",
+    "should be able to add layers at the root level",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber132",
+    "should be able to add layers below the root level to other layers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber101",
+    "should be able to check if it owns a layer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber108",
+    "should be able to get layers by id",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber88",
+    "should be able to make layers with a factory method",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber141",
+    "should ensure that layers it adds at the root level are owned by it",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber146",
+    "should ensure that layers it adds below the root level are owned by it",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber79",
+    "should have default (configuration) options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber159",
+    "should have valid enabled states upon creation",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber116",
+    "should not be able to add non-NestedLayer layers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber151",
+    "should own all layers it was created with",
     "test"
   ],
   [
@@ -889,13 +931,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-hierarchy",
+    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-hierarchy",
     "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "member"
   ],
   [
     "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-hierarchy",
+    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-hierarchy",
     "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
     "member"
   ],
@@ -1110,6 +1152,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/leaflet.nestedlayer.js~nestedlayer#defaults",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-defaults",
+    "src/Leaflet.NestedLayer.js~NestedLayer#defaults",
+    "member"
+  ],
+  [
     "src/leaflet.nestedlayer.js~nestedlayer#deselect",
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-deselect",
     "src/Leaflet.NestedLayer.js~NestedLayer#deselect",
@@ -1128,12 +1176,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/leaflet.nestedlayer.js~nestedlayer#disablechildren",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-disableChildren",
-    "src/Leaflet.NestedLayer.js~NestedLayer#disableChildren",
-    "method"
-  ],
-  [
     "src/leaflet.nestedlayer.js~nestedlayer#disabled",
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-disabled",
     "src/Leaflet.NestedLayer.js~NestedLayer#disabled",
@@ -1143,12 +1185,6 @@ window.esdocSearchIndex = [
     "src/leaflet.nestedlayer.js~nestedlayer#enable",
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-enable",
     "src/Leaflet.NestedLayer.js~NestedLayer#enable",
-    "method"
-  ],
-  [
-    "src/leaflet.nestedlayer.js~nestedlayer#enablechildren",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-enableChildren",
-    "src/Leaflet.NestedLayer.js~NestedLayer#enableChildren",
     "method"
   ],
   [
@@ -1176,15 +1212,15 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/leaflet.nestedlayer.js~nestedlayer#isownedby",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-isOwnedBy",
-    "src/Leaflet.NestedLayer.js~NestedLayer#isOwnedBy",
-    "method"
-  ],
-  [
     "src/leaflet.nestedlayer.js~nestedlayer#layer",
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-layer",
     "src/Leaflet.NestedLayer.js~NestedLayer#layer",
+    "member"
+  ],
+  [
+    "src/leaflet.nestedlayer.js~nestedlayer#layerid",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-layerID",
+    "src/Leaflet.NestedLayer.js~NestedLayer#layerID",
     "member"
   ],
   [
@@ -1212,27 +1248,15 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/leaflet.nestedlayer.js~nestedlayer#options",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-options",
-    "src/Leaflet.NestedLayer.js~NestedLayer#options",
+    "src/leaflet.nestedlayer.js~nestedlayer#parent",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-parent",
+    "src/Leaflet.NestedLayer.js~NestedLayer#parent",
     "member"
   ],
   [
-    "src/leaflet.nestedlayer.js~nestedlayer#ownchildren",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-ownChildren",
-    "src/Leaflet.NestedLayer.js~NestedLayer#ownChildren",
-    "method"
-  ],
-  [
-    "src/leaflet.nestedlayer.js~nestedlayer#owner",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-owner",
-    "src/Leaflet.NestedLayer.js~NestedLayer#owner",
-    "member"
-  ],
-  [
-    "src/leaflet.nestedlayer.js~nestedlayer#owner",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-owner",
-    "src/Leaflet.NestedLayer.js~NestedLayer#owner",
+    "src/leaflet.nestedlayer.js~nestedlayer#rules",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-rules",
+    "src/Leaflet.NestedLayer.js~NestedLayer#rules",
     "member"
   ],
   [
@@ -1243,20 +1267,14 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.nestedlayer.js~nestedlayer#selected",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-selected",
-    "src/Leaflet.NestedLayer.js~NestedLayer#selected",
-    "member"
-  ],
-  [
-    "src/leaflet.nestedlayer.js~nestedlayer#selected",
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-selected",
     "src/Leaflet.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
   [
-    "src/leaflet.nestedlayer.js~nestedlayer#swatch",
-    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-swatch",
-    "src/Leaflet.NestedLayer.js~NestedLayer#swatch",
+    "src/leaflet.nestedlayer.js~nestedlayer#selected",
+    "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-selected",
+    "src/Leaflet.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
   [
@@ -1270,6 +1288,12 @@ window.esdocSearchIndex = [
     "class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-toggleSelected",
     "src/Leaflet.NestedLayer.js~NestedLayer#toggleSelected",
     "method"
+  ],
+  [
+    "src/leaflet.nestedlayertreehelper.js",
+    "file/src/Leaflet.NestedLayerTreeHelper.js.html",
+    "src/Leaflet.NestedLayerTreeHelper.js",
+    "file"
   ],
   [
     "src/leaflet.symbology.js",
@@ -1359,6 +1383,12 @@ window.esdocSearchIndex = [
     "test/leaflet.symbology.spec.js",
     "test-file/test/Leaflet.Symbology.spec.js.html",
     "test/Leaflet.Symbology.spec.js",
+    "testFile"
+  ],
+  [
+    "test/nestedlayertreehelper.spec.js",
+    "test-file/test/NestedLayerTreeHelper.spec.js.html",
+    "test/NestedLayerTreeHelper.spec.js",
     "testFile"
   ]
 ]

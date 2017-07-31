@@ -48,14 +48,19 @@ $ npm start
 
 ### Script Tasks
 
-During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, linting, and testing. These processes run in parallel together; if one "fails" at any point, the others will continue.
+During development, it's recommended to use the main `watch` task (which is aliased to `npm start`), which will enable real-time transpilation, bundling, and documentation generation. These processes run in parallel together; if one "fails" at any point, the others will continue. If you'd like to also add real-time linting and testing, use `watch:all`.
 
 ```sh
+# Transplile, bundle, and serve docs
 $ npm start
 # or
 $ npm run watch
+
+# Also test and lint
+$ npm run watch:all
 ```
 
+If you like to have multiple consoles open, you can keep the build process chugging in one console with `npm start`, and in two other consoles watch the linter and test with `npm run lint:watch` and `npm run test:watch`.
 
 #### Building and Transpiling
 
@@ -109,9 +114,12 @@ The linting scripts will throw errors if you are missing or have malformed inlin
 ```sh
 # Generate documentation in /docs
 # This is also called when you npm run build
+# View the docs at /docs/index.html
 $ npm run docs
 
-# View the docs at /docs/index.html
+# Watch and re-compile changes to the docs
+$ npm run docs:watch
+# Docs served at http://localhost:4001/
 ```
 
 ### Script Configurations

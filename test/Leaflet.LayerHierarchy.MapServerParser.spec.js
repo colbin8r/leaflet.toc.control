@@ -13,7 +13,7 @@ import { Map } from 'leaflet-headless';
 // import chalk from 'chalk';
 import sinon from 'sinon';
 
-describe( 'MapServerParser', () => {
+describe.skip( 'MapServerParser', () => {
 
   let url, map, options, parser;
   before( () => {

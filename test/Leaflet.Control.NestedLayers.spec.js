@@ -4,6 +4,18 @@ import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
 
 import jsdom from 'jsdom';
 
+// describe('TOCComponent', () => {
+
+// })
+
+// describe('NestedLayerComponent', () => {
+
+// })
+
+// describe('NestedLayers Plugin', () => {
+
+// })
+
 describe( 'NestedLayers', () => {
 
   let control, h, el;

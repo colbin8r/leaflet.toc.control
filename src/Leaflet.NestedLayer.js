@@ -1,10 +1,45 @@
+import { defaultsDeep as defaults } from 'lodash';
+
+let lastID = 0;
+
 /**
- * Wraps a {@link http://leafletjs.com/reference-1.1.0.html#layer Leaflet
- * layer} to allow that layer to be the "parent" of other layers by having
+ * Generate a ID number guaranteed to be unique.
+ * IDs are composed of a pseudorandom 4-digit number suffixed by an incrementing counter.
+ * @return {Number} Unique ID number
+ */
+export function generateID() {
+  // generates a 4 digit random number
+  // lastID is appended to the end of the number
+  // lastID is incremented each
+  return Number.parseInt(Math.floor(1000 + Math.random() * 9000).toString()
+                         + (lastID++).toString());
+}
+
+/**
+ * Wraps a Leaflet Layer to allow that layer to be the "parent" of other layers by having
  * "child" layers
- * @param {object} props The layer data
+ * @see http://leafletjs.com/reference-1.1.0.html#layer
  */
 export default class NestedLayer {
+
+  static _defaults = {
+    parent: null,
+    children: [],
+    enabled: true,
+    selected: false,
+    minZoom: Number.NEGATIVE_INFINITY,
+    maxZoom: Number.POSITIVE_INFINITY,
+    rules: {
+      enableTriggersAttach: true,
+      alwaysDeselectedWhenDisabled: true
+    },
+    _isAttached: false
+  }
+
+  get defaults() {
+    // uses reflection to return the static _defaults property on the class
+    return this.constructor._defaults;
+  }
 
   /**
    *
@@ -22,26 +57,43 @@ export default class NestedLayer {
    * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible
    * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible
    */
-  constructor(props) {
-    // set default props for optional props
-    this._props = { children: [], enabled: true, selected: false, swatch: '' };
-    this._isAttached = false;
 
-    // verify that all required arguments are present
-    if (typeof props.id == 'undefined') {
-      throw new Error('Missing ID when creating NestedLayer');
+  /**
+   * Creates a new NestedLayer.
+   * @param  {number} layerID ID of the layer on the origin.
+   * @param  {string} name    Name of the layer on the origin; display-friendly
+   * @param  {L.Layer} layer   Leaflet layer
+   * @param  {L.Map} map     Leaflet map
+   * @param  {object} props   Optional properties
+   */
+  constructor(layerID, name, layer, map, props) {
+
+    // ensure all required props are present
+    if (typeof layerID == 'undefined') {
+      throw new Error('Missing layer ID when creating NestedLayer');
     }
-    if (typeof props.name == 'undefined') {
+    if (typeof name == 'undefined') {
       throw new Error('Missing name when creating NestedLayer');
     }
-    if (typeof props.layer == 'undefined') {
+    if (typeof layer == 'undefined') {
       throw new Error('Missing layer object when creating NestedLayer');
     }
-    if (typeof props.map == 'undefined') {
+    if (typeof map == 'undefined') {
       throw new Error('Missing map object when creating NestedLayer');
     }
 
-    Object.assign(this._props, props);
+    // set the required props
+    this._props = {
+      layerID,
+      name,
+      layer,
+      map
+    };
+
+    // merge optional props with defaults
+    // the "defaults" also contains the initial state
+    defaults(this._props, props, this.defaults);
+    this._props.id = generateID();
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
@@ -59,17 +111,17 @@ export default class NestedLayer {
 
     // if this layer has zoom data, we need to handle the case where the user zooms to a level where
     // our layer should be disabled according to the minZoom/maxZoom contained in the layer object
-    if (this.minZoom !== undefined && this.maxZoom !== undefined) {
-      this.map.on('zoomend', this._handleMapZoom);
-    }
+    // if (this.minZoom !== undefined && this.maxZoom !== undefined) {
+    //   this.map.on('zoomend', this._handleMapZoom);
+    // }
   }
 
   /**
-   * Layer ID
+   * Layer ID as specified by the server
    * @type {number}
    */
-  get id() {
-    return this._props.id;
+  get layerID() {
+    return this._props.layerID;
   }
 
   /**
@@ -97,19 +149,19 @@ export default class NestedLayer {
   }
 
   /**
-   * Base64 encoded swatch PNG
-   * @type {string}
-   */
-  get swatch() {
-    return this._props.swatch;
-  }
-
-  /**
    * Child layers
    * @type {NestedLayer[]}
    */
   get children() {
     return this._props.children;
+  }
+
+  /**
+   * Parent layer
+   * @type {NestedLayer}
+   */
+  get parent() {
+    return this._props.parent;
   }
 
   /**
@@ -126,6 +178,18 @@ export default class NestedLayer {
    */
   get maxZoom() {
     return this._props.maxZoom;
+  }
+
+  get rules() {
+    return this._props.rules;
+  }
+
+  /**
+   * Unique ID generated for each NestedLayer
+   * @type {number}
+   */
+  get id() {
+    return this._props.id;
   }
 
   // enabled = user may freely toggle this layer on and off
@@ -150,7 +214,7 @@ export default class NestedLayer {
       this._detach();
 
     // if enabling, and marked selected (i.e. "re-enabling"), attach to map
-    } else if (this._props.selected) {
+    } else if (this.rules.enableTriggersAttach && this._props.selected) {
       this._attach();
     }
   }
@@ -178,7 +242,7 @@ export default class NestedLayer {
   // selected = layer present on the map
   // deselected = layer not present on the map
   get selected() {
-    if (this.disabled) {
+    if (this.rules.alwaysDeselectedWhenDisabled && this.disabled) {
       return false;
     } else {
       return this._props.selected;
@@ -191,10 +255,10 @@ export default class NestedLayer {
     // disable children from selection when unselected
     if (this.selected) {
       this._attach();
-      this.enableChildren();
+      // this.enableChildren();
     } else {
       this._detach();
-      this.disableChildren();
+      // this.disableChildren();
     }
   }
   get deselected() {
@@ -210,28 +274,6 @@ export default class NestedLayer {
     this.selected = !this.selected;
   }
 
-  // this is used to track what programmatic object owns this NestedLayer
-  get owner() {
-    return this._owner;
-  }
-  set owner(val) {
-    this._owner = val;
-  }
-  // checks ownership
-  isOwnedBy(owner) {
-    return this.owner === owner;
-  }
-
-  // options come from the layers owner
-  // will return null if there is no owner
-  get options() {
-    if (typeof this.owner === 'undefined') {
-      return null;
-    } else {
-      return this.owner.options;
-    }
-  }
-
   // true if the layer has children
   get hasChildren() {
     return this.children.length > 0;
@@ -245,42 +287,42 @@ export default class NestedLayer {
     this._props.children.push(child);
   }
 
-  enableChildren() {
-    this._applyStateChangeToAllChildren('enabled', true, this.children);
-  }
+  // enableChildren() {
+  //   this._applyStateChangeToAllChildren('enabled', true, this.children);
+  // }
 
-  disableChildren() {
-    this._applyStateChangeToAllChildren('enabled', false, this.children);
-  }
+  // disableChildren() {
+  //   this._applyStateChangeToAllChildren('enabled', false, this.children);
+  // }
 
-  ownChildren() {
-    this._applyStateChangeToAllChildren('owner', this.owner, this.children);
-  }
+  // ownChildren() {
+  //   this._applyStateChangeToAllChildren('owner', this.owner, this.children);
+  // }
 
-  _applyStateChangeToAllChildren(prop, val, children) {
-    // utility to recursively loop through children (and their children, etc.)
-    // to change their state
-    // IDEA: convert to a "deep map" function
-    for (let i = 0; i < children.length; i++) {
-      // make the state change
-      children[i][prop] = val;
+  // _applyStateChangeToAllChildren(prop, val, children) {
+  //   // utility to recursively loop through children (and their children, etc.)
+  //   // to change their state
+  //   // IDEA: convert to a "deep map" function
+  //   for (let i = 0; i < children.length; i++) {
+  //     // make the state change
+  //     children[i][prop] = val;
 
-      // loop through children/subtrees when necessary
-      if (children[i].hasChildren) {
-        this._applyStateChangeToAllChildren(prop, val, children[i].children);
-      }
-    }
-  }
+  //     // loop through children/subtrees when necessary
+  //     if (children[i].hasChildren) {
+  //       this._applyStateChangeToAllChildren(prop, val, children[i].children);
+  //     }
+  //   }
+  // }
 
-  _handleMapZoom = () => {
-    const zoom = this.map.getZoom();
+  // _handleMapZoom = () => {
+  //   const zoom = this.map.getZoom();
 
-    if (zoom < this.minZoom || zoom > this.maxZoom) {
-      this._detach();
-    } else {
-      this._attach()
-    }
-  }
+  //   if (zoom < this.minZoom || zoom > this.maxZoom) {
+  //     this._detach();
+  //   } else {
+  //     this._attach()
+  //   }
+  // }
 
   // display on map
   _attach() {

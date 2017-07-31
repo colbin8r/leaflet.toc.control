@@ -39,6 +39,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -55,20 +61,20 @@
 
   <tbody data-ice="tests">
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber7"><p>NestedLayers</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber19"><p>NestedLayers</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber22"><p>should have required arguments on construction</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber34"><p>should have required arguments on construction</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber34"><p>should have default (configuration) options</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.Control.NestedLayers.spec.js.html#lineNumber46"><p>should have default (configuration) options</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -76,23 +82,209 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber16"><p>MapServerParser</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">14</td>
-</tr>
-
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber41"><p>#url</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber41"><p>#url</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">1</td>
 </tr>
 
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber42"><p>should be able to get the MapServer url</p>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber42"><p>should be able to get the MapServer url</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber47"><p>#map</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber48"><p>should be able to get the Leaflet map object</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber53"><p>#options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber54"><p>should be able to get configuration options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber59"><p>#defaults</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber60"><p>should have default configuration options accessible always</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber65"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber66"><p>should throw errors if required arguments are missing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber78"><p>should have default (configuration) options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber85"><p>should merge options with defaults</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber94"><p>#parse</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber101"><p>should return a promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber105"><p>should resolve the promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber114"><p>#_queryLayers</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber115"><p>should return a promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber120"><p>#_queryLegend</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber121"><p>should return a promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber126"><p>._makeLayerURL</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber127"><p>should require valid parameters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber145"><p>should make valid URLs</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber162"><p>#_convertLayerNodeToNestedLayer)</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber167"><p>should trim whitespace around a layer name</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber9"><p>#generateID</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber10"><p>should return numbers</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber14"><p>shouldn&apos;t generate the same ID twice</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber20"><p>NestedLayer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">10</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber29"><p>should have accessible properties</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -100,14 +292,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber47"><p>#map</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber43"><p>#constructor</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
+  <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber48"><p>should be able to get the Leaflet map object</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber44"><p>should throw errors when missing required arguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber64"><p>should have defaults for optional arguments</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -115,14 +313,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber53"><p>#options</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber76"><p>#enabled</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
+  <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber54"><p>should be able to get configuration options</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber95"><p>should detach when disabled</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber101"><p>should attach when enabled and selected and enableTriggersAttach is true</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -130,14 +334,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber59"><p>#defaults</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber111"><p>#selected</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
+  <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber60"><p>should have default configuration options accessible always</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber112"><p>should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber126"><p>should always return the selected state when alwaysDeselectedWhenDisabled is false</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -145,353 +355,26 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber65"><p>#constructor</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber147"><p>#children</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">3</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber66"><p>should throw errors if required arguments are missing</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber155"><p>should be able to add children</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber78"><p>should have default (configuration) options</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber162"><p>should only be able to add NestedLayers as children</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber85"><p>should merge options with defaults</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber94"><p>#parse</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">2</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber101"><p>should return a promise</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber105"><p>should resolve the promise</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber114"><p>#_queryLayers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber115"><p>should return a promise</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber120"><p>#_queryLegend</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber121"><p>should return a promise</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber126"><p>._makeLayerURL</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">2</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber127"><p>should require valid parameters</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber145"><p>should make valid URLs</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber162"><p>#_convertLayerNodeToNestedLayer)</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.LayerHierarchy.MapServerParser.spec.js.html#lineNumber167"><p>should trim whitespace around a layer name</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber5"><p>LayerHierarchy</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">12</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber79"><p>should have default (configuration) options</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber88"><p>should be able to make layers with a factory method</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber92"><p>should be able own layers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber101"><p>should be able to check if it owns a layer</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber108"><p>should be able to get layers by id</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber116"><p>should not be able to add non-NestedLayer layers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber123"><p>should be able to add layers at the root level</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber132"><p>should be able to add layers below the root level to other layers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber141"><p>should ensure that layers it adds at the root level are owned by it</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber146"><p>should ensure that layers it adds below the root level are owned by it</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber151"><p>should own all layers it was created with</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.LayerHierarchy.spec.js.html#lineNumber159"><p>should have valid enabled states upon creation</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber8"><p>NestedLayer</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">25</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber74"><p>should accept props on construction</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber81"><p>should have defaults for optional arguments in the constructor</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber95"><p>should throw errors when missing required arguments on construction</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber128"><p>should have a name</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber132"><p>should be selectable</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber142"><p>should be deselectable</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber152"><p>should permit toggling the selected state</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber159"><p>should be enableable</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber169"><p>should be disableable</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber179"><p>should permit toggling the enabled state</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber186"><p>should always be deselected if disabled</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber196"><p>should retain selected state if disabled then re-enabled</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber212"><p>should know who its owner is</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber225"><p>should have access to its owner&apos;s configuration properties when owned</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber237"><p>should be able to add valid child layers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber250"><p>should know if it has children</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber255"><p>should be able to enable its children</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber275"><p>should be able to disable its children</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber295"><p>should be able to take ownership of all its children</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber313"><p>should attach to the map when selected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber318"><p>should not attach to the map if it is already attached</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber325"><p>should detach from the map when deselected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber332"><p>should detach from the map when disabled</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber338"><p>should re-attach to the map after being re-enabled (if selected)</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber345"><p>should not detach from the map if it is already detached</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.NestedLayer.spec.js.html#lineNumber169"><p>#hasChildren</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -516,6 +399,87 @@
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
   <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.Symbology.spec.js.html#lineNumber22"><p>should be able to get a label</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber8"><p>NestedLayerTreeHelper</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber30"><p>#getLayerByID</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber31"><p>should find layers by ID</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber38"><p>should return null if the layer is not found</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber45"><p>#getLayerByLayerID</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber46"><p>should find layers by server ID</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber53"><p>should return null if the layer is not found</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber60"><p>#applyStateChangeToLayer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber61"><p>should apply valid state changes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber73"><p>#applyStateChangeToTree</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/NestedLayerTreeHelper.spec.js.html#lineNumber74"><p>should apply valid state changes</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>

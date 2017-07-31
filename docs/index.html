@@ -39,6 +39,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -73,11 +79,16 @@ $ npm start
 # Start development :)</code>
 </code></pre>
 <h3 id="script-tasks">Script Tasks</h3>
-<p>During development, it&apos;s recommended to use the main <code>watch</code> task (which is aliased to <code>npm start</code>), which will enable real-time transpilation, bundling, linting, and testing. These processes run in parallel together; if one &quot;fails&quot; at any point, the others will continue.</p>
-<pre><code class="lang-sh"><code class="source-code prettyprint">$ npm start
+<p>During development, it&apos;s recommended to use the main <code>watch</code> task (which is aliased to <code>npm start</code>), which will enable real-time transpilation, bundling, and documentation generation. These processes run in parallel together; if one &quot;fails&quot; at any point, the others will continue. If you&apos;d like to also add real-time linting and testing, use <code>watch:all</code>.</p>
+<pre><code class="lang-sh"><code class="source-code prettyprint"># Transplile, bundle, and serve docs
+$ npm start
 # or
-$ npm run watch</code>
+$ npm run watch
+
+# Also test and lint
+$ npm run watch:all</code>
 </code></pre>
+<p>If you like to have multiple consoles open, you can keep the build process chugging in one console with <code>npm start</code>, and in two other consoles watch the linter and test with <code>npm run lint:watch</code> and <code>npm run test:watch</code>.</p>
 <h4 id="building-and-transpiling">Building and Transpiling</h4>
 <pre><code class="lang-sh"><code class="source-code prettyprint"># Rebuild everything
 $ npm run build
@@ -115,9 +126,12 @@ $ npm run lint:tests</code>
 <p>The linting scripts will throw errors if you are missing or have malformed inline docs. You can see a list of all valid <a href="https://esdoc.org/manual/tags.html">tags</a> that you can use in comment blocks. Since the project is written in ES6, there is support for much of the <a href="https://esdoc.org/manual/feature.html#ecmascript-proposal">experimental ES6 features</a> provided as a part of the ECMAScript proposal that Babel implements.</p>
 <pre><code class="lang-sh"><code class="source-code prettyprint"># Generate documentation in /docs
 # This is also called when you npm run build
+# View the docs at /docs/index.html
 $ npm run docs
 
-# View the docs at /docs/index.html</code>
+# Watch and re-compile changes to the docs
+$ npm run docs:watch
+# Docs served at http://localhost:4001/</code>
 </code></pre>
 <h3 id="script-configurations">Script Configurations</h3>
 <p>Gulp, the build system, can be configured in <code>gulpfile.babel.js</code>.</p>

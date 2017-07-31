@@ -39,18 +39,24 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.LayerHierarchy.js~LayerHierarchy.html">LayerHierarchy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Symbology.js~Symbology.html">Symbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import NestedLayer from &apos;<span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber7">leaflet.control.nestedlayers/src/Leaflet.NestedLayer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import NestedLayer from &apos;<span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber23">leaflet.control.nestedlayers/src/Leaflet.NestedLayer.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber7">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber23">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -70,13 +76,12 @@
 
   
   
-  <div class="description" data-ice="description"><p>Wraps a {@link <a href="http://leafletjs.com/reference-1.1.0.html#layer">http://leafletjs.com/reference-1.1.0.html#layer</a> Leaflet
-layer} to allow that layer to be the &quot;parent&quot; of other layers by having
+  <div class="description" data-ice="description"><p>Wraps a Leaflet Layer to allow that layer to be the &quot;parent&quot; of other layers by having
 &quot;child&quot; layers</p>
 </div>
   
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="http://leafletjs.com/reference-1.1.0.html#layer">http://leafletjs.com/reference-1.1.0.html#layer</a></span></li></ul></div>
 
   
 
@@ -104,13 +109,14 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         <p>
           
           
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(layerID: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, layer: <span>L.Layer</span>, map: <span>L.Map</span>, props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Creates a new NestedLayer.</p>
+</div>
       </div>
     </td>
     <td>
@@ -146,6 +152,33 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         
         <div data-ice="description"><p>Child layers</p>
 </div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-defaults">defaults</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
       </div>
     </td>
     <td>
@@ -309,7 +342,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
       <div>
         
         
-        <div data-ice="description"><p>Layer ID</p>
+        <div data-ice="description"><p>Unique ID generated for each NestedLayer</p>
 </div>
       </div>
     </td>
@@ -338,6 +371,34 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         
         
         <div data-ice="description"><p>Underlying Leaflet layer</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-layerID">layerID</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Layer ID as specified by the server</p>
 </div>
       </div>
     </td>
@@ -471,13 +532,14 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         <p>
           
           
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-options">options</a></span></span><span data-ice="signature">: <span>*</span></span>
+          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-parent">parent</a></span></span><span data-ice="signature">: <span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Parent layer</p>
+</div>
       </div>
     </td>
     <td>
@@ -498,34 +560,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         <p>
           
           
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-owner">owner</a></span></span><span data-ice="signature">: <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      <span class="kind" data-ice="kind">set</span>
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-set-owner">owner</a></span></span><span data-ice="signature">: <span>*</span></span>
+          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-rules">rules</a></span></span><span data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -586,34 +621,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         
         
         
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      <span class="kind" data-ice="kind">get</span>
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-get-swatch">swatch</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Base64 encoded swatch PNG</p>
-</div>
       </div>
     </td>
     <td>
@@ -723,33 +730,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         <p>
           
           
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-disableChildren">disableChildren</a></span></span><span data-ice="signature">()</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
           <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-enable">enable</a></span></span><span data-ice="signature">()</span>
         </p>
       </div>
@@ -758,87 +738,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
         
         <div data-ice="description"><p>Enable the layer</p>
 </div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-enableChildren">enableChildren</a></span></span><span data-ice="signature">()</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-isOwnedBy">isOwnedBy</a></span></span><span data-ice="signature">(owner: <span>*</span>): <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html#instance-method-ownChildren">ownChildren</a></span></span><span data-ice="signature">()</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
       </div>
     </td>
     <td>
@@ -946,18 +845,19 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     
     
     
-    <span data-ice="name">constructor</span><span data-ice="signature">(props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+    <span data-ice="name">constructor</span><span data-ice="signature">(layerID: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, layer: <span>L.Layer</span>, map: <span>L.Map</span>, props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber25">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber69">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Creates a new NestedLayer.</p>
+</div>
 
   
 
@@ -970,86 +870,38 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <tbody>
     
     <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">layerID</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>ID of the layer on the origin.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">name</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Name of the layer on the origin; display-friendly</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">layer</td>
+      <td data-ice="type"><span>L.Layer</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Leaflet layer</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">map</td>
+      <td data-ice="type"><span>L.Map</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Leaflet map</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">props</td>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The layer data</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.id</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The layer&apos;s unique ID number</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.name</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The layer&apos;s unique name</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.layer</td>
-      <td data-ice="type"><span>L.Layer</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>A {@link
-<a href="http://leafletjs.com/reference-1.1.0.html#layer">http://leafletjs.com/reference-1.1.0.html#layer</a> Leaflet layer}</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.map</td>
-      <td data-ice="type"><span>L.Map</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>{@link
-<a href="http://leafletjs.com/reference-1.1.0.html#map">http://leafletjs.com/reference-1.1.0.html#map</a> Leaflet map} to attach to</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.enabled</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: true</li></ul></td>
-      <td data-ice="description"><p>Initial enabled state of the layer</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.selected</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: false</li></ul></td>
-      <td data-ice="description"><p>Initial selected state of the layer</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.swatch</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: &apos;&apos;</li></ul></td>
-      <td data-ice="description"><p>Base64 encoded swatch PNG</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.children</td>
-      <td data-ice="type"><span><span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span><span>[]</span></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: []</li></ul></td>
-      <td data-ice="description"><p>Child layers</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.minZoom</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>Minimum zoom level that the layer should be visible</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="1">
-      <td data-ice="name" data-depth="1">props.maxZoom</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>Maximum zoom level that the layer should be visible</p>
+      <td data-ice="description"><p>Optional properties</p>
 </td>
     </tr>
 </tbody>
@@ -1089,7 +941,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber111">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber155">source</a></span></span>
     </span>
   </h3>
 
@@ -1098,6 +950,49 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
   <div data-ice="description"><p>Child layers</p>
 </div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-defaults">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span data-ice="name">defaults</span><span data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber39">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
 
   
 
@@ -1133,7 +1028,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber200">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber264">source</a></span></span>
     </span>
   </h3>
 
@@ -1176,7 +1071,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber161">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber225">source</a></span></span>
     </span>
   </h3>
 
@@ -1220,7 +1115,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber145">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber209">source</a></span></span>
     </span>
   </h3>
 
@@ -1263,7 +1158,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber142">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber206">source</a></span></span>
     </span>
   </h3>
 
@@ -1307,7 +1202,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber236">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber278">source</a></span></span>
     </span>
   </h3>
 
@@ -1350,14 +1245,14 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber71">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber191">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Layer ID</p>
+  <div data-ice="description"><p>Unique ID generated for each NestedLayer</p>
 </div>
 
   
@@ -1394,7 +1289,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber87">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber139">source</a></span></span>
     </span>
   </h3>
 
@@ -1402,6 +1297,50 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
   
   <div data-ice="description"><p>Underlying Leaflet layer</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-layerID">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span data-ice="name">layerID</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber123">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Layer ID as specified by the server</p>
 </div>
 
   
@@ -1438,7 +1377,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber95">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber147">source</a></span></span>
     </span>
   </h3>
 
@@ -1482,7 +1421,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber127">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber179">source</a></span></span>
     </span>
   </h3>
 
@@ -1526,7 +1465,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber119">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber171">source</a></span></span>
     </span>
   </h3>
 
@@ -1570,7 +1509,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber79">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber131">source</a></span></span>
     </span>
   </h3>
 
@@ -1603,25 +1542,26 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-get-options">
+  <h3 data-ice="anchor" id="instance-get-parent">
     <span class="access" data-ice="access">public</span>
     
     <span class="kind" data-ice="kind">get</span>
     
     
     
-    <span data-ice="name">options</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">parent</span><span data-ice="signature">: <span><a href="class/src/Leaflet.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber227">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber163">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Parent layer</p>
+</div>
 
   
 
@@ -1646,61 +1586,18 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-get-owner">
+  <h3 data-ice="anchor" id="instance-get-rules">
     <span class="access" data-ice="access">public</span>
     
     <span class="kind" data-ice="kind">get</span>
     
     
     
-    <span data-ice="name">owner</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">rules</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber214">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-set-owner">
-    <span class="access" data-ice="access">public</span>
-    
-    <span class="kind" data-ice="kind">set</span>
-    
-    
-    
-    <span data-ice="name">owner</span><span data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber217">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber183">source</a></span></span>
     </span>
   </h3>
 
@@ -1743,7 +1640,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber180">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber244">source</a></span></span>
     </span>
   </h3>
 
@@ -1786,7 +1683,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber187">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber251">source</a></span></span>
     </span>
   </h3>
 
@@ -1794,50 +1691,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
   
   
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-get-swatch">
-    <span class="access" data-ice="access">public</span>
-    
-    <span class="kind" data-ice="kind">get</span>
-    
-    
-    
-    <span data-ice="name">swatch</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber103">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Base64 encoded swatch PNG</p>
-</div>
 
   
 
@@ -1876,7 +1729,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber241">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber283">source</a></span></span>
     </span>
   </h3>
 
@@ -1935,7 +1788,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber206">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber270">source</a></span></span>
     </span>
   </h3>
 
@@ -1978,7 +1831,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber170">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber234">source</a></span></span>
     </span>
   </h3>
 
@@ -1987,49 +1840,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
   <div data-ice="description"><p>Disable the layer</p>
 </div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-disableChildren">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span data-ice="name">disableChildren</span><span data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber252">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
 
   
 
@@ -2065,7 +1875,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber166">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber230">source</a></span></span>
     </span>
   </h3>
 
@@ -2074,163 +1884,6 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
   
   <div data-ice="description"><p>Enable the layer</p>
 </div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-enableChildren">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span data-ice="name">enableChildren</span><span data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber248">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-isOwnedBy">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span data-ice="name">isOwnedBy</span><span data-ice="signature">(owner: <span>*</span>): <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber221">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">owner</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type" data-ice="returnType"><span>*</span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-ownChildren">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span data-ice="name">ownChildren</span><span data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber256">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
 
   
 
@@ -2266,7 +1919,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber203">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber267">source</a></span></span>
     </span>
   </h3>
 
@@ -2309,7 +1962,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber174">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber238">source</a></span></span>
     </span>
   </h3>
 
@@ -2353,7 +2006,7 @@ layer} to allow that layer to be the &quot;parent&quot; of other layers by havin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber209">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Leaflet.NestedLayer.js.html#lineNumber273">source</a></span></span>
     </span>
   </h3>
 
