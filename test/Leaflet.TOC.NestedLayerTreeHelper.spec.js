@@ -1,6 +1,7 @@
 /*global describe, expect, it, beforeEach*/
-import * as NestedLayerTreeHelper from './../src/Leaflet.NestedLayerTreeHelper';
-import NestedLayer from './../src/Leaflet.NestedLayer';
+import * as NestedLayerTreeHelper from '../src/Leaflet.TOC.NestedLayerTreeHelper';
+import NestedLayer from '../src/Leaflet.TOC.NestedLayer';
+// import tree, * as fixtures from './fixtures/smalltree';
 
 import L from 'leaflet-headless';
 import sinon from 'sinon';

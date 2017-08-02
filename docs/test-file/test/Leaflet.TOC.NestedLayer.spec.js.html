@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/Leaflet.TOC.NestedLayer.spec.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.TOC.NestedLayer.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
+import NestedLayer, { generateID } from &apos;./../src/Leaflet.TOC.NestedLayer&apos;;
+
+import L from &apos;leaflet-headless&apos;;
+import sinon from &apos;sinon&apos;;
+
+describe(&apos;#generateID&apos;, () =&gt; {
+  it(&apos;should return numbers&apos;, () =&gt; {
+    expect(generateID()).to.be.a(&apos;number&apos;);
+  })
+
+  it(&apos;shouldn\&apos;t generate the same ID twice&apos;, () =&gt; {
+    const a = generateID(), b = generateID();
+    expect(a).to.not.equal(b);
+  })
+})
+
+describe(&apos;NestedLayer&apos;, () =&gt; {
+  let l;
+  let layerStub = sinon.createStubInstance(L.Layer);
+  let mapStub = sinon.createStubInstance(L.Map);
+
+  beforeEach(() =&gt; {
+    l = new NestedLayer(666, &apos;Layer 666&apos;, layerStub, mapStub);
+  })
+
+  it(&apos;should have accessible properties&apos;, () =&gt; {
+    expect(l).to.have.property(&apos;layerID&apos;);
+    expect(l).to.have.property(&apos;name&apos;);
+    expect(l).to.have.property(&apos;enabled&apos;);
+    expect(l).to.have.property(&apos;selected&apos;);
+    expect(l).to.have.property(&apos;layer&apos;);
+    expect(l).to.have.property(&apos;children&apos;);
+    expect(l).to.have.property(&apos;parent&apos;);
+    expect(l).to.have.property(&apos;minZoom&apos;);
+    expect(l).to.have.property(&apos;maxZoom&apos;);
+    expect(l).to.have.property(&apos;rules&apos;);
+    expect(l).to.have.property(&apos;id&apos;);
+  })
+
+  describe(&apos;#constructor&apos;, () =&gt; {
+    it(&apos;should throw errors when missing required arguments&apos;, () =&gt; {
+      const layerID = 999;
+      const name = &apos;Layer 999&apos;;
+      expect(function() {
+        new NestedLayer(undefined, name, layerStub, mapStub);
+      }).to.throw(&apos;layer ID&apos;);
+
+      expect(function() {
+        new NestedLayer(layerID, undefined, layerStub, mapStub);
+      }).to.throw(&apos;name&apos;);
+
+      expect(function() {
+        new NestedLayer(layerID, name, undefined, mapStub);
+      }).to.throw(&apos;layer object&apos;);
+
+      expect(function() {
+        new NestedLayer(layerID, name, layerStub, undefined);
+      }).to.throw(&apos;map object&apos;);
+    })
+
+    it(&apos;should have defaults for optional arguments&apos;, () =&gt; {
+      expect(l.parent).to.equal(l.defaults.parent);
+      // .equal tests referential equality (===)
+      // .eql tests deep equality
+      // http://chaijs.com/api/bdd/#method_eql
+      expect(l.children).to.eql(l.defaults.children);
+      expect(l.enabled).to.equal(l.defaults.enabled);
+      expect(l.selected).to.equal(l.defaults.selected);
+      expect(l.zoom).to.equal(l.defaults.zoom);
+    })
+  })
+
+  describe(&apos;#enabled&apos;, () =&gt; {
+    before(() =&gt; {
+      l = new NestedLayer(666, &apos;Layer 666&apos;, layerStub, mapStub, {
+        rules: {
+          enableTriggersAttach: true
+        }
+      });
+    })
+
+    beforeEach(() =&gt; {
+      sinon.spy(l, &apos;_attach&apos;);
+      sinon.spy(l, &apos;_detach&apos;);
+    })
+
+    afterEach(() =&gt; {
+      l._attach.restore();
+      l._detach.restore();
+    })
+
+    it(&apos;should detach when disabled&apos;, () =&gt; {
+      l.disable();
+      expect(l.disabled).to.be.true;
+      expect(l._detach).to.have.been.called;
+    })
+
+    it(&apos;should attach when enabled and selected and enableTriggersAttach is true&apos;, () =&gt; {
+      l.select();
+      l.enable();
+      expect(l.enabled).to.be.true;
+      expect(l.selected).to.be.true;
+      expect(l.rules.enableTriggersAttach).to.be.true;
+      expect(l._attach).to.have.been.called;
+    })
+  })
+
+  describe(&apos;#selected&apos;, () =&gt; {
+    it(&apos;should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true&apos;, () =&gt; {
+      l = new NestedLayer(666, &apos;Layer 666&apos;, layerStub, mapStub, {
+        rules: {
+          alwaysDeselectedWhenDisabled: true
+        }
+      });
+
+      l.select();
+      l.disable();
+      expect(l.disabled).to.be.true;
+      expect(l.rules.alwaysDeselectedWhenDisabled).to.be.true;
+      expect(l.deselected).to.be.true;
+    })
+
+    it(&apos;should always return the selected state when alwaysDeselectedWhenDisabled is false&apos;, () =&gt; {
+      l = new NestedLayer(666, &apos;Layer 666&apos;, layerStub, mapStub, {
+        rules: {
+          alwaysDeselectedWhenDisabled: false
+        }
+      });
+
+      l.select();
+      l.disable();
+      expect(l.selected).to.be.true;
+      l.enable();
+      expect(l.selected).to.be.true;
+
+      l.deselect();
+      l.disable();
+      expect(l.deselected).to.be.true;
+      l.enable();
+      expect(l.deselected).to.be.true;
+    })
+  })
+
+  describe(&apos;#children&apos;, () =&gt; {
+    let child1, child2;
+
+    before(() =&gt; {
+      child1 = new NestedLayer(777, &apos;Layer 777&apos;, layerStub, mapStub);
+      child2 = new NestedLayer(888, &apos;Layer 888&apos;, layerStub, mapStub);
+    })
+
+    it(&apos;should be able to add children&apos;, () =&gt; {
+      l.addChild(child1);
+      l.addChild(child2);
+      expect(l.children).to.contain(child1);
+      expect(l.children).to.contain(child2);
+    })
+
+    it(&apos;should only be able to add NestedLayers as children&apos;, () =&gt; {
+      const badChild = {};
+      expect(() =&gt; {
+        l.addChild(badChild);
+      }).to.throw(&apos;NestedLayer&apos;);
+    })
+
+    it(&apos;#hasChildren&apos;, () =&gt; {
+      expect(l.hasChildren).to.be.false;
+
+      l.addChild(child1);
+      expect(l.hasChildren).to.be.true;
+    })
+  })
+
+})
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

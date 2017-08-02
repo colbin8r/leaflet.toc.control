@@ -1,7 +1,5 @@
 /*global describe, expect, it, beforeEach*/
-import { generateID } from './../src/Leaflet.NestedLayer';
-import NestedLayer from './../src/Leaflet.NestedLayer';
-import LayerHierarchy from './../src/Leaflet.LayerHierarchy';
+import NestedLayer, { generateID } from './../src/Leaflet.TOC.NestedLayer';
 
 import L from 'leaflet-headless';
 import sinon from 'sinon';
