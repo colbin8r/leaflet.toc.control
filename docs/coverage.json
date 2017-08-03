@@ -1,7 +1,7 @@
 {
-  "coverage": "50.6%",
-  "expectCount": 83,
-  "actualCount": 42,
+  "coverage": "31.03%",
+  "expectCount": 58,
+  "actualCount": 18,
   "files": {
     "src/Leaflet.TOC.Control.js": {
       "expectCount": 10,
@@ -20,29 +20,15 @@
       ]
     },
     "src/components/LeafletTOC.js": {
-      "expectCount": 3,
+      "expectCount": 6,
       "actualCount": 0,
       "undocumentLines": [
-        7,
-        9,
-        14
-      ]
-    },
-    "src/Leaflet.TOC.NestedLayer.js": {
-      "expectCount": 28,
-      "actualCount": 17,
-      "undocumentLines": [
-        283,
-        39,
-        270,
-        264,
-        209,
-        278,
-        183,
-        267,
-        251,
-        244,
-        273
+        8,
+        15,
+        10,
+        37,
+        19,
+        24
       ]
     },
     "src/components/NestedLayer.js": {
@@ -51,18 +37,25 @@
       "undocumentLines": [
         7,
         9,
-        18,
-        14
+        19,
+        15
       ]
     },
-    "src/Leaflet.Control.NestedLayers.js": {
+    "src/Leaflet.TOC.NestedLayer.js": {
       "expectCount": 28,
-      "actualCount": 24,
+      "actualCount": 17,
       "undocumentLines": [
-        262,
-        245,
-        22,
-        125
+        290,
+        41,
+        277,
+        271,
+        211,
+        285,
+        185,
+        274,
+        253,
+        246,
+        280
       ]
     },
     "src/Leaflet.TOC.Symbology.js": {
@@ -72,8 +65,8 @@
         3,
         9,
         23,
-        16,
-        19
+        19,
+        16
       ]
     },
     "src/Leaflet.TOC.NestedLayerTreeHelper.js": {

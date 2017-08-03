@@ -1,4 +1,4 @@
-import { NestedLayer as NL } from '../Leaflet.NestedLayer';
+import NL from '../Leaflet.TOC.NestedLayer';
 
 import React from 'react';
 import PropTypes from 'prop-types';

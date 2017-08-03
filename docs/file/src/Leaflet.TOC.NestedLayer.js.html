@@ -32,10 +32,7 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
@@ -52,6 +49,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/Leaflet.TOC.NestedLayer.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { defaultsDeep as defaults } from &apos;lodash&apos;;
+import * as NestedLayerTreeHelper from &apos;./Leaflet.TOC.NestedLayerTreeHelper&apos;;
 
 let lastID = 0;
 
@@ -84,7 +82,8 @@ export default class NestedLayer {
     maxZoom: Number.POSITIVE_INFINITY,
     rules: {
       enableTriggersAttach: true,
-      alwaysDeselectedWhenDisabled: true
+      alwaysDeselectedWhenDisabled: true,
+      disableDescendentsWhenDeselected: true
     },
     _isAttached: false
   }
@@ -313,6 +312,11 @@ export default class NestedLayer {
       this._detach();
       // this.disableChildren();
     }
+
+    // if configured to, disable all descendents if deselected
+    if (this.rules.disableDescendentsWhenDeselected) {
+      NestedLayerTreeHelper.applyStateChangeToTree(this.children, { enabled: this.selected });
+    }
   }
   get deselected() {
     return !this.selected;
@@ -339,33 +343,6 @@ export default class NestedLayer {
     }
     this._props.children.push(child);
   }
-
-  // enableChildren() {
-  //   this._applyStateChangeToAllChildren(&apos;enabled&apos;, true, this.children);
-  // }
-
-  // disableChildren() {
-  //   this._applyStateChangeToAllChildren(&apos;enabled&apos;, false, this.children);
-  // }
-
-  // ownChildren() {
-  //   this._applyStateChangeToAllChildren(&apos;owner&apos;, this.owner, this.children);
-  // }
-
-  // _applyStateChangeToAllChildren(prop, val, children) {
-  //   // utility to recursively loop through children (and their children, etc.)
-  //   // to change their state
-  //   // IDEA: convert to a &quot;deep map&quot; function
-  //   for (let i = 0; i &lt; children.length; i++) {
-  //     // make the state change
-  //     children[i][prop] = val;
-
-  //     // loop through children/subtrees when necessary
-  //     if (children[i].hasChildren) {
-  //       this._applyStateChangeToAllChildren(prop, val, children[i].children);
-  //     }
-  //   }
-  // }
 
   // _handleMapZoom = () =&gt; {
   //   const zoom = this.map.getZoom();

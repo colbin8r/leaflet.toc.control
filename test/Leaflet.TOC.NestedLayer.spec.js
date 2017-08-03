@@ -1,5 +1,6 @@
 /*global describe, expect, it, beforeEach*/
 import NestedLayer, { generateID } from './../src/Leaflet.TOC.NestedLayer';
+import fixtureGen from './fixtures/smalltree-custom';
 
 import L from 'leaflet-headless';
 import sinon from 'sinon';
@@ -75,7 +76,7 @@ describe('NestedLayer', () => {
     before(() => {
       l = new NestedLayer(666, 'Layer 666', layerStub, mapStub, {
         rules: {
-          enableTriggersAttach: true
+          enableTriggersAttach: true,
         }
       });
     })
@@ -139,6 +140,25 @@ describe('NestedLayer', () => {
       expect(l.deselected).to.be.true;
       l.enable();
       expect(l.deselected).to.be.true;
+    })
+
+    it('should disable children when deselected and disableDescendentsWhenDeselected is true', () => {
+      const options = {
+        rules: {
+          disableDescendentsWhenDeselected: true
+        }
+      }
+
+      let fixtures = fixtureGen(options);
+      let fixture = fixtures.parent;
+      fixture.deselect();
+
+      expect(fixture.rules.disableDescendentsWhenDeselected).to.be.true;
+      expect(fixture.deselected).to.be.true;
+      fixture.children.forEach((child) => {
+        expect(child.disabled).to.be.true;
+      });
+
     })
   })
 

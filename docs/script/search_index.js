@@ -1,19 +1,19 @@
 window.esdocSearchIndex = [
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber7",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber8",
     "#generateID",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber8",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber9",
     "#generateID should return numbers",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber12",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber13",
     "#generateID shouldn't generate the same ID twice",
     "test"
   ],
@@ -129,24 +129,6 @@ window.esdocSearchIndex = [
     "leaflet.control.nestedlayers/src/components/nestedlayer.js~nestedlayer",
     "class/src/components/NestedLayer.js~NestedLayer.html",
     "<span>NestedLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/components/NestedLayer.js</span>",
-    "class"
-  ],
-  [
-    "leaflet.control.nestedlayers/src/leaflet.control.nestedlayers.js~nestedlayercomponent",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html",
-    "<span>NestedLayerComponent</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.Control.NestedLayers.js</span>",
-    "class"
-  ],
-  [
-    "leaflet.control.nestedlayers/src/leaflet.control.nestedlayers.js~nestedlayers",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html",
-    "<span>NestedLayers</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.Control.NestedLayers.js</span>",
-    "class"
-  ],
-  [
-    "leaflet.control.nestedlayers/src/leaflet.control.nestedlayers.js~nestedlayerscomponent",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html",
-    "<span>NestedLayersComponent</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.Control.NestedLayers.js</span>",
     "class"
   ],
   [
@@ -523,91 +505,97 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber18",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber19",
     "NestedLayer",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber145",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber165",
     "NestedLayer #children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber167",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber187",
     "NestedLayer #children #hasChildren",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber153",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber173",
     "NestedLayer #children should be able to add children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber160",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber180",
     "NestedLayer #children should only be able to add NestedLayers as children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber41",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber42",
     "NestedLayer #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber62",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber63",
     "NestedLayer #constructor should have defaults for optional arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber42",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber43",
     "NestedLayer #constructor should throw errors when missing required arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber74",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber75",
     "NestedLayer #enabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber99",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber100",
     "NestedLayer #enabled should attach when enabled and selected and enableTriggersAttach is true",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber93",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber94",
     "NestedLayer #enabled should detach when disabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber109",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber110",
     "NestedLayer #selected",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber124",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber125",
     "NestedLayer #selected should always return the selected state when alwaysDeselectedWhenDisabled is false",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber110",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber111",
     "NestedLayer #selected should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber27",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber145",
+    "NestedLayer #selected should disable children when deselected and disableDescendentsWhenDeselected is true",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber28",
     "NestedLayer should have accessible properties",
     "test"
   ],
@@ -702,162 +690,6 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "src/leaflet.control.nestedlayers.js",
-    "file/src/Leaflet.Control.NestedLayers.js.html",
-    "src/Leaflet.Control.NestedLayers.js",
-    "file"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent#constructor",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#instance-constructor-constructor",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent#constructor",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent#getswatch",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#instance-member-getSwatch",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent#getSwatch",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent#render",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#instance-method-render",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent#render",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent#state",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#instance-member-state",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent#state",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent#toggleselected",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#instance-member-toggleSelected",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent#toggleSelected",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayercomponent.proptypes",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html#static-member-propTypes",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.propTypes",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#attach",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-method-attach",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#attach",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#component",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-component",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#component",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#constructor",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-constructor-constructor",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#constructor",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#detach",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-method-detach",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#detach",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#el",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-el",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#el",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#element",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-element",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#element",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#element",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-element",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#element",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#h",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-h",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#h",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-set-hierarchy",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#hierarchy",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-hierarchy",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#hierarchy",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#isattached",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-isAttached",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#isAttached",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayers#options",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html#instance-get-options",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayers#options",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#constructor",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-constructor-constructor",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#constructor",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#handletoggleselected",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-member-handleToggleSelected",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#handleToggleSelected",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#makecomponentfromlayer",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-member-makeComponentFromLayer",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#makeComponentFromLayer",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#makelayerkey",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-method-makeLayerKey",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#makeLayerKey",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#render",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-method-render",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#render",
-    "method"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent#state",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#instance-member-state",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent#state",
-    "member"
-  ],
-  [
-    "src/leaflet.control.nestedlayers.js~nestedlayerscomponent.proptypes",
-    "class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html#static-member-propTypes",
-    "src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.propTypes",
-    "member"
-  ],
-  [
     "src/leaflet.toc.control.js",
     "file/src/Leaflet.TOC.Control.js.html",
     "src/Leaflet.TOC.Control.js",
@@ -916,6 +748,12 @@ window.esdocSearchIndex = [
     "class/src/Leaflet.TOC.Control.js~Control.html#instance-get-options",
     "src/Leaflet.TOC.Control.js~Control#options",
     "member"
+  ],
+  [
+    "src/leaflet.toc.nestedlayer.dynamicmaplayer.js",
+    "file/src/Leaflet.TOC.NestedLayer.DynamicMapLayer.js.html",
+    "src/Leaflet.TOC.NestedLayer.DynamicMapLayer.js",
+    "file"
   ],
   [
     "src/leaflet.toc.nestedlayer.js",
@@ -1057,13 +895,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#selected",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-selected",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-selected",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#selected",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-selected",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-selected",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
@@ -1105,13 +943,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-label",
+    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-set-label",
     "src/Leaflet.TOC.Symbology.js~Symbology#label",
     "member"
   ],
   [
     "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-set-label",
+    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-label",
     "src/Leaflet.TOC.Symbology.js~Symbology#label",
     "member"
   ],
@@ -1122,10 +960,28 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/components/leaflettoc.js~leaflettoc#constructor",
+    "class/src/components/LeafletTOC.js~LeafletTOC.html#instance-constructor-constructor",
+    "src/components/LeafletTOC.js~LeafletTOC#constructor",
+    "method"
+  ],
+  [
     "src/components/leaflettoc.js~leaflettoc#render",
     "class/src/components/LeafletTOC.js~LeafletTOC.html#instance-method-render",
     "src/components/LeafletTOC.js~LeafletTOC#render",
     "method"
+  ],
+  [
+    "src/components/leaflettoc.js~leaflettoc#state",
+    "class/src/components/LeafletTOC.js~LeafletTOC.html#instance-member-state",
+    "src/components/LeafletTOC.js~LeafletTOC#state",
+    "member"
+  ],
+  [
+    "src/components/leaflettoc.js~leaflettoc#toggleselected",
+    "class/src/components/LeafletTOC.js~LeafletTOC.html#instance-member-toggleSelected",
+    "src/components/LeafletTOC.js~LeafletTOC#toggleSelected",
+    "member"
   ],
   [
     "src/components/leaflettoc.js~leaflettoc.proptypes",
@@ -1176,6 +1032,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "test/leaflet.toc.control.spec.js",
+    "test-file/test/Leaflet.TOC.Control.spec.js.html",
+    "test/Leaflet.TOC.Control.spec.js",
+    "testFile"
+  ],
+  [
     "test/leaflet.toc.nestedlayer.spec.js",
     "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html",
     "test/Leaflet.TOC.NestedLayer.spec.js",
@@ -1203,12 +1065,6 @@ window.esdocSearchIndex = [
     "test/components/nestedlayer.spec.js",
     "test-file/test/components/NestedLayer.spec.js.html",
     "test/components/NestedLayer.spec.js",
-    "testFile"
-  ],
-  [
-    "test/fixtures/leaflet.toc.control.spec.js",
-    "test-file/test/fixtures/Leaflet.TOC.Control.spec.js.html",
-    "test/fixtures/Leaflet.TOC.Control.spec.js",
     "testFile"
   ]
 ]

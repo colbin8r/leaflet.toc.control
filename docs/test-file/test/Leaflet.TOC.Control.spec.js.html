@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/index.js | API Document</title>
+  <title data-ice="title">test/Leaflet.TOC.Control.spec.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -47,62 +47,9 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/index.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* global window */
-import NestedLayer from &apos;./Leaflet.TOC.NestedLayer&apos;;
-import * as NestedLayerTreeHelper from &apos;./Leaflet.TOC.NestedLayerTreeHelper&apos;;
-import Symbology from &apos;./Leaflet.TOC.Symbology&apos;;
-import Control from &apos;./Leaflet.TOC.Control&apos;;
-// import LayerHierarchy from &apos;./Leaflet.LayerHierarchy&apos;;
-// import MapServerParser from &apos;./Leaflet.LayerHierarchy.MapServerParser&apos;;
-// import NestedLayers from &apos;./Leaflet.Control.NestedLayers&apos;;
-
-let exports = {
-  NestedLayer,
-  NestedLayerTreeHelper,
-  Symbology,
-  Control
-  // LayerHierarchy,
-  // MapServerParser,
-  // NestedLayers
-}
-
-// decide later whether to attach to the global L by attaching everything we would attach
-// to the global L to a separate &apos;namespace&apos; object
-let namespace = Object.assign({}, exports);
-
-// create the standard factory methods that Leaflet plugins are supposed to expose
-// using ES6 spread notation means always up-to-date constructor parameters
-namespace.nestedLayer = function nestedLayer(...args) {
-  return new exports.NestedLayer(...args);
-};
-// no factory for NestedLayerTreeHelper
-namespace.symbology = function symbology(...args) {
-  return new exports.Symbology(...args);
-}
-namespace.control = function control(...args) {
-  return new exports.Control(...args);
-}
-
-if (typeof window !== &apos;undefined&apos; &amp;&amp; typeof window.L !== &apos;undefined&apos;) {
-  // global L and window present
-  window.L.TOC = namespace;
-  // specially alias plugin (a Leaflet control) to the L.Control.TOC
-  // to emulate other control plugins&apos; best practice
-  window.L.Control.TOC = namespace.Control;
-} else if (typeof window !== &apos;undefined&apos;) {
-  // global L and window missing
-  window.LeafletTOC = namespace;
-} else {
-  // if there is no global window, stay out of the global namespace
-  exports.L = {
-    TOC: namespace
-  };
-}
-
-module.exports = exports;
-</code></pre>
-
+<div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.TOC.Control.spec.js</h1>
+<pre class="source-code line-number raw-source-code"></pre>
+<p data-ice="emptySourceCode">Sorry, this documentation does not provide source code.</p>
 </div>
 
 <footer class="footer">

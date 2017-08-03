@@ -1,4 +1,3 @@
-// import NestedLayer from './Leaflet.NestedLayer';
 // import { assign } from 'lodash';
 
 // recursively traverses down the tree looking for the first matching NestedLayer

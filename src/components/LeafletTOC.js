@@ -1,5 +1,6 @@
 import NestedLayer from './NestedLayer';
-import { NestedLayer as NL } from '../Leaflet.TOC.NestedLayer';
+import NL from '../Leaflet.TOC.NestedLayer';
+// import NestedLayerTreeHelper from '../Leaflet.TOC.NestedLayerTreeHelper';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,8 +12,30 @@ export default class LeafletTOC extends React.Component {
     title: PropTypes.string.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    // the initial state is a reference to the layers prop
+    this.state = {
+      layers: props.layers
+    };
+  }
+
+  toggleSelected = (layer) => {
+    // let layers = this.state.layers;
+    console.log('toggling selected state of', layer);
+    layer.toggleSelected();
+    this.setState({ layers: this.state.layers });
+  }
+
+  // toggleEnabled = (layer) => {
+  //   console.log('toggling enabled state of', layer);
+  //   layer.toggleEnabled();
+  //   this.setState({ layers: this.state.layers });
+  // }
+
   render() {
-    let layers = this.props.layers.map((layer) => <NestedLayer layer={layer} key={layer.id} />);
+    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} />);
 
     return (
       <div className="leaflet-toc-container">

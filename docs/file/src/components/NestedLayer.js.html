@@ -32,10 +32,7 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
@@ -51,7 +48,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/NestedLayer.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { NestedLayer as NL } from &apos;../Leaflet.TOC.NestedLayer&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
 
 import React from &apos;react&apos;;
 import PropTypes from &apos;prop-types&apos;;
@@ -61,7 +58,8 @@ export default class NestedLayer extends React.Component {
 
   static propTypes = {
     layer: PropTypes.instanceOf(NL).isRequired,
-    toggleSelected: PropTypes.func.isRequired
+    toggleSelected: PropTypes.func.isRequired,
+    // toggleEnabled: PropTypes.func.isRequired
   };
 
   toggleSelected = () =&gt; {
@@ -81,10 +79,12 @@ export default class NestedLayer extends React.Component {
 
     if (this.props.layer.hasChildren) {
       // each child layer turns into a NestedLayer
-      children = this.props.layer.children.map((layer) =&gt; &lt;NestedLayer layer={layer} key={layer.id} /&gt;);
+      children = this.props.layer.children.map((layer) =&gt; &lt;NestedLayer layer={layer}
+                                                                       toggleSelected={this.props.toggleSelected}
+                                                                       key={layer.id} /&gt;);
       // wrap the children with a &lt;ul&gt;
       children = (
-        &lt;ul className=&quot;leaf&quot;&gt;
+        &lt;ul className=&quot;branch&quot;&gt;
           {children}
         &lt;/ul&gt;
       )

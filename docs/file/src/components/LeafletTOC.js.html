@@ -32,10 +32,7 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayerComponent.html">NestedLayerComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayers.html">NestedLayers</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.Control.NestedLayers.js~NestedLayersComponent.html">NestedLayersComponent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
@@ -52,7 +49,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/LeafletTOC.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import NestedLayer from &apos;./NestedLayer&apos;;
-import { NestedLayer as NL } from &apos;../Leaflet.TOC.NestedLayer&apos;;
+import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
+// import NestedLayerTreeHelper from &apos;../Leaflet.TOC.NestedLayerTreeHelper&apos;;
 
 import React from &apos;react&apos;;
 import PropTypes from &apos;prop-types&apos;;
@@ -64,8 +62,30 @@ export default class LeafletTOC extends React.Component {
     title: PropTypes.string.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    // the initial state is a reference to the layers prop
+    this.state = {
+      layers: props.layers
+    };
+  }
+
+  toggleSelected = (layer) =&gt; {
+    // let layers = this.state.layers;
+    console.log(&apos;toggling selected state of&apos;, layer);
+    layer.toggleSelected();
+    this.setState({ layers: this.state.layers });
+  }
+
+  // toggleEnabled = (layer) =&gt; {
+  //   console.log(&apos;toggling enabled state of&apos;, layer);
+  //   layer.toggleEnabled();
+  //   this.setState({ layers: this.state.layers });
+  // }
+
   render() {
-    let layers = this.props.layers.map((layer) =&gt; &lt;NestedLayer layer={layer} key={layer.id} /&gt;);
+    let layers = this.state.layers.map((layer) =&gt; &lt;NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} /&gt;);
 
     return (
       &lt;div className=&quot;leaflet-toc-container&quot;&gt;

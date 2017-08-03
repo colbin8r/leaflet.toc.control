@@ -1,4 +1,5 @@
 import { defaultsDeep as defaults } from 'lodash';
+import * as NestedLayerTreeHelper from './Leaflet.TOC.NestedLayerTreeHelper';
 
 let lastID = 0;
 
@@ -31,7 +32,8 @@ export default class NestedLayer {
     maxZoom: Number.POSITIVE_INFINITY,
     rules: {
       enableTriggersAttach: true,
-      alwaysDeselectedWhenDisabled: true
+      alwaysDeselectedWhenDisabled: true,
+      disableDescendentsWhenDeselected: true
     },
     _isAttached: false
   }
@@ -260,6 +262,11 @@ export default class NestedLayer {
       this._detach();
       // this.disableChildren();
     }
+
+    // if configured to, disable all descendents if deselected
+    if (this.rules.disableDescendentsWhenDeselected) {
+      NestedLayerTreeHelper.applyStateChangeToTree(this.children, { enabled: this.selected });
+    }
   }
   get deselected() {
     return !this.selected;
@@ -286,33 +293,6 @@ export default class NestedLayer {
     }
     this._props.children.push(child);
   }
-
-  // enableChildren() {
-  //   this._applyStateChangeToAllChildren('enabled', true, this.children);
-  // }
-
-  // disableChildren() {
-  //   this._applyStateChangeToAllChildren('enabled', false, this.children);
-  // }
-
-  // ownChildren() {
-  //   this._applyStateChangeToAllChildren('owner', this.owner, this.children);
-  // }
-
-  // _applyStateChangeToAllChildren(prop, val, children) {
-  //   // utility to recursively loop through children (and their children, etc.)
-  //   // to change their state
-  //   // IDEA: convert to a "deep map" function
-  //   for (let i = 0; i < children.length; i++) {
-  //     // make the state change
-  //     children[i][prop] = val;
-
-  //     // loop through children/subtrees when necessary
-  //     if (children[i].hasChildren) {
-  //       this._applyStateChangeToAllChildren(prop, val, children[i].children);
-  //     }
-  //   }
-  // }
 
   // _handleMapZoom = () => {
   //   const zoom = this.map.getZoom();
