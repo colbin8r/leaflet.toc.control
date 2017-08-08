@@ -1,18 +1,35 @@
-import { defaultsDeep as defaults } from 'lodash';
+'use strict';
 
-let lastID = 0;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.generateID = generateID;
+
+var _lodash = require('lodash');
+
+var _LeafletTOC = require('./Leaflet.TOC.NestedLayerTreeHelper');
+
+var NestedLayerTreeHelper = _interopRequireWildcard(_LeafletTOC);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var lastID = 0;
 
 /**
  * Generate a ID number guaranteed to be unique.
  * IDs are composed of a pseudorandom 4-digit number suffixed by an incrementing counter.
  * @return {Number} Unique ID number
  */
-export function generateID() {
+function generateID() {
   // generates a 4 digit random number
   // lastID is appended to the end of the number
   // lastID is incremented each
-  return Number.parseInt(Math.floor(1000 + Math.random() * 9000).toString()
-                         + (lastID++).toString());
+  return Number.parseInt(Math.floor(1000 + Math.random() * 9000).toString() + (lastID++).toString());
 }
 
 /**
@@ -20,53 +37,45 @@ export function generateID() {
  * "child" layers
  * @see http://leafletjs.com/reference-1.1.0.html#layer
  */
-export default class NestedLayer {
 
-  static _defaults = {
-    parent: null,
-    children: [],
-    enabled: true,
-    selected: false,
-    minZoom: Number.NEGATIVE_INFINITY,
-    maxZoom: Number.POSITIVE_INFINITY,
-    rules: {
-      enableTriggersAttach: true,
-      alwaysDeselectedWhenDisabled: true
-    },
-    _isAttached: false
-  }
+var NestedLayer = function () {
+  _createClass(NestedLayer, [{
+    key: 'defaults',
+    get: function get() {
+      // uses reflection to return the static _defaults property on the class
+      return this.constructor._defaults;
+    }
 
-  get defaults() {
-    // uses reflection to return the static _defaults property on the class
-    return this.constructor._defaults;
-  }
+    /**
+     *
+     * @param {object} props The layer data
+     * @param {number} props.id The layer's unique ID number
+     * @param {string} props.name The layer's unique name
+     * @param {L.Layer} props.layer A {@link
+     * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}
+     * @param {L.Map} props.map {@link
+     * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to
+     * @param {boolean} [props.enabled=true] Initial enabled state of the layer
+     * @param {boolean} [props.selected=false] Initial selected state of the layer
+     * @param {string} [props.swatch=''] Base64 encoded swatch PNG
+     * @param {NestedLayer[]} [props.children=[]] Child layers
+     * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible
+     * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible
+     */
 
-  /**
-   *
-   * @param {object} props The layer data
-   * @param {number} props.id The layer's unique ID number
-   * @param {string} props.name The layer's unique name
-   * @param {L.Layer} props.layer A {@link
-   * http://leafletjs.com/reference-1.1.0.html#layer Leaflet layer}
-   * @param {L.Map} props.map {@link
-   * http://leafletjs.com/reference-1.1.0.html#map Leaflet map} to attach to
-   * @param {boolean} [props.enabled=true] Initial enabled state of the layer
-   * @param {boolean} [props.selected=false] Initial selected state of the layer
-   * @param {string} [props.swatch=''] Base64 encoded swatch PNG
-   * @param {NestedLayer[]} [props.children=[]] Child layers
-   * @param {number} [props.minZoom] Minimum zoom level that the layer should be visible
-   * @param {number} [props.maxZoom] Maximum zoom level that the layer should be visible
-   */
+    /**
+     * Creates a new NestedLayer.
+     * @param  {number} layerID ID of the layer on the origin.
+     * @param  {string} name    Name of the layer on the origin; display-friendly
+     * @param  {L.Layer} layer   Leaflet layer
+     * @param  {L.Map} map     Leaflet map
+     * @param  {object} props   Optional properties
+     */
 
-  /**
-   * Creates a new NestedLayer.
-   * @param  {number} layerID ID of the layer on the origin.
-   * @param  {string} name    Name of the layer on the origin; display-friendly
-   * @param  {L.Layer} layer   Leaflet layer
-   * @param  {L.Map} map     Leaflet map
-   * @param  {object} props   Optional properties
-   */
-  constructor(layerID, name, layer, map, props) {
+  }]);
+
+  function NestedLayer(layerID, name, layer, map, props) {
+    _classCallCheck(this, NestedLayer);
 
     // ensure all required props are present
     if (typeof layerID == 'undefined') {
@@ -84,16 +93,17 @@ export default class NestedLayer {
 
     // set the required props
     this._props = {
-      layerID,
-      name,
-      layer,
-      map
+      layerID: layerID,
+      name: name,
+      layer: layer,
+      map: map
     };
 
     // merge optional props with defaults
     // the "defaults" also contains the initial state
-    defaults(this._props, props, this.defaults);
+    (0, _lodash.defaultsDeep)(this._props, props, this.defaults);
     this._props.id = generateID();
+    this._isAttached = false;
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
@@ -120,227 +130,289 @@ export default class NestedLayer {
    * Layer ID as specified by the server
    * @type {number}
    */
-  get layerID() {
-    return this._props.layerID;
-  }
 
-  /**
-   * Layer name
-   * @type {string}
-   */
-  get name() {
-    return this._props.name;
-  }
 
-  /**
-   * Underlying Leaflet layer
-   * @type {L.Layer}
-   */
-  get layer() {
-    return this._props.layer;
-  }
+  _createClass(NestedLayer, [{
+    key: 'enable',
 
-  /**
-   * Leaflet Map to attach to
-   * @type {L.Map}
-   */
-  get map() {
-    return this._props.map;
-  }
 
-  /**
-   * Child layers
-   * @type {NestedLayer[]}
-   */
-  get children() {
-    return this._props.children;
-  }
-
-  /**
-   * Parent layer
-   * @type {NestedLayer}
-   */
-  get parent() {
-    return this._props.parent;
-  }
-
-  /**
-   * Minimum zoom level for this layer to be visible
-   * @type {number}
-   */
-  get minZoom() {
-    return this._props.minZoom;
-  }
-
-  /**
-   * Maximum zoom level for this layer to be visible
-   * @type {number}
-   */
-  get maxZoom() {
-    return this._props.maxZoom;
-  }
-
-  get rules() {
-    return this._props.rules;
-  }
-
-  /**
-   * Unique ID generated for each NestedLayer
-   * @type {number}
-   */
-  get id() {
-    return this._props.id;
-  }
-
-  // enabled = user may freely toggle this layer on and off
-  // disabled = user may not toggle the layer
-  // disabling always deselects the layer, but the selected state is persisted, so that if
-  // the layer is re-enabled, the selected state is what it was prior to disabling
-  // i.e. if disabled, always deselected
-  // this logic is handled in the .selected getter
-
-  /**
-   * Whether the user may freely toggle this layer on and off
-   * @type {boolean}
-   */
-  get enabled() {
-    return this._props.enabled;
-  }
-  set enabled(val) {
-    this._props.enabled = val;
-
-    // if disabling, detach from map
-    if (!val) {
-      this._detach();
-
-    // if enabling, and marked selected (i.e. "re-enabling"), attach to map
-    } else if (this.rules.enableTriggersAttach && this._props.selected) {
-      this._attach();
+    /** Enable the layer */
+    value: function enable() {
+      this.enabled = true;
     }
-  }
-  /**
-   * The inverse of #enabled
-   * @type {boolean}
-   */
-  get disabled() {
-    return !this.enabled;
-  }
+    /** Disable the layer */
 
-  /** Enable the layer */
-  enable() {
-    this.enabled = true;
-  }
-  /** Disable the layer */
-  disable() {
-    this.enabled = false;
-  }
-  /** Toggle the layer's enabled state */
-  toggleEnabled() {
-    this.enabled = !this.enabled;
-  }
-
-  // selected = layer present on the map
-  // deselected = layer not present on the map
-  get selected() {
-    if (this.rules.alwaysDeselectedWhenDisabled && this.disabled) {
-      return false;
-    } else {
-      return this._props.selected;
+  }, {
+    key: 'disable',
+    value: function disable() {
+      this.enabled = false;
     }
-  }
-  set selected(val) {
-    this._props.selected = val;
+    /** Toggle the layer's enabled state */
 
-    // attach/detach from map when needed
-    // disable children from selection when unselected
-    if (this.selected) {
-      this._attach();
-      // this.enableChildren();
-    } else {
-      this._detach();
-      // this.disableChildren();
+  }, {
+    key: 'toggleEnabled',
+    value: function toggleEnabled() {
+      this.enabled = !this.enabled;
     }
-  }
-  get deselected() {
-    return !this.selected;
-  }
-  select() {
-    this.selected = true;
-  }
-  deselect() {
-    this.selected = false;
-  }
-  toggleSelected() {
-    this.selected = !this.selected;
-  }
 
-  // true if the layer has children
-  get hasChildren() {
-    return this.children.length > 0;
-  }
+    // selected = layer present on the map
+    // deselected = layer not present on the map
 
-  // add a child NestedLayer object
-  addChild(child) {
-    if (!(child instanceof NestedLayer)) {
-      throw new TypeError('child is not a NestedLayer');
+  }, {
+    key: 'select',
+    value: function select() {
+      this.selected = true;
     }
-    this._props.children.push(child);
-  }
+  }, {
+    key: 'deselect',
+    value: function deselect() {
+      this.selected = false;
+    }
+  }, {
+    key: 'toggleSelected',
+    value: function toggleSelected() {
+      this.selected = !this.selected;
+    }
 
-  // enableChildren() {
-  //   this._applyStateChangeToAllChildren('enabled', true, this.children);
-  // }
+    // true if the layer has children
 
-  // disableChildren() {
-  //   this._applyStateChangeToAllChildren('enabled', false, this.children);
-  // }
+  }, {
+    key: 'addChild',
 
-  // ownChildren() {
-  //   this._applyStateChangeToAllChildren('owner', this.owner, this.children);
-  // }
 
-  // _applyStateChangeToAllChildren(prop, val, children) {
-  //   // utility to recursively loop through children (and their children, etc.)
-  //   // to change their state
-  //   // IDEA: convert to a "deep map" function
-  //   for (let i = 0; i < children.length; i++) {
-  //     // make the state change
-  //     children[i][prop] = val;
+    // add a child NestedLayer object
+    value: function addChild(child) {
+      if (!(child instanceof NestedLayer)) {
+        throw new TypeError('child is not a NestedLayer');
+      }
+      this._props.children.push(child);
+    }
 
-  //     // loop through children/subtrees when necessary
-  //     if (children[i].hasChildren) {
-  //       this._applyStateChangeToAllChildren(prop, val, children[i].children);
-  //     }
-  //   }
-  // }
+    // _handleMapZoom = () => {
+    //   const zoom = this.map.getZoom();
 
-  // _handleMapZoom = () => {
-  //   const zoom = this.map.getZoom();
+    //   if (zoom < this.minZoom || zoom > this.maxZoom) {
+    //     this._detach();
+    //   } else {
+    //     this._attach()
+    //   }
+    // }
 
-  //   if (zoom < this.minZoom || zoom > this.maxZoom) {
-  //     this._detach();
-  //   } else {
-  //     this._attach()
-  //   }
-  // }
+    // display on map
 
-  // display on map
-  _attach() {
-    if (!this._isAttached) {
-      this.map.addLayer(this.layer);
-      // this.layer.addTo(this.map);
+  }, {
+    key: '_attach',
+    value: function _attach() {
+      if (!this._isAttached && !this.map.hasLayer(this.layer)) {
+        this.map.addLayer(this.layer);
+        // this.layer.addTo(this.map);
+      }
       this._isAttached = true;
     }
-  }
 
-  // remove from map
-  _detach() {
-    if (this._isAttached) {
-      this.map.removeLayer(this.layer);
-      // this.layer.removeFrom(this.map);
+    // remove from map
+
+  }, {
+    key: '_detach',
+    value: function _detach() {
+      if (this._isAttached && this.map.hasLayer(this.layer)) {
+        this.map.removeLayer(this.layer);
+        // this.layer.removeFrom(this.map);
+      }
       this._isAttached = false;
     }
+  }, {
+    key: 'layerID',
+    get: function get() {
+      return this._props.layerID;
+    }
+
+    /**
+     * Layer name
+     * @type {string}
+     */
+
+  }, {
+    key: 'name',
+    get: function get() {
+      return this._props.name;
+    }
+
+    /**
+     * Underlying Leaflet layer
+     * @type {L.Layer}
+     */
+
+  }, {
+    key: 'layer',
+    get: function get() {
+      return this._props.layer;
+    }
+
+    /**
+     * Leaflet Map to attach to
+     * @type {L.Map}
+     */
+
+  }, {
+    key: 'map',
+    get: function get() {
+      return this._props.map;
+    }
+
+    /**
+     * Child layers
+     * @type {NestedLayer[]}
+     */
+
+  }, {
+    key: 'children',
+    get: function get() {
+      return this._props.children;
+    }
+
+    /**
+     * Parent layer
+     * @type {NestedLayer}
+     */
+
+  }, {
+    key: 'parent',
+    get: function get() {
+      return this._props.parent;
+    }
+
+    /**
+     * Minimum zoom level for this layer to be visible
+     * @type {number}
+     */
+
+  }, {
+    key: 'minZoom',
+    get: function get() {
+      return this._props.minZoom;
+    }
+
+    /**
+     * Maximum zoom level for this layer to be visible
+     * @type {number}
+     */
+
+  }, {
+    key: 'maxZoom',
+    get: function get() {
+      return this._props.maxZoom;
+    }
+  }, {
+    key: 'rules',
+    get: function get() {
+      return this._props.rules;
+    }
+
+    /**
+     * Unique ID generated for each NestedLayer
+     * @type {number}
+     */
+
+  }, {
+    key: 'id',
+    get: function get() {
+      return this._props.id;
+    }
+
+    // enabled = user may freely toggle this layer on and off
+    // disabled = user may not toggle the layer
+    // disabling always deselects the layer, but the selected state is persisted, so that if
+    // the layer is re-enabled, the selected state is what it was prior to disabling
+    // i.e. if disabled, always deselected
+    // this logic is handled in the .selected getter
+
+    /**
+     * Whether the user may freely toggle this layer on and off
+     * @type {boolean}
+     */
+
+  }, {
+    key: 'enabled',
+    get: function get() {
+      return this._props.enabled;
+    },
+    set: function set(val) {
+      this._props.enabled = val;
+
+      // if disabling, detach from map
+      if (!val) {
+        this._detach();
+
+        // if enabling, and marked selected (i.e. "re-enabling"), attach to map
+      } else if (this.rules.enableTriggersAttach && this._props.selected) {
+        this._attach();
+      }
+    }
+    /**
+     * The inverse of #enabled
+     * @type {boolean}
+     */
+
+  }, {
+    key: 'disabled',
+    get: function get() {
+      return !this.enabled;
+    }
+  }, {
+    key: 'selected',
+    get: function get() {
+      if (this.rules.alwaysDeselectedWhenDisabled && this.disabled) {
+        return false;
+      } else {
+        return this._props.selected;
+      }
+    },
+    set: function set(val) {
+      this._props.selected = val;
+
+      // attach/detach from map when needed
+      // disable children from selection when unselected
+      if (this.selected) {
+        this._attach();
+        // this.enableChildren();
+      } else {
+        this._detach();
+        // this.disableChildren();
+      }
+
+      // if configured to, disable all descendents if deselected
+      if (this.rules.disableDescendentsWhenDeselected) {
+        NestedLayerTreeHelper.applyStateChangeToTree(this.children, { enabled: this.selected });
+      }
+    }
+  }, {
+    key: 'deselected',
+    get: function get() {
+      return !this.selected;
+    }
+  }, {
+    key: 'hasChildren',
+    get: function get() {
+      return this.children.length > 0;
+    }
+  }]);
+
+  return NestedLayer;
+}();
+
+NestedLayer._defaults = {
+  parent: null,
+  children: [],
+  enabled: true,
+  selected: false,
+  minZoom: Number.NEGATIVE_INFINITY,
+  maxZoom: Number.POSITIVE_INFINITY,
+  rules: {
+    enableTriggersAttach: true,
+    alwaysDeselectedWhenDisabled: true,
+    disableDescendentsWhenDeselected: true
   }
-}
-
-
+};
+exports.default = NestedLayer;
+//# sourceMappingURL=Leaflet.TOC.NestedLayer.js.map

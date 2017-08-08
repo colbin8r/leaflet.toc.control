@@ -120,6 +120,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "leaflet.control.nestedlayers/src/leaflet.toc.nesteddynamicmaplayer.js~nesteddynamicmaplayer",
+    "class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html",
+    "<span>NestedDynamicMapLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.NestedDynamicMapLayer.js</span>",
+    "class"
+  ],
+  [
     "leaflet.control.nestedlayers/src/leaflet.toc.nestedlayer.js~nestedlayer",
     "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html",
     "<span>NestedLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.NestedLayer.js</span>",
@@ -505,6 +511,72 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber12",
+    "NestedDynamicMapLayer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber38",
+    "NestedDynamicMapLayer #_attach",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber56",
+    "NestedDynamicMapLayer #_attach should add the new ID even if there are no existing layers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber44",
+    "NestedDynamicMapLayer #_attach should have the new ID in the list",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber50",
+    "NestedDynamicMapLayer #_attach should keep existing IDs in the list",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber39",
+    "NestedDynamicMapLayer #_attach should try to call .setLayers on the Leaflet layer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber66",
+    "NestedDynamicMapLayer #_detach",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber72",
+    "NestedDynamicMapLayer #_detach should have removed the ID from the list",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber78",
+    "NestedDynamicMapLayer #_detach should keep existing IDs in the list",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber67",
+    "NestedDynamicMapLayer #_detach should try to call .setLayers on the Leaflet layer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber34",
+    "NestedDynamicMapLayer should be a NestedDynamicMapLayer",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber19",
     "NestedLayer",
     "test"
@@ -750,9 +822,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/leaflet.toc.nestedlayer.dynamicmaplayer.js",
-    "file/src/Leaflet.TOC.NestedLayer.DynamicMapLayer.js.html",
-    "src/Leaflet.TOC.NestedLayer.DynamicMapLayer.js",
+    "src/leaflet.toc.nesteddynamicmaplayer.js",
+    "file/src/Leaflet.TOC.NestedDynamicMapLayer.js.html",
+    "src/Leaflet.TOC.NestedDynamicMapLayer.js",
     "file"
   ],
   [
@@ -817,13 +889,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
@@ -895,13 +967,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#selected",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-selected",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-selected",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#selected",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-selected",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-selected",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#selected",
     "member"
   ],
@@ -943,13 +1015,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-set-label",
+    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-label",
     "src/Leaflet.TOC.Symbology.js~Symbology#label",
     "member"
   ],
   [
     "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-label",
+    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-set-label",
     "src/Leaflet.TOC.Symbology.js~Symbology#label",
     "member"
   ],
@@ -1035,6 +1107,12 @@ window.esdocSearchIndex = [
     "test/leaflet.toc.control.spec.js",
     "test-file/test/Leaflet.TOC.Control.spec.js.html",
     "test/Leaflet.TOC.Control.spec.js",
+    "testFile"
+  ],
+  [
+    "test/leaflet.toc.nesteddynamicmaplayer.spec.js",
+    "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html",
+    "test/Leaflet.TOC.NestedDynamicMapLayer.spec.js",
     "testFile"
   ],
   [

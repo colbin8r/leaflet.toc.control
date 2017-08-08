@@ -33,6 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html">NestedDynamicMapLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
@@ -50,6 +51,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/index.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* global window */
 import NestedLayer from &apos;./Leaflet.TOC.NestedLayer&apos;;
+import NestedDynamicMapLayer from &apos;./Leaflet.TOC.NestedDynamicMapLayer&apos;;
 import * as NestedLayerTreeHelper from &apos;./Leaflet.TOC.NestedLayerTreeHelper&apos;;
 import Symbology from &apos;./Leaflet.TOC.Symbology&apos;;
 import Control from &apos;./Leaflet.TOC.Control&apos;;
@@ -59,6 +61,7 @@ import Control from &apos;./Leaflet.TOC.Control&apos;;
 
 let exports = {
   NestedLayer,
+  NestedDynamicMapLayer,
   NestedLayerTreeHelper,
   Symbology,
   Control
@@ -76,6 +79,9 @@ let namespace = Object.assign({}, exports);
 namespace.nestedLayer = function nestedLayer(...args) {
   return new exports.NestedLayer(...args);
 };
+namespace.nestedDynamicMapLayer = function nestedDynamicMapLayer(...args) {
+  return new exports.NestedDynamicMapLayer(...args);
+}
 // no factory for NestedLayerTreeHelper
 namespace.symbology = function symbology(...args) {
   return new exports.Symbology(...args);

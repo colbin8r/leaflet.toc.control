@@ -4,12 +4,12 @@ body {
   overflow: hidden;
 }
 #map, #toc {
-  margin-top: 1em;
   height: 100%;
   display: inline-block;
   font-size: 18px;
 }
 #toc {
+  padding-top: 1em;
   float: left;
   width: 25vw;
   overflow: auto;
@@ -20,6 +20,7 @@ body {
 #map {
   float: right;
   width: 75vw;
+  padding-top: 0;
 }
 .layer-name {
 

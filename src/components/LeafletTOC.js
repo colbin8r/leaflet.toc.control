@@ -23,7 +23,6 @@ export default class LeafletTOC extends React.Component {
 
   toggleSelected = (layer) => {
     // let layers = this.state.layers;
-    console.log('toggling selected state of', layer);
     layer.toggleSelected();
     this.setState({ layers: this.state.layers });
   }

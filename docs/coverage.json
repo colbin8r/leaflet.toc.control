@@ -1,6 +1,6 @@
 {
-  "coverage": "31.03%",
-  "expectCount": 58,
+  "coverage": "30.5%",
+  "expectCount": 59,
   "actualCount": 18,
   "files": {
     "src/Leaflet.TOC.Control.js": {
@@ -26,9 +26,33 @@
         8,
         15,
         10,
-        37,
+        36,
         19,
         24
+      ]
+    },
+    "src/Leaflet.TOC.NestedDynamicMapLayer.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "src/Leaflet.TOC.NestedLayer.js": {
+      "expectCount": 28,
+      "actualCount": 17,
+      "undocumentLines": [
+        290,
+        40,
+        277,
+        271,
+        211,
+        285,
+        185,
+        274,
+        253,
+        246,
+        280
       ]
     },
     "src/components/NestedLayer.js": {
@@ -39,23 +63,6 @@
         9,
         19,
         15
-      ]
-    },
-    "src/Leaflet.TOC.NestedLayer.js": {
-      "expectCount": 28,
-      "actualCount": 17,
-      "undocumentLines": [
-        290,
-        41,
-        277,
-        271,
-        211,
-        285,
-        185,
-        274,
-        253,
-        246,
-        280
       ]
     },
     "src/Leaflet.TOC.Symbology.js": {

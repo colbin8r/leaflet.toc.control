@@ -33,6 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html">NestedDynamicMapLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
@@ -84,8 +85,7 @@ export default class NestedLayer {
       enableTriggersAttach: true,
       alwaysDeselectedWhenDisabled: true,
       disableDescendentsWhenDeselected: true
-    },
-    _isAttached: false
+    }
   }
 
   get defaults() {
@@ -146,6 +146,7 @@ export default class NestedLayer {
     // the &quot;defaults&quot; also contains the initial state
     defaults(this._props, props, this.defaults);
     this._props.id = generateID();
+    this._isAttached = false;
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
@@ -356,20 +357,20 @@ export default class NestedLayer {
 
   // display on map
   _attach() {
-    if (!this._isAttached) {
+    if (!this._isAttached &amp;&amp; !this.map.hasLayer(this.layer)) {
       this.map.addLayer(this.layer);
       // this.layer.addTo(this.map);
-      this._isAttached = true;
     }
+    this._isAttached = true;
   }
 
   // remove from map
   _detach() {
-    if (this._isAttached) {
+    if (this._isAttached &amp;&amp; this.map.hasLayer(this.layer)) {
       this.map.removeLayer(this.layer);
       // this.layer.removeFrom(this.map);
-      this._isAttached = false;
     }
+    this._isAttached = false;
   }
 }
 

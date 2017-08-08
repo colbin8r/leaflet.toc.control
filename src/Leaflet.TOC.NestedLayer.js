@@ -34,8 +34,7 @@ export default class NestedLayer {
       enableTriggersAttach: true,
       alwaysDeselectedWhenDisabled: true,
       disableDescendentsWhenDeselected: true
-    },
-    _isAttached: false
+    }
   }
 
   get defaults() {
@@ -96,6 +95,7 @@ export default class NestedLayer {
     // the "defaults" also contains the initial state
     defaults(this._props, props, this.defaults);
     this._props.id = generateID();
+    this._isAttached = false;
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
@@ -306,20 +306,20 @@ export default class NestedLayer {
 
   // display on map
   _attach() {
-    if (!this._isAttached) {
+    if (!this._isAttached && !this.map.hasLayer(this.layer)) {
       this.map.addLayer(this.layer);
       // this.layer.addTo(this.map);
-      this._isAttached = true;
     }
+    this._isAttached = true;
   }
 
   // remove from map
   _detach() {
-    if (this._isAttached) {
+    if (this._isAttached && this.map.hasLayer(this.layer)) {
       this.map.removeLayer(this.layer);
       // this.layer.removeFrom(this.map);
-      this._isAttached = false;
     }
+    this._isAttached = false;
   }
 }
 

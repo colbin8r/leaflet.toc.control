@@ -1,44 +1,97 @@
-import NestedLayer from './NestedLayer';
-import NL from '../Leaflet.TOC.NestedLayer';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _NestedLayer = require('./NestedLayer');
+
+var _NestedLayer2 = _interopRequireDefault(_NestedLayer);
+
+var _LeafletTOC = require('../Leaflet.TOC.NestedLayer');
+
+var _LeafletTOC2 = _interopRequireDefault(_LeafletTOC);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 // import NestedLayerTreeHelper from '../Leaflet.TOC.NestedLayerTreeHelper';
 
-import React from 'react';
-import PropTypes from 'prop-types';
+var LeafletTOC = function (_React$Component) {
+  _inherits(LeafletTOC, _React$Component);
 
-export default class LeafletTOC extends React.Component {
-
-  static propTypes = {
-    layers: PropTypes.arrayOf(PropTypes.instanceOf(NL)).isRequired,
-    title: PropTypes.string.isRequired
-  };
-
-  constructor(props) {
-    super(props);
+  function LeafletTOC(props) {
+    _classCallCheck(this, LeafletTOC);
 
     // the initial state is a reference to the layers prop
-    this.state = {
+    var _this = _possibleConstructorReturn(this, (LeafletTOC.__proto__ || Object.getPrototypeOf(LeafletTOC)).call(this, props));
+
+    _this.toggleSelected = function (layer) {
+      // let layers = this.state.layers;
+      layer.toggleSelected();
+      _this.setState({ layers: _this.state.layers });
+    };
+
+    _this.state = {
       layers: props.layers
     };
+    return _this;
   }
 
-  toggleSelected = (layer) => {
-    // let layers = this.state.layers;
-    console.log('toggling', layer);
-    layer.toggleSelected();
-    this.setState({ this.state.layers });
-  }
+  _createClass(LeafletTOC, [{
+    key: 'render',
 
-  render() {
-    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} />);
 
-    return (
-      <div className="leaflet-toc-container">
-        <h2>{this.state.title}</h2>
-        <ul className="branch">
-          {layers}
-        </ul>
-      </div>
-    );
-  }
+    // toggleEnabled = (layer) => {
+    //   console.log('toggling enabled state of', layer);
+    //   layer.toggleEnabled();
+    //   this.setState({ layers: this.state.layers });
+    // }
 
-}
+    value: function render() {
+      var _this2 = this;
+
+      var layers = this.state.layers.map(function (layer) {
+        return _react2.default.createElement(_NestedLayer2.default, { layer: layer, toggleSelected: _this2.toggleSelected, key: layer.id });
+      });
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'leaflet-toc-container' },
+        _react2.default.createElement(
+          'h2',
+          null,
+          this.props.title
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'branch' },
+          layers
+        )
+      );
+    }
+  }]);
+
+  return LeafletTOC;
+}(_react2.default.Component);
+
+LeafletTOC.propTypes = {
+  layers: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(_LeafletTOC2.default)).isRequired,
+  title: _propTypes2.default.string.isRequired
+};
+exports.default = LeafletTOC;
+//# sourceMappingURL=LeafletTOC.js.map

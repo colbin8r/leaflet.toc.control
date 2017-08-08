@@ -8,7 +8,7 @@
 
 ## Usage
 
-(TODO: DEMO)
+See some of the examples in [`demo/`](/demo)!
 
 ### As a Package
 If you use ES6 or higher, you can import exactly what you need for use in your own package with ES6 syntax:

@@ -28,42 +28,42 @@ describe('<NestedLayer />', () => {
 
   it('should have a .enabled class if it is enabled', () => {
     layer.enable();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w).to.have.className('enabled');
   })
 
   it('should have a .disabled class if it is disabled', () => {
     layer.disable();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w).to.have.className('disabled');
   })
 
   it('should have a .selected class if it is selected', () => {
     layer.select();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w).to.have.className('selected');
   })
 
   it('should have a .deselected class if it is deselected', () => {
     layer.deselect();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w).to.have.className('deselected');
   })
 
   it('should have a checked checkbox if it is selected', () => {
     layer.select();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w.find('input[type="checkbox"]')).to.be.checked();
   })
 
   it('should have an unchecked checkbox if it is deselected', () => {
     layer.deselect();
-    let w = shallow(<NestedLayer layer={layer} />);
+    let w = shallow(<NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} />);
 
     expect(w.find('input[type="checkbox"]')).to.not.be.checked();
   })

@@ -1,5 +1,6 @@
 /* global window */
 import NestedLayer from './Leaflet.TOC.NestedLayer';
+import NestedDynamicMapLayer from './Leaflet.TOC.NestedDynamicMapLayer';
 import * as NestedLayerTreeHelper from './Leaflet.TOC.NestedLayerTreeHelper';
 import Symbology from './Leaflet.TOC.Symbology';
 import Control from './Leaflet.TOC.Control';
@@ -9,6 +10,7 @@ import Control from './Leaflet.TOC.Control';
 
 let exports = {
   NestedLayer,
+  NestedDynamicMapLayer,
   NestedLayerTreeHelper,
   Symbology,
   Control
@@ -26,6 +28,9 @@ let namespace = Object.assign({}, exports);
 namespace.nestedLayer = function nestedLayer(...args) {
   return new exports.NestedLayer(...args);
 };
+namespace.nestedDynamicMapLayer = function nestedDynamicMapLayer(...args) {
+  return new exports.NestedDynamicMapLayer(...args);
+}
 // no factory for NestedLayerTreeHelper
 namespace.symbology = function symbology(...args) {
   return new exports.Symbology(...args);
