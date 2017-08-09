@@ -43,6 +43,78 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber9",
+    "<MapSymbol />",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber45",
+    "<MapSymbol /> label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber52",
+    "<MapSymbol /> label should have the .label class",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber56",
+    "<MapSymbol /> label should have the label text",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber17",
+    "<MapSymbol /> should have a .symbol class",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber21",
+    "<MapSymbol /> swatch",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber40",
+    "<MapSymbol /> swatch should have the .swatch class",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber36",
+    "<MapSymbol /> swatch should have the correct base64 URI as the src",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbol.spec.js.html#lineNumber28",
+    "<MapSymbol /> swatch should have the proper width and height",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbology.spec.js.html#lineNumber10",
+    "<MapSymbology />",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbology.spec.js.html#lineNumber17",
+    "<MapSymbology /> should have a .symbology class",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/components/MapSymbology.spec.js.html#lineNumber21",
+    "<MapSymbology /> should have a MapSymbol for each symbol",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/components/NestedLayer.spec.js.html#lineNumber9",
     "<NestedLayer />",
     "test"
@@ -120,9 +192,51 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "leaflet.control.nestedlayers/src/leaflet.toc.mapserverparser-old.js~mapserverparser",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html",
+    "<span>MapServerParser</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.MapServerParser-old.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.toc.mapserverparser.js~mapserverparser",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html",
+    "<span>MapServerParser</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.MapServerParser.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.toc.mapsymbol.js~mapsymbol",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html",
+    "<span>MapSymbol</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.MapSymbol.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/components/mapsymbol.js~mapsymbol",
+    "class/src/components/MapSymbol.js~MapSymbol.html",
+    "<span>MapSymbol</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/components/MapSymbol.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.toc.mapsymbology.js~mapsymbology",
+    "class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html",
+    "<span>MapSymbology</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.MapSymbology.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/components/mapsymbology.js~mapsymbology",
+    "class/src/components/MapSymbology.js~MapSymbology.html",
+    "<span>MapSymbology</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/components/MapSymbology.js</span>",
+    "class"
+  ],
+  [
     "leaflet.control.nestedlayers/src/leaflet.toc.nesteddynamicmaplayer.js~nesteddynamicmaplayer",
     "class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html",
     "<span>NestedDynamicMapLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.NestedDynamicMapLayer.js</span>",
+    "class"
+  ],
+  [
+    "leaflet.control.nestedlayers/src/leaflet.toc.nestedgrouplayer.js~nestedgrouplayer",
+    "class/src/Leaflet.TOC.NestedGroupLayer.js~NestedGroupLayer.html",
+    "<span>NestedGroupLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.NestedGroupLayer.js</span>",
     "class"
   ],
   [
@@ -135,12 +249,6 @@ window.esdocSearchIndex = [
     "leaflet.control.nestedlayers/src/components/nestedlayer.js~nestedlayer",
     "class/src/components/NestedLayer.js~NestedLayer.html",
     "<span>NestedLayer</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/components/NestedLayer.js</span>",
-    "class"
-  ],
-  [
-    "leaflet.control.nestedlayers/src/leaflet.toc.symbology.js~symbology",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html",
-    "<span>Symbology</span> <span class=\"search-result-import-path\">leaflet.control.nestedlayers/src/Leaflet.TOC.Symbology.js</span>",
     "class"
   ],
   [
@@ -511,6 +619,258 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber13",
+    "MapServerParser",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber110",
+    "MapServerParser #_queryLayers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber111",
+    "MapServerParser #_queryLayers should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber116",
+    "MapServerParser #_queryLegend",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber117",
+    "MapServerParser #_queryLegend should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber62",
+    "MapServerParser #constructor",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber75",
+    "MapServerParser #constructor should have default (configuration) options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber82",
+    "MapServerParser #constructor should merge options with defaults",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber63",
+    "MapServerParser #constructor should throw errors if required arguments are missing",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber50",
+    "MapServerParser #defaults",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber51",
+    "MapServerParser #defaults should have default configuration options accessible always",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber56",
+    "MapServerParser #layer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber57",
+    "MapServerParser #layer should be able to get the Esri-Leaflet DynamicMapLayer",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber38",
+    "MapServerParser #map",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber39",
+    "MapServerParser #map should be able to get the Leaflet map object",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber44",
+    "MapServerParser #options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber45",
+    "MapServerParser #options should be able to get configuration options",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber91",
+    "MapServerParser #parse",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber101",
+    "MapServerParser #parse should resolve the promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber105",
+    "MapServerParser #parse should resolve the promise with an array",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber97",
+    "MapServerParser #parse should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber32",
+    "MapServerParser #url",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber33",
+    "MapServerParser #url should be able to get the MapServer url",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber3",
+    "MapSymbol",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber56",
+    "MapSymbol #base64URI",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber57",
+    "MapSymbol #base64URI should be able to a string suitable for embedding the symbology in an image tag's src attribute",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber38",
+    "MapSymbol #contentType",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber39",
+    "MapSymbol #contentType should be able to get the contentType",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber26",
+    "MapSymbol #height",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber27",
+    "MapSymbol #height should be able to get the height",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber44",
+    "MapSymbol #iamgeData",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber45",
+    "MapSymbol #iamgeData should be able to get the imageData",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber20",
+    "MapSymbol #label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber21",
+    "MapSymbol #label should be able to get the label",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber50",
+    "MapSymbol #relativeURL",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber51",
+    "MapSymbol #relativeURL should be able to get the relativeURL",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber32",
+    "MapSymbol #width",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html#lineNumber33",
+    "MapSymbol #width should be able to get the width",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber5",
+    "MapSymbology",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber7",
+    "MapSymbology #symbols",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber14",
+    "MapSymbology #symbols should be able to get the symbols",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber18",
+    "MapSymbology #symbols should contain only MapSymbols",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber12",
     "NestedDynamicMapLayer",
     "test"
@@ -583,85 +943,85 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber165",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber167",
     "NestedLayer #children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber187",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber189",
     "NestedLayer #children #hasChildren",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber173",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber175",
     "NestedLayer #children should be able to add children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber180",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber182",
     "NestedLayer #children should only be able to add NestedLayers as children",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber42",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber43",
     "NestedLayer #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber63",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber64",
     "NestedLayer #constructor should have defaults for optional arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber43",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber44",
     "NestedLayer #constructor should throw errors when missing required arguments",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber75",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber77",
     "NestedLayer #enabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber100",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber102",
     "NestedLayer #enabled should attach when enabled and selected and enableTriggersAttach is true",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber94",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber96",
     "NestedLayer #enabled should detach when disabled",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber110",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber112",
     "NestedLayer #selected",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber125",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber127",
     "NestedLayer #selected should always return the selected state when alwaysDeselectedWhenDisabled is false",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber111",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber113",
     "NestedLayer #selected should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true",
     "test"
   ],
   [
     "",
-    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber145",
+    "test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber147",
     "NestedLayer #selected should disable children when deselected and disableDescendentsWhenDeselected is true",
     "test"
   ],
@@ -738,30 +1098,6 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "",
-    "test-file/test/Leaflet.TOC.Symbology.spec.js.html#lineNumber20",
-    "getters and setters",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.TOC.Symbology.spec.js.html#lineNumber21",
-    "getters and setters label",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.TOC.Symbology.spec.js.html#lineNumber22",
-    "getters and setters label should be able to get a label",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/Leaflet.TOC.Symbology.spec.js.html#lineNumber16",
-    "should pass",
-    "test"
-  ],
-  [
     "src/leaflet.toc.control.js",
     "file/src/Leaflet.TOC.Control.js.html",
     "src/Leaflet.TOC.Control.js",
@@ -822,9 +1158,225 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/leaflet.toc.mapserverparser-old.js",
+    "file/src/Leaflet.TOC.MapServerParser-old.js.html",
+    "src/Leaflet.TOC.MapServerParser-old.js",
+    "file"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#constructor",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-constructor-constructor",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#constructor",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#defaults",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-get-defaults",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#defaults",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#map",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-get-map",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#map",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#options",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-get-options",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#options",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#parse",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-method-parse",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#parse",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser#url",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#instance-get-url",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser#url",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser.apiendpoints",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#static-member-APIEndpoints",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.APIEndpoints",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser.headers",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#static-member-Headers",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.Headers",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser-old.js~mapserverparser.queryparameters",
+    "class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html#static-member-QueryParameters",
+    "src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.QueryParameters",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js",
+    "file/src/Leaflet.TOC.MapServerParser.js.html",
+    "src/Leaflet.TOC.MapServerParser.js",
+    "file"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#constructor",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-constructor-constructor",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#constructor",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#defaults",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-get-defaults",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#defaults",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#layer",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-get-layer",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#layer",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#map",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-get-map",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#map",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#options",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-get-options",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#options",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#parse",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-method-parse",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#parse",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser#url",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#instance-get-url",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser#url",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser.apiendpoints",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#static-member-APIEndpoints",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser.APIEndpoints",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser.headers",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#static-member-Headers",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser.Headers",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapserverparser.js~mapserverparser.queryparameters",
+    "class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html#static-member-QueryParameters",
+    "src/Leaflet.TOC.MapServerParser.js~MapServerParser.QueryParameters",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js",
+    "file/src/Leaflet.TOC.MapSymbol.js.html",
+    "src/Leaflet.TOC.MapSymbol.js",
+    "file"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#base64uri",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-base64URI",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#base64URI",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#constructor",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-constructor-constructor",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#constructor",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#contenttype",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-contentType",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#contentType",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#defaults",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-defaults",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#defaults",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#height",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-height",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#height",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#imagedata",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-imageData",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#imageData",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#label",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-label",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#label",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#relativeurl",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-relativeURL",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#relativeURL",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbol.js~mapsymbol#width",
+    "class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html#instance-get-width",
+    "src/Leaflet.TOC.MapSymbol.js~MapSymbol#width",
+    "member"
+  ],
+  [
+    "src/leaflet.toc.mapsymbology.js",
+    "file/src/Leaflet.TOC.MapSymbology.js.html",
+    "src/Leaflet.TOC.MapSymbology.js",
+    "file"
+  ],
+  [
+    "src/leaflet.toc.mapsymbology.js~mapsymbology#addsymbol",
+    "class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html#instance-method-addSymbol",
+    "src/Leaflet.TOC.MapSymbology.js~MapSymbology#addSymbol",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapsymbology.js~mapsymbology#constructor",
+    "class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html#instance-constructor-constructor",
+    "src/Leaflet.TOC.MapSymbology.js~MapSymbology#constructor",
+    "method"
+  ],
+  [
+    "src/leaflet.toc.mapsymbology.js~mapsymbology#symbols",
+    "class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html#instance-get-symbols",
+    "src/Leaflet.TOC.MapSymbology.js~MapSymbology#symbols",
+    "member"
+  ],
+  [
     "src/leaflet.toc.nesteddynamicmaplayer.js",
     "file/src/Leaflet.TOC.NestedDynamicMapLayer.js.html",
     "src/Leaflet.TOC.NestedDynamicMapLayer.js",
+    "file"
+  ],
+  [
+    "src/leaflet.toc.nestedgrouplayer.js",
+    "file/src/Leaflet.TOC.NestedGroupLayer.js.html",
+    "src/Leaflet.TOC.NestedGroupLayer.js",
     "file"
   ],
   [
@@ -889,13 +1441,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
@@ -978,6 +1530,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/leaflet.toc.nestedlayer.js~nestedlayer#symbology",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-symbology",
+    "src/Leaflet.TOC.NestedLayer.js~NestedLayer#symbology",
+    "member"
+  ],
+  [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#toggleenabled",
     "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-method-toggleEnabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#toggleEnabled",
@@ -994,36 +1552,6 @@ window.esdocSearchIndex = [
     "file/src/Leaflet.TOC.NestedLayerTreeHelper.js.html",
     "src/Leaflet.TOC.NestedLayerTreeHelper.js",
     "file"
-  ],
-  [
-    "src/leaflet.toc.symbology.js",
-    "file/src/Leaflet.TOC.Symbology.js.html",
-    "src/Leaflet.TOC.Symbology.js",
-    "file"
-  ],
-  [
-    "src/leaflet.toc.symbology.js~symbology#constructor",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-constructor-constructor",
-    "src/Leaflet.TOC.Symbology.js~Symbology#constructor",
-    "method"
-  ],
-  [
-    "src/leaflet.toc.symbology.js~symbology#defaults",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-defaults",
-    "src/Leaflet.TOC.Symbology.js~Symbology#defaults",
-    "member"
-  ],
-  [
-    "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-get-label",
-    "src/Leaflet.TOC.Symbology.js~Symbology#label",
-    "member"
-  ],
-  [
-    "src/leaflet.toc.symbology.js~symbology#label",
-    "class/src/Leaflet.TOC.Symbology.js~Symbology.html#instance-set-label",
-    "src/Leaflet.TOC.Symbology.js~Symbology#label",
-    "member"
   ],
   [
     "src/components/leaflettoc.js",
@@ -1068,16 +1596,46 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/components/mapsymbol.js~mapsymbol#render",
+    "class/src/components/MapSymbol.js~MapSymbol.html#instance-method-render",
+    "src/components/MapSymbol.js~MapSymbol#render",
+    "method"
+  ],
+  [
+    "src/components/mapsymbol.js~mapsymbol.proptypes",
+    "class/src/components/MapSymbol.js~MapSymbol.html#static-member-propTypes",
+    "src/components/MapSymbol.js~MapSymbol.propTypes",
+    "member"
+  ],
+  [
     "src/components/mapsymbology.js",
     "file/src/components/MapSymbology.js.html",
     "src/components/MapSymbology.js",
     "file"
   ],
   [
+    "src/components/mapsymbology.js~mapsymbology#render",
+    "class/src/components/MapSymbology.js~MapSymbology.html#instance-method-render",
+    "src/components/MapSymbology.js~MapSymbology#render",
+    "method"
+  ],
+  [
+    "src/components/mapsymbology.js~mapsymbology.proptypes",
+    "class/src/components/MapSymbology.js~MapSymbology.html#static-member-propTypes",
+    "src/components/MapSymbology.js~MapSymbology.propTypes",
+    "member"
+  ],
+  [
     "src/components/nestedlayer.js",
     "file/src/components/NestedLayer.js.html",
     "src/components/NestedLayer.js",
     "file"
+  ],
+  [
+    "src/components/nestedlayer.js~nestedlayer#friendlylayertype",
+    "class/src/components/NestedLayer.js~NestedLayer.html#instance-member-friendlyLayerType",
+    "src/components/NestedLayer.js~NestedLayer#friendlyLayerType",
+    "member"
   ],
   [
     "src/components/nestedlayer.js~nestedlayer#render",
@@ -1110,6 +1668,24 @@ window.esdocSearchIndex = [
     "testFile"
   ],
   [
+    "test/leaflet.toc.mapserverparser.spec.js",
+    "test-file/test/Leaflet.TOC.MapServerParser.spec.js.html",
+    "test/Leaflet.TOC.MapServerParser.spec.js",
+    "testFile"
+  ],
+  [
+    "test/leaflet.toc.mapsymbol.spec.js",
+    "test-file/test/Leaflet.TOC.MapSymbol.spec.js.html",
+    "test/Leaflet.TOC.MapSymbol.spec.js",
+    "testFile"
+  ],
+  [
+    "test/leaflet.toc.mapsymbology.spec.js",
+    "test-file/test/Leaflet.TOC.MapSymbology.spec.js.html",
+    "test/Leaflet.TOC.MapSymbology.spec.js",
+    "testFile"
+  ],
+  [
     "test/leaflet.toc.nesteddynamicmaplayer.spec.js",
     "test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html",
     "test/Leaflet.TOC.NestedDynamicMapLayer.spec.js",
@@ -1128,15 +1704,21 @@ window.esdocSearchIndex = [
     "testFile"
   ],
   [
-    "test/leaflet.toc.symbology.spec.js",
-    "test-file/test/Leaflet.TOC.Symbology.spec.js.html",
-    "test/Leaflet.TOC.Symbology.spec.js",
-    "testFile"
-  ],
-  [
     "test/components/leaflettoc.spec.js",
     "test-file/test/components/LeafletTOC.spec.js.html",
     "test/components/LeafletTOC.spec.js",
+    "testFile"
+  ],
+  [
+    "test/components/mapsymbol.spec.js",
+    "test-file/test/components/MapSymbol.spec.js.html",
+    "test/components/MapSymbol.spec.js",
+    "testFile"
+  ],
+  [
+    "test/components/mapsymbology.spec.js",
+    "test-file/test/components/MapSymbology.spec.js.html",
+    "test/components/MapSymbology.spec.js",
     "testFile"
   ],
   [

@@ -33,6 +33,7 @@ describe('NestedLayer', () => {
     expect(l).to.have.property('layer');
     expect(l).to.have.property('children');
     expect(l).to.have.property('parent');
+    expect(l).to.have.property('symbology');
     expect(l).to.have.property('minZoom');
     expect(l).to.have.property('maxZoom');
     expect(l).to.have.property('rules');
@@ -66,6 +67,7 @@ describe('NestedLayer', () => {
       // .eql tests deep equality
       // http://chaijs.com/api/bdd/#method_eql
       expect(l.children).to.eql(l.defaults.children);
+      expect(l.symbology).to.eql(l.defaults.symbology);
       expect(l.enabled).to.equal(l.defaults.enabled);
       expect(l.selected).to.equal(l.defaults.selected);
       expect(l.zoom).to.equal(l.defaults.zoom);

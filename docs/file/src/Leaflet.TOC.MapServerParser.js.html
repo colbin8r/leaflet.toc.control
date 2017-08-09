@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Leaflet.TOC.MapServerParser.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html">NestedDynamicMapLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedGroupLayer.js~NestedGroupLayer.html">NestedGroupLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Leaflet.TOC.MapServerParser.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { defaultsDeep as defaults } from &apos;lodash&apos;;
+// superagent mimics the node &apos;request&apos; library on the client side as an xhr library
+import superagent from &apos;superagent&apos;;
+import Promise from &apos;bluebird&apos;;
+import superagentPromise from &apos;superagent-promise&apos;;
+const request = superagentPromise(superagent, Promise);
+
+import NestedDynamicMapLayer from &apos;./Leaflet.TOC.NestedDynamicMapLayer&apos;;
+import NestedGroupLayer from &apos;./Leaflet.TOC.NestedGroupLayer&apos;;
+import * as NestedLayerTreeHelper from &apos;./Leaflet.TOC.NestedLayerTreeHelper&apos;;
+import MapSymbol from &apos;./Leaflet.TOC.MapSymbol&apos;;
+import { DynamicMapLayer } from &apos;esri-leaflet&apos;;
+
+export default class MapServerParser {
+
+  static _defaults = {
+    parsingOptions: {
+      scale: true,
+      defaultVisibility: true,
+      symbology: false
+    },
+    layerProps: {},
+    dynamicMapLayerOptions: {}
+  };
+
+  static APIEndpoints = {
+    layers: &apos;/layers&apos;,
+    legend: &apos;/legend&apos;
+  };
+
+  static QueryParameters = {
+    f: &apos;json&apos;
+  };
+
+  static Headers = {
+    Accept: &apos;application/json&apos;
+  };
+
+  constructor(url, map, options) {
+    // ensure required parameters are present
+    if (typeof url == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing URL when creating MapServerParser&apos;);
+    }
+    if (typeof map == &apos;undefined&apos;) {
+      throw new Error(&apos;Missing Leaflet map object when creating MapServerParser&apos;);
+    }
+
+    // save url
+    this._url = url;
+
+    // save map
+    this._map = map;
+
+    // https://lodash.com/docs/4.17.4#defaultsDeep
+    this._options = defaults({}, options, this.defaults);
+
+    // create a new DynamicMapLayer to use in all of our NestedDynamicMapLayers
+    let layerOptions = defaults({ url }, this.options.dynamicMapLayerOptions)
+    this._layer = new DynamicMapLayer(layerOptions);
+  }
+
+  /**
+   * MapServer URL
+   * @type {string}
+   */
+  get url() {
+    return this._url;
+  }
+
+  /**
+   * Leaflet Map object
+   * @type {L.Map}
+   */
+  get map() {
+    return this._map;
+  }
+
+  /**
+   * Configuration options
+   * @type {object}
+   */
+  get options() {
+    return this._options;
+  }
+
+  /**
+   * Default configuration options
+   * @type {object}
+   */
+  get defaults() {
+    // uses reflection to return the static _defaults property on the class
+    return this.constructor._defaults;
+  }
+
+  /**
+   * Esri-Leaflet DynamicMapLayer object
+   * @type {DynamicMapLayer}
+   */
+  get layer() {
+    return this._layer;
+  }
+
+  parse() {
+    // we have to wait for both xhr promises to resolve before we can begin processing
+    // note that Promise.join returns a promise that resolves to a LayerHierarchy
+    return Promise.join(this._queryLayers(), this._queryLegend(), (layerResponse, legendResponse) =&gt; {
+      // ensure we hit HTTP 2xx statuses
+      if (!layerResponse.ok || !legendResponse.ok) {
+        throw new Error(&apos;Bad request: HTTP status was not 2xx&apos;);
+      }
+
+      // parse the layer data into JSON
+      let layers = this._parseBodyAsJSON(layerResponse);
+
+      // parse the legend data into JSON
+      let legend = this._parseBodyAsJSON(legendResponse);
+
+      // restrict ourselves to the &apos;layers&apos; node of the response bodies
+      layers = layers.layers;
+      legend = legend.layers;
+
+      let tree = [];
+
+      layers.forEach((node) =&gt; {
+        let layer = this._parseNode(node);
+
+        if (this.options.parsingOptions.defaultVisibility) {
+          layer.selected = node.defaultVisibility;
+        }
+
+        if (this.options.parsingOptions.symbology) {
+
+          // find the entry in the legend corresponding to the current layer
+          let legendEntry = legend.find((legendNode) =&gt; {
+            return legendNode.layerId == layer.layerID;
+          })
+
+          // confirm that there is symbology for the layer
+          if (legendEntry &amp;&amp; legendEntry.legend &amp;&amp; legendEntry.legend.length &gt; 0) {
+
+            // add each entry from the legend node in the entry as a MapSymbol
+            legendEntry.legend.forEach((entry, idx) =&gt; {
+              layer.symbology.addSymbol(new MapSymbol(entry));
+            })
+
+          }
+        }
+
+        // add the layer into the proper subtree
+        if (node.parentLayer !== null) {
+          let parentID = node.parentLayer.id;
+          // this assumes that the parent has already been parsed
+          let parent = NestedLayerTreeHelper.getLayerByLayerID(tree, parentID);
+          parent.addChild(layer);
+        } else {
+          tree.push(layer);
+        }
+      })
+
+      return tree;
+    });
+  }
+
+  _queryLayers() {
+    // assemble layerdata url
+    const layerdataURL = this.url + this.constructor.APIEndpoints.layers;
+
+    // fetch layerdata as JSON
+    return request
+      .get(layerdataURL)
+      .set(this.constructor.Headers)
+      .query(this.constructor.QueryParameters)
+      .end();
+  }
+
+  _queryLegend() {
+    // assemble legend url
+    const legendURL = this.url + this.constructor.APIEndpoints.legend;
+
+    // fetch legend as JSON
+    return request
+      .get(legendURL)
+      .set(this.constructor.Headers)
+      .query(this.constructor.QueryParameters)
+      .end();
+  }
+
+  _parseBodyAsJSON(response) {
+    // parse the data into JSON
+    let body = response.body;
+    // ArcGIS does not properly set its Content-Type header
+    // so force JSON parsing if superagent did not parse automatically
+    if (response.type !== this.constructor.Headers.Accept) {
+      body = JSON.parse(response.text);
+    }
+
+    return body;
+  }
+
+  _parseNode(node) {
+    let layerType;
+
+    switch (node.type) {
+      case &apos;Group Layer&apos;:
+        layerType =  NestedGroupLayer;
+        break;
+      case &apos;Feature Layer&apos;:
+        layerType = NestedDynamicMapLayer
+        break;
+      default:
+        throw &apos;Invalid layer type: &apos; + node.type;
+        break;
+    }
+
+    return new layerType(
+      node.id,
+      node.name,
+      this.layer,
+      this.map,
+      this.options.layerProps);
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

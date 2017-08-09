@@ -1,5 +1,7 @@
 import { defaultsDeep as defaults } from 'lodash';
+
 import * as NestedLayerTreeHelper from './Leaflet.TOC.NestedLayerTreeHelper';
+import MapSymbology from './Leaflet.TOC.MapSymbology';
 
 let lastID = 0;
 
@@ -91,6 +93,11 @@ export default class NestedLayer {
       map
     };
 
+    // this prop isn't set on defaults
+    // if it is, then all instances that use the default will share the same instance
+    // (NOT what you want)
+    this._props.symbology = new MapSymbology()
+
     // merge optional props with defaults
     // the "defaults" also contains the initial state
     defaults(this._props, props, this.defaults);
@@ -106,10 +113,10 @@ export default class NestedLayer {
 
     // if the zoom properties are on the leaflet layer object, copy them up to the
     // NestedLayer object
-    if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
-      this._props.minZoom = this.layer.minZoom;
-      this._props.maxZoom = this.layer.maxZoom;
-    }
+    // if (this.layer.minZoom !== undefined && this.layer.maxZoom !== undefined) {
+    //   this._props.minZoom = this.layer.minZoom;
+    //   this._props.maxZoom = this.layer.maxZoom;
+    // }
 
     // if this layer has zoom data, we need to handle the case where the user zooms to a level where
     // our layer should be disabled according to the minZoom/maxZoom contained in the layer object
@@ -164,6 +171,14 @@ export default class NestedLayer {
    */
   get parent() {
     return this._props.parent;
+  }
+
+  /**
+   * Map symbology
+   * @type {MapSymbology}
+   */
+  get symbology() {
+    return this._props.symbology;
   }
 
   /**

@@ -6,11 +6,13 @@ const sinonChai = require('sinon-chai');
 const chaiEnzyme = require('chai-enzyme');
 const chaiAsPromised = require('chai-as-promised');
 
+// spies, stubs, and mocks for chai
 // https://github.com/domenic/sinon-chai
 // example assertion:
 // expect(mySpy.calledWith("foo")).to.be.ok;
 chai.use(sinonChai);
 
+// assert on React components
 // https://github.com/producthunt/chai-enzyme
 chai.use(chaiEnzyme());
 

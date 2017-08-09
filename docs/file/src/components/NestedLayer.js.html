@@ -33,9 +33,13 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html">NestedDynamicMapLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedGroupLayer.js~NestedGroupLayer.html">NestedGroupLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Symbology.js~Symbology.html">Symbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateID">generateID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToLayer">applyStateChangeToLayer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyStateChangeToTree">applyStateChangeToTree</a></span></span></li>
@@ -43,17 +47,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html">NestedLayer</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/components/NestedLayer.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
-
-import React from &apos;react&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import React from &apos;react&apos;;
 import PropTypes from &apos;prop-types&apos;;
 import classnames from &apos;classnames&apos;;
+
+import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
+import MapSymbology from &apos;./MapSymbology&apos;;
 
 export default class NestedLayer extends React.Component {
 
@@ -65,6 +72,10 @@ export default class NestedLayer extends React.Component {
 
   toggleSelected = () =&gt; {
     this.props.toggleSelected(this.props.layer);
+  }
+
+  friendlyLayerType = () =&gt; {
+    return this.props.layer.constructor.name.replace(&apos;Nested&apos;, &apos;&apos;);
   }
 
   render() {
@@ -95,6 +106,9 @@ export default class NestedLayer extends React.Component {
       &lt;li className={classes} &gt;
         &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} onChange={this.toggleSelected} /&gt;
         &lt;span className=&quot;layer-name&quot;&gt;{this.props.layer.name}&lt;/span&gt;
+        &lt;span className=&quot;layer-type&quot;&gt;{this.friendlyLayerType()}&lt;/span&gt;
+
+        &lt;MapSymbology symbology={this.props.layer.symbology} /&gt;
 
         {children}
 

@@ -14,16 +14,13 @@ body {
   width: 25vw;
   overflow: auto;
 }
-#toc .nested-layer-control-container {
-  padding-left: .5em;
-}
 #map {
   float: right;
   width: 75vw;
   padding-top: 0;
 }
-.layer-name {
-
+.branch {
+  list-style: none;
 }
 .leaf input[type=checkbox] {
   cursor: pointer;
@@ -31,11 +28,16 @@ body {
   vertical-align: top;
   margin-top: 2px;
 }
-.enabled {
+.enabled .layer-name {
   color: limegreen;
 }
-.disabled {
-  color: grey;
+.disabled .layer-name {
+  color: gray;
+}
+.layer-type {
+  padding-left: 1.5rem;
+  font-size: .75rem;
+  color: lightgray;
 }
 /*.leaf::after {
   content: '*';

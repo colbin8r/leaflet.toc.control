@@ -2,7 +2,9 @@
 import NestedLayer from './Leaflet.TOC.NestedLayer';
 import NestedDynamicMapLayer from './Leaflet.TOC.NestedDynamicMapLayer';
 import * as NestedLayerTreeHelper from './Leaflet.TOC.NestedLayerTreeHelper';
-import Symbology from './Leaflet.TOC.Symbology';
+import MapServerParser from './Leaflet.TOC.MapServerParser';
+import MapSymbology from './Leaflet.TOC.MapSymbology';
+import MapSymbol from './Leaflet.TOC.MapSymbol';
 import Control from './Leaflet.TOC.Control';
 // import LayerHierarchy from './Leaflet.LayerHierarchy';
 // import MapServerParser from './Leaflet.LayerHierarchy.MapServerParser';
@@ -12,7 +14,9 @@ let exports = {
   NestedLayer,
   NestedDynamicMapLayer,
   NestedLayerTreeHelper,
-  Symbology,
+  MapServerParser,
+  MapSymbology,
+  MapSymbol,
   Control
   // LayerHierarchy,
   // MapServerParser,
@@ -32,8 +36,14 @@ namespace.nestedDynamicMapLayer = function nestedDynamicMapLayer(...args) {
   return new exports.NestedDynamicMapLayer(...args);
 }
 // no factory for NestedLayerTreeHelper
-namespace.symbology = function symbology(...args) {
-  return new exports.Symbology(...args);
+namespace.mapServerParser = function mapServerParser(...args) {
+  return new exports.MapServerParser(...args);
+}
+namespace.mapSymbology = function mapSymbology(...args) {
+  return new exports.MapSymbology(...args);
+}
+namespace.mapSymbol = function mapSymbol(...args) {
+  return new exports.MapSymbol(...args);
 }
 namespace.control = function control(...args) {
   return new exports.Control(...args);
