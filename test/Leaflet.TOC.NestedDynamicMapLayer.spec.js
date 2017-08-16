@@ -63,7 +63,7 @@ describe('NestedDynamicMapLayer', () => {
     })
   })
 
-  describe('#_detach', () => {
+  describe.skip('#_detach', () => {
     it('should try to call .setLayers on the Leaflet layer', () => {
       fixture._detach();
       expect(setLayersSpy).to.have.been.called;

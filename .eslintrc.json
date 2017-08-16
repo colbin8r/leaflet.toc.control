@@ -15,7 +15,8 @@
     "vars-on-top": "off",
     "func-names": ["warn", "as-needed"],
     "no-unused-vars": "warn",
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "indent": ["warn", 2, { "SwitchCase": 1}]
     // "valid-jsdoc": ["error", {
     //   "requireReturn": false,
     //   "requireReturnType": true,

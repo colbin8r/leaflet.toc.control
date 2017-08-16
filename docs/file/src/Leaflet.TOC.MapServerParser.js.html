@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -196,11 +197,26 @@ export default class MapServerParser {
           if (legendEntry &amp;&amp; legendEntry.legend &amp;&amp; legendEntry.legend.length &gt; 0) {
 
             // add each entry from the legend node in the entry as a MapSymbol
-            legendEntry.legend.forEach((entry, idx) =&gt; {
+            legendEntry.legend.forEach((entry) =&gt; {
               layer.symbology.addSymbol(new MapSymbol(entry));
             })
 
           }
+        }
+
+        if (this.options.parsingOptions.scale) {
+          // convert the &apos;scale&apos; data returned by ArcGIS to &apos;zoom&apos; data used by Leaflet
+          // if ArcGIS returns &apos;0&apos;, set to Inifinity or -Infinity where appropriate
+          // http://leafletjs.com/reference-1.2.0.html#crs-zoom
+          // https://github.com/Leaflet/Leaflet/blob/master/src/map/Map.js#L39
+          const leafletMostZoomedInLevel = 19;
+          const leafletLeastZoomedInLevel = 1;
+          const max = (node.maxScale !== 0 ? leafletLeastZoomedInLevel + this.map.options.crs.zoom(node.maxScale) : Number.POSITIVE_INFINITY);
+          const min = (node.minScale !== 0 ? leafletMostZoomedInLevel - this.map.options.crs.zoom(node.minScale) : Number.NEGATIVE_INFINITY);
+          console.log(&apos;MapServerParser min&apos;, min, &apos;max&apos;, max);
+          // console.log(&apos;nodemax&apos;, node.maxScale, &apos;min&apos;, min, &apos;nodemin&apos;, node.minScale, &apos;max&apos;, max);
+          layer.minZoom = min;
+          layer.maxZoom = max;
         }
 
         // add the layer into the proper subtree
@@ -213,6 +229,8 @@ export default class MapServerParser {
           tree.push(layer);
         }
       })
+
+      NestedLayerTreeHelper.validateTreeEnabledState(tree);
 
       return tree;
     });
@@ -259,14 +277,13 @@ export default class MapServerParser {
 
     switch (node.type) {
       case &apos;Group Layer&apos;:
-        layerType =  NestedGroupLayer;
+        layerType = NestedGroupLayer;
         break;
       case &apos;Feature Layer&apos;:
         layerType = NestedDynamicMapLayer
         break;
       default:
         throw &apos;Invalid layer type: &apos; + node.type;
-        break;
     }
 
     return new layerType(

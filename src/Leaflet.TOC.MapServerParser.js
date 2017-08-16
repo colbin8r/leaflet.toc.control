@@ -139,11 +139,26 @@ export default class MapServerParser {
           if (legendEntry && legendEntry.legend && legendEntry.legend.length > 0) {
 
             // add each entry from the legend node in the entry as a MapSymbol
-            legendEntry.legend.forEach((entry, idx) => {
+            legendEntry.legend.forEach((entry) => {
               layer.symbology.addSymbol(new MapSymbol(entry));
             })
 
           }
+        }
+
+        if (this.options.parsingOptions.scale) {
+          // convert the 'scale' data returned by ArcGIS to 'zoom' data used by Leaflet
+          // if ArcGIS returns '0', set to Inifinity or -Infinity where appropriate
+          // http://leafletjs.com/reference-1.2.0.html#crs-zoom
+          // https://github.com/Leaflet/Leaflet/blob/master/src/map/Map.js#L39
+          const leafletMostZoomedInLevel = 19;
+          const leafletLeastZoomedInLevel = 1;
+          const max = (node.maxScale !== 0 ? leafletLeastZoomedInLevel + this.map.options.crs.zoom(node.maxScale) : Number.POSITIVE_INFINITY);
+          const min = (node.minScale !== 0 ? leafletMostZoomedInLevel - this.map.options.crs.zoom(node.minScale) : Number.NEGATIVE_INFINITY);
+          console.log('MapServerParser min', min, 'max', max);
+          // console.log('nodemax', node.maxScale, 'min', min, 'nodemin', node.minScale, 'max', max);
+          layer.minZoom = min;
+          layer.maxZoom = max;
         }
 
         // add the layer into the proper subtree
@@ -156,6 +171,8 @@ export default class MapServerParser {
           tree.push(layer);
         }
       })
+
+      NestedLayerTreeHelper.validateTreeEnabledState(tree);
 
       return tree;
     });
@@ -202,14 +219,13 @@ export default class MapServerParser {
 
     switch (node.type) {
       case 'Group Layer':
-        layerType =  NestedGroupLayer;
+        layerType = NestedGroupLayer;
         break;
       case 'Feature Layer':
         layerType = NestedDynamicMapLayer
         break;
       default:
         throw 'Invalid layer type: ' + node.type;
-        break;
     }
 
     return new layerType(

@@ -27,6 +27,10 @@ export default class LeafletTOC extends React.Component {
     this.setState({ layers: this.state.layers });
   }
 
+  visibilityChange = () => {
+    this.setState({ layers: this.state.layers });
+  }
+
   // toggleEnabled = (layer) => {
   //   console.log('toggling enabled state of', layer);
   //   layer.toggleEnabled();
@@ -34,7 +38,7 @@ export default class LeafletTOC extends React.Component {
   // }
 
   render() {
-    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} />);
+    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer} toggleSelected={this.toggleSelected} visibilityChange={this.visibilityChange} key={layer.id} />);
 
     return (
       <div className="leaflet-toc-container">

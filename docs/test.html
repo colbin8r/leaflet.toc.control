@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -65,6 +66,27 @@
   </thead>
 
   <tbody data-ice="tests">
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.MapEventManager.spec.js.html#lineNumber6"><p>MapEventManager</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.MapEventManager.spec.js.html#lineNumber42"><p>should export MapEventManager class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.MapEventManager.spec.js.html#lineNumber46"><p>should have IDs for the maps</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
   <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.MapServerParser.spec.js.html#lineNumber13"><p>MapServerParser</p>
 </a></span></td>
@@ -351,7 +373,7 @@
   <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber5"><p>MapSymbology</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">2</td>
+  <td data-ice="testCount">3</td>
 </tr>
 
 
@@ -360,7 +382,7 @@
   <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber7"><p>#symbols</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">2</td>
+  <td data-ice="testCount">3</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
@@ -371,6 +393,12 @@
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
   <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber18"><p>should contain only MapSymbols</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.MapSymbology.spec.js.html#lineNumber24"><p>should know if it only has one symbol</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -386,6 +414,24 @@
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
   <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber34"><p>should be a NestedDynamicMapLayer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber67"><p>should try to call .setLayers on the Leaflet layer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber72"><p>should have removed the ID from the list</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber78"><p>should keep existing IDs in the list</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -425,27 +471,21 @@
 </tr>
 
 
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber66"><p>#_detach</p>
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber9"><p>#generateID</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">3</td>
+  <td data-ice="testCount">2</td>
 </tr>
 
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber67"><p>should try to call .setLayers on the Leaflet layer</p>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber10"><p>should return numbers</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber72"><p>should have removed the ID from the list</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedDynamicMapLayer.spec.js.html#lineNumber78"><p>should keep existing IDs in the list</p>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber14"><p>shouldn&apos;t generate the same ID twice</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -453,35 +493,14 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber8"><p>#generateID</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber20"><p>NestedLayer</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">2</td>
+  <td data-ice="testCount">12</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber9"><p>should return numbers</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber13"><p>shouldn&apos;t generate the same ID twice</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber19"><p>NestedLayer</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">11</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber28"><p>should have accessible properties</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber29"><p>should have accessible properties</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -489,20 +508,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber43"><p>#constructor</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber44"><p>#constructor</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber44"><p>should throw errors when missing required arguments</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber45"><p>should throw errors when missing required arguments</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber64"><p>should have defaults for optional arguments</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber65"><p>should have defaults for optional arguments</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -510,20 +529,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber77"><p>#enabled</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber78"><p>#enabled</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber96"><p>should detach when disabled</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber97"><p>should detach when disabled</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber102"><p>should attach when enabled and selected and enableTriggersAttach is true</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber103"><p>should attach when enabled and selected and enableTriggersAttach is true</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -531,26 +550,26 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber112"><p>#selected</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber113"><p>#selected</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">3</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber113"><p>should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber114"><p>should be deselected when selected but disabled and alwaysDeselectedWhenDisabled is true</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber127"><p>should always return the selected state when alwaysDeselectedWhenDisabled is false</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber128"><p>should always return the selected state when alwaysDeselectedWhenDisabled is false</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber147"><p>should disable children when deselected and disableDescendentsWhenDeselected is true</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber148"><p>should disable children when deselected and disableDescendentsWhenDeselected is true</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -558,26 +577,32 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber167"><p>#children</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber168"><p>#children</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">3</td>
+  <td data-ice="testCount">4</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber175"><p>should be able to add children</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber176"><p>should be able to add children</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber182"><p>should only be able to add NestedLayers as children</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber183"><p>should make itself the parent of children it adds</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber189"><p>#hasChildren</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber190"><p>should only be able to add NestedLayers as children</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/Leaflet.TOC.NestedLayer.spec.js.html#lineNumber197"><p>#hasChildren</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -777,72 +802,12 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber9"><p>&lt;NestedLayer /&gt;</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber83"><p>#bindToMapEvents</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">10</td>
+  
 </tr>
 
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber21"><p>should display the layer name</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber25"><p>should have a .leaf class</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber29"><p>should have a .enabled class if it is enabled</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber36"><p>should have a .disabled class if it is disabled</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber43"><p>should have a .selected class if it is selected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber50"><p>should have a .deselected class if it is deselected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber57"><p>should have a checked checkbox if it is selected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber64"><p>should have an unchecked checkbox if it is deselected</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber71"><p>should toggle its selected state when the checkbox is clicked</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/components/NestedLayer.spec.js.html#lineNumber78"><p>should render a NestedLayer for each child</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
 
 </tbody>
 </table>

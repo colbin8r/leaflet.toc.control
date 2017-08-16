@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -63,16 +64,17 @@ import { mount, render, shallow } from &apos;enzyme&apos;;
 import {root3 as layer} from &apos;../fixtures/smalltree&apos;;
 import NestedLayer from &apos;../../src/components/NestedLayer&apos;;
 
-describe(&apos;&lt;NestedLayer /&gt;&apos;, () =&gt; {
+describe.skip(&apos;&lt;NestedLayer /&gt;&apos;, () =&gt; {
   let wrapper;
   let toggleSelectedSpy;
 
   before(() =&gt; {
-    toggleSelectedSpy = sinon.spy((layer) =&gt; {
+    toggleSelectedSpy = sinon.spy((l) =&gt; {
       // BAD PRACTICE because it does not use setState
-      layer.toggleSelected();
+      l.toggleSelected();
     });
-    wrapper = shallow(&lt;NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} /&gt;);
+    wrapper = shallow(&lt;NestedLayer layer={layer} toggleSelected={toggleSelectedSpy} /&gt;,
+                      { lifecycleExperimental: true });
   })
 
   it(&apos;should display the layer name&apos;, () =&gt; {
@@ -134,6 +136,25 @@ describe(&apos;&lt;NestedLayer /&gt;&apos;, () =&gt; {
 
   it(&apos;should render a NestedLayer for each child&apos;, () =&gt; {
     expect(wrapper).to.have.exactly(layer.children.length).descendants(NestedLayer);
+  })
+
+  describe(&apos;#bindToMapEvents&apos;, () =&gt; {
+    it.skip(&apos;should add event listeners to the map&apos;, () =&gt; {
+      const listeners = wrapper.state(&apos;_mapEventListeners&apos;);
+      console.log(listeners);
+      const eventTypes = Object.keys(listeners);
+      const map = layer.map;
+      expect(map.on).to.have.been.called;
+      eventTypes.forEach((eventType) =&gt; {
+        // because of an apparent bug with sinon, map.listens() will return undefined
+        // so the following assertion can&apos;t be used:
+        // expect(map.listens(eventType)).to.be.true;
+        // instead, perform deep inspection of the map object
+        // if the Leaflet Map internals change, these assertions may fail
+        // (written for Leaflet 1.2.0)
+        expect(map._events[eventType]).to.include(listeners[eventType]);
+      });
+    })
   })
 })
 </code></pre>

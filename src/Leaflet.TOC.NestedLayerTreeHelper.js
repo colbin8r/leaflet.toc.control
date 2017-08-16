@@ -56,6 +56,17 @@ export function applyStateChangeToTree(tree, change) {
   }
 }
 
+export function validateTreeEnabledState(tree) {
+  console.log('validating enabled state of tree', tree);
+  for (let i = 0; i < tree.length; i++) {
+    console.log('is tree[i] selected?', tree[i].selected);
+    if (tree[i].selected && tree[i].children.length > 0) {
+      applyStateChangeToTree(tree[i].children, { enabled: true });
+      validateTreeEnabledState(tree[i].children);
+    }
+  }
+}
+
 /**
  * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:
  * 1. All the descendents of an enabled layer are also enabled.

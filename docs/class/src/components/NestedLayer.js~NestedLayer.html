@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -55,13 +56,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import NestedLayer from &apos;<span><a href="file/src/components/NestedLayer.js.html#lineNumber8">leaflet.control.nestedlayers/src/components/NestedLayer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import NestedLayer from &apos;<span><a href="file/src/components/NestedLayer.js.html#lineNumber9">leaflet.control.nestedlayers/src/components/NestedLayer.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/components/NestedLayer.js.html#lineNumber8">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/components/NestedLayer.js.html#lineNumber9">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -110,7 +111,7 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#static-member-propTypes">propTypes</a></span></span><span data-ice="signature">: {&quot;layer&quot;: <span>*</span>, &quot;toggleSelected&quot;: <span>*</span>}</span>
+          <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#static-member-propTypes">propTypes</a></span></span><span data-ice="signature">: {&quot;layer&quot;: <span>*</span>, &quot;toggleSelected&quot;: <span>*</span>, &quot;visibilityChange&quot;: <span>*</span>, &quot;eventManager&quot;: <span>*</span>}</span>
         </p>
       </div>
       <div>
@@ -128,12 +129,72 @@
 </table>
 </div>
 
-
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(props: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
 <div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
   <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
   <tbody>
   
   <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#instance-member-eventManager">eventManager</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       
@@ -174,6 +235,33 @@
           
           
           <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#instance-member-toggleSelected">toggleSelected</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/components/NestedLayer.js~NestedLayer.html#instance-member-visibilityChange">visibilityChange</a></span></span><span data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -237,11 +325,11 @@
     
     
     
-    <span data-ice="name">propTypes</span><span data-ice="signature">: {&quot;layer&quot;: <span>*</span>, &quot;toggleSelected&quot;: <span>*</span>}</span>
+    <span data-ice="name">propTypes</span><span data-ice="signature">: {&quot;layer&quot;: <span>*</span>, &quot;toggleSelected&quot;: <span>*</span>, &quot;visibilityChange&quot;: <span>*</span>, &quot;eventManager&quot;: <span>*</span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber10">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber11">source</a></span></span>
     </span>
   </h3>
 
@@ -274,9 +362,113 @@
 </div>
 </div>
 
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span data-ice="name">constructor</span><span data-ice="signature">(props: <span>*</span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber18">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">props</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-eventManager">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span data-ice="name">eventManager</span><span data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber21">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-friendlyLayerType">
     <span class="access" data-ice="access">public</span>
@@ -289,7 +481,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber20">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber91">source</a></span></span>
     </span>
   </h3>
 
@@ -332,7 +524,50 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber16">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber83">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-visibilityChange">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span data-ice="name">visibilityChange</span><span data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber87">source</a></span></span>
     </span>
   </h3>
 
@@ -378,7 +613,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber24">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/components/NestedLayer.js.html#lineNumber95">source</a></span></span>
     </span>
   </h3>
 

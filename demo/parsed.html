@@ -46,7 +46,8 @@ var url = 'http://vm104.worldviewsolutions.net/arcgis/rest/services/NN/Stormwate
 var parser = L.TOC.mapServerParser(url, map, {
   parsingOptions: {
     defaultVisibility: true,
-    symbology: true
+    symbology: true,
+    scale: true
   }
 });
 

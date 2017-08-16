@@ -2,8 +2,10 @@ import NestedLayer from './NestedLayer';
 import NL from '../Leaflet.TOC.NestedLayer';
 // import NestedLayerTreeHelper from '../Leaflet.TOC.NestedLayerTreeHelper';
 
+import MapEventManager from '../Leaflet.TOC.MapEventManager';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 
 export default class LeafletTOC extends React.Component {
 
@@ -19,6 +21,10 @@ export default class LeafletTOC extends React.Component {
     this.state = {
       layers: props.layers
     };
+
+    this.eventManager = new MapEventManager();
+    window.em = this.eventManager; // FOR DEBUGGING
+    console.log('LeafletTOC created event manager', this.eventManager);
   }
 
   toggleSelected = (layer) => {
@@ -27,14 +33,30 @@ export default class LeafletTOC extends React.Component {
     this.setState({ layers: this.state.layers });
   }
 
+  visibilityChange = debounce(() => {
+    console.log('visibilityChange (debounced)');
+    this.setState({ layers: this.state.layers });
+  })
+
   // toggleEnabled = (layer) => {
   //   console.log('toggling enabled state of', layer);
   //   layer.toggleEnabled();
   //   this.setState({ layers: this.state.layers });
   // }
+  //
+
+  componentWillUpdate() {
+    console.log('LeafletTOC componentWillUpdate (state change)');
+  }
 
   render() {
-    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} />);
+    console.log('LeafletTOC rendering with event manager', this.eventManager);
+
+    let layers = this.state.layers.map((layer) => <NestedLayer layer={layer}
+                                                               toggleSelected={this.toggleSelected}
+                                                               visibilityChange={this.visibilityChange}
+                                                               eventManager={this.eventManager}
+                                                               key={layer.id} />);
 
     return (
       <div className="leaflet-toc-container">

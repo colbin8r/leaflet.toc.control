@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 2068,
+  "end": 2278,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 69,
+      "line": 77,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 2068,
+    "end": 2278,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 69,
+        "line": 77,
         "column": 0
       }
     },
@@ -2686,8 +2686,7 @@
                 }
               }
             ],
-            "directives": [],
-            "trailingComments": null
+            "directives": []
           },
           "leadingComments": [
             {
@@ -2707,56 +2706,7 @@
               }
             }
           ],
-          "trailingComments": [
-            {
-              "type": "CommentBlock",
-              "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
-              "start": 1697,
-              "end": 2012,
-              "loc": {
-                "start": {
-                  "line": 59,
-                  "column": 0
-                },
-                "end": {
-                  "line": 65,
-                  "column": 3
-                }
-              }
-            },
-            {
-              "type": "CommentLine",
-              "value": " export function validateEnabledStates(tree) {",
-              "start": 2013,
-              "end": 2061,
-              "loc": {
-                "start": {
-                  "line": 66,
-                  "column": 0
-                },
-                "end": {
-                  "line": 66,
-                  "column": 48
-                }
-              }
-            },
-            {
-              "type": "CommentLine",
-              "value": " }",
-              "start": 2063,
-              "end": 2067,
-              "loc": {
-                "start": {
-                  "line": 68,
-                  "column": 0
-                },
-                "end": {
-                  "line": 68,
-                  "column": 4
-                }
-              }
-            }
-          ]
+          "trailingComments": []
         },
         "leadingComments": [
           {
@@ -2775,20 +2725,615 @@
               }
             }
           }
-        ],
+        ]
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 1697,
+        "end": 1905,
+        "loc": {
+          "start": {
+            "line": 59,
+            "column": 0
+          },
+          "end": {
+            "line": 65,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "start": 1704,
+          "end": 1905,
+          "loc": {
+            "start": {
+              "line": 59,
+              "column": 7
+            },
+            "end": {
+              "line": 65,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 1713,
+            "end": 1737,
+            "loc": {
+              "start": {
+                "line": 59,
+                "column": 16
+              },
+              "end": {
+                "line": 59,
+                "column": 40
+              },
+              "identifierName": "validateTreeEnabledState"
+            },
+            "name": "validateTreeEnabledState"
+          },
+          "generator": false,
+          "expression": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "start": 1738,
+              "end": 1742,
+              "loc": {
+                "start": {
+                  "line": 59,
+                  "column": 41
+                },
+                "end": {
+                  "line": 59,
+                  "column": 45
+                },
+                "identifierName": "tree"
+              },
+              "name": "tree"
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "start": 1744,
+            "end": 1905,
+            "loc": {
+              "start": {
+                "line": 59,
+                "column": 47
+              },
+              "end": {
+                "line": 65,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "start": 1748,
+                "end": 1796,
+                "loc": {
+                  "start": {
+                    "line": 60,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 60,
+                    "column": 50
+                  }
+                },
+                "expression": {
+                  "type": "CallExpression",
+                  "start": 1748,
+                  "end": 1795,
+                  "loc": {
+                    "start": {
+                      "line": 60,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 60,
+                      "column": 49
+                    }
+                  },
+                  "callee": {
+                    "type": "MemberExpression",
+                    "start": 1748,
+                    "end": 1759,
+                    "loc": {
+                      "start": {
+                        "line": 60,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 60,
+                        "column": 13
+                      }
+                    },
+                    "object": {
+                      "type": "Identifier",
+                      "start": 1748,
+                      "end": 1755,
+                      "loc": {
+                        "start": {
+                          "line": 60,
+                          "column": 2
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 9
+                        },
+                        "identifierName": "console"
+                      },
+                      "name": "console"
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 1756,
+                      "end": 1759,
+                      "loc": {
+                        "start": {
+                          "line": 60,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 13
+                        },
+                        "identifierName": "log"
+                      },
+                      "name": "log"
+                    },
+                    "computed": false
+                  },
+                  "arguments": [
+                    {
+                      "type": "StringLiteral",
+                      "start": 1760,
+                      "end": 1794,
+                      "loc": {
+                        "start": {
+                          "line": 60,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 48
+                        }
+                      },
+                      "extra": {
+                        "rawValue": "validating enabled state of tree",
+                        "raw": "'validating enabled state of tree'"
+                      },
+                      "value": "validating enabled state of tree"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "ForStatement",
+                "start": 1799,
+                "end": 1903,
+                "loc": {
+                  "start": {
+                    "line": 61,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 64,
+                    "column": 3
+                  }
+                },
+                "init": {
+                  "type": "VariableDeclaration",
+                  "start": 1804,
+                  "end": 1813,
+                  "loc": {
+                    "start": {
+                      "line": 61,
+                      "column": 7
+                    },
+                    "end": {
+                      "line": 61,
+                      "column": 16
+                    }
+                  },
+                  "declarations": [
+                    {
+                      "type": "VariableDeclarator",
+                      "start": 1808,
+                      "end": 1813,
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 11
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 16
+                        }
+                      },
+                      "id": {
+                        "type": "Identifier",
+                        "start": 1808,
+                        "end": 1809,
+                        "loc": {
+                          "start": {
+                            "line": 61,
+                            "column": 11
+                          },
+                          "end": {
+                            "line": 61,
+                            "column": 12
+                          },
+                          "identifierName": "i"
+                        },
+                        "name": "i"
+                      },
+                      "init": {
+                        "type": "NumericLiteral",
+                        "start": 1812,
+                        "end": 1813,
+                        "loc": {
+                          "start": {
+                            "line": 61,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 61,
+                            "column": 16
+                          }
+                        },
+                        "extra": {
+                          "rawValue": 0,
+                          "raw": "0"
+                        },
+                        "value": 0
+                      }
+                    }
+                  ],
+                  "kind": "let"
+                },
+                "test": {
+                  "type": "BinaryExpression",
+                  "start": 1815,
+                  "end": 1830,
+                  "loc": {
+                    "start": {
+                      "line": 61,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 61,
+                      "column": 33
+                    }
+                  },
+                  "left": {
+                    "type": "Identifier",
+                    "start": 1815,
+                    "end": 1816,
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 19
+                      },
+                      "identifierName": "i"
+                    },
+                    "name": "i"
+                  },
+                  "operator": "<",
+                  "right": {
+                    "type": "MemberExpression",
+                    "start": 1819,
+                    "end": 1830,
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 22
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 33
+                      }
+                    },
+                    "object": {
+                      "type": "Identifier",
+                      "start": 1819,
+                      "end": 1823,
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 26
+                        },
+                        "identifierName": "tree"
+                      },
+                      "name": "tree"
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 1824,
+                      "end": 1830,
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 33
+                        },
+                        "identifierName": "length"
+                      },
+                      "name": "length"
+                    },
+                    "computed": false
+                  }
+                },
+                "update": {
+                  "type": "UpdateExpression",
+                  "start": 1832,
+                  "end": 1835,
+                  "loc": {
+                    "start": {
+                      "line": 61,
+                      "column": 35
+                    },
+                    "end": {
+                      "line": 61,
+                      "column": 38
+                    }
+                  },
+                  "operator": "++",
+                  "prefix": false,
+                  "argument": {
+                    "type": "Identifier",
+                    "start": 1832,
+                    "end": 1833,
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 35
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 36
+                      },
+                      "identifierName": "i"
+                    },
+                    "name": "i"
+                  }
+                },
+                "body": {
+                  "type": "BlockStatement",
+                  "start": 1837,
+                  "end": 1903,
+                  "loc": {
+                    "start": {
+                      "line": 61,
+                      "column": 40
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 3
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "ExpressionStatement",
+                      "start": 1843,
+                      "end": 1867,
+                      "loc": {
+                        "start": {
+                          "line": 62,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 62,
+                          "column": 28
+                        }
+                      },
+                      "expression": {
+                        "type": "CallExpression",
+                        "start": 1843,
+                        "end": 1866,
+                        "loc": {
+                          "start": {
+                            "line": 62,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 62,
+                            "column": 27
+                          }
+                        },
+                        "callee": {
+                          "type": "MemberExpression",
+                          "start": 1843,
+                          "end": 1864,
+                          "loc": {
+                            "start": {
+                              "line": 62,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 62,
+                              "column": 25
+                            }
+                          },
+                          "object": {
+                            "type": "MemberExpression",
+                            "start": 1843,
+                            "end": 1850,
+                            "loc": {
+                              "start": {
+                                "line": 62,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 62,
+                                "column": 11
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 1843,
+                              "end": 1847,
+                              "loc": {
+                                "start": {
+                                  "line": 62,
+                                  "column": 4
+                                },
+                                "end": {
+                                  "line": 62,
+                                  "column": 8
+                                },
+                                "identifierName": "tree"
+                              },
+                              "name": "tree"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 1848,
+                              "end": 1849,
+                              "loc": {
+                                "start": {
+                                  "line": 62,
+                                  "column": 9
+                                },
+                                "end": {
+                                  "line": 62,
+                                  "column": 10
+                                },
+                                "identifierName": "i"
+                              },
+                              "name": "i"
+                            },
+                            "computed": true
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 1851,
+                            "end": 1864,
+                            "loc": {
+                              "start": {
+                                "line": 62,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 62,
+                                "column": 25
+                              },
+                              "identifierName": "toggleEnabled"
+                            },
+                            "name": "toggleEnabled"
+                          },
+                          "computed": false
+                        },
+                        "arguments": []
+                      },
+                      "trailingComments": [
+                        {
+                          "type": "CommentLine",
+                          "value": " tree[i].toggleEnabled();",
+                          "start": 1872,
+                          "end": 1899,
+                          "loc": {
+                            "start": {
+                              "line": 63,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 63,
+                              "column": 31
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "directives": []
+                }
+              }
+            ],
+            "directives": [],
+            "trailingComments": null
+          },
+          "trailingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
+              "start": 1907,
+              "end": 2222,
+              "loc": {
+                "start": {
+                  "line": 67,
+                  "column": 0
+                },
+                "end": {
+                  "line": 73,
+                  "column": 3
+                }
+              }
+            },
+            {
+              "type": "CommentLine",
+              "value": " export function validateEnabledStates(tree) {",
+              "start": 2223,
+              "end": 2271,
+              "loc": {
+                "start": {
+                  "line": 74,
+                  "column": 0
+                },
+                "end": {
+                  "line": 74,
+                  "column": 48
+                }
+              }
+            },
+            {
+              "type": "CommentLine",
+              "value": " }",
+              "start": 2273,
+              "end": 2277,
+              "loc": {
+                "start": {
+                  "line": 76,
+                  "column": 0
+                },
+                "end": {
+                  "line": 76,
+                  "column": 4
+                }
+              }
+            }
+          ],
+          "leadingComments": []
+        },
         "trailingComments": [
           {
             "type": "CommentBlock",
             "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
-            "start": 1697,
-            "end": 2012,
+            "start": 1907,
+            "end": 2222,
             "loc": {
               "start": {
-                "line": 59,
+                "line": 67,
                 "column": 0
               },
               "end": {
-                "line": 65,
+                "line": 73,
                 "column": 3
               }
             }
@@ -2796,15 +3341,15 @@
           {
             "type": "CommentLine",
             "value": " export function validateEnabledStates(tree) {",
-            "start": 2013,
-            "end": 2061,
+            "start": 2223,
+            "end": 2271,
             "loc": {
               "start": {
-                "line": 66,
+                "line": 74,
                 "column": 0
               },
               "end": {
-                "line": 66,
+                "line": 74,
                 "column": 48
               }
             }
@@ -2812,15 +3357,15 @@
           {
             "type": "CommentLine",
             "value": " }",
-            "start": 2063,
-            "end": 2067,
+            "start": 2273,
+            "end": 2277,
             "loc": {
               "start": {
-                "line": 68,
+                "line": 76,
                 "column": 0
               },
               "end": {
-                "line": 68,
+                "line": 76,
                 "column": 4
               }
             }
@@ -3008,17 +3553,33 @@
       }
     },
     {
-      "type": "CommentBlock",
-      "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
-      "start": 1697,
-      "end": 2012,
+      "type": "CommentLine",
+      "value": " tree[i].toggleEnabled();",
+      "start": 1872,
+      "end": 1899,
       "loc": {
         "start": {
-          "line": 59,
+          "line": 63,
+          "column": 4
+        },
+        "end": {
+          "line": 63,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
+      "start": 1907,
+      "end": 2222,
+      "loc": {
+        "start": {
+          "line": 67,
           "column": 0
         },
         "end": {
-          "line": 65,
+          "line": 73,
           "column": 3
         }
       }
@@ -3026,15 +3587,15 @@
     {
       "type": "CommentLine",
       "value": " export function validateEnabledStates(tree) {",
-      "start": 2013,
-      "end": 2061,
+      "start": 2223,
+      "end": 2271,
       "loc": {
         "start": {
-          "line": 66,
+          "line": 74,
           "column": 0
         },
         "end": {
-          "line": 66,
+          "line": 74,
           "column": 48
         }
       }
@@ -3042,15 +3603,15 @@
     {
       "type": "CommentLine",
       "value": " }",
-      "start": 2063,
-      "end": 2067,
+      "start": 2273,
+      "end": 2277,
       "loc": {
         "start": {
-          "line": 68,
+          "line": 76,
           "column": 0
         },
         "end": {
-          "line": 68,
+          "line": 76,
           "column": 4
         }
       }
@@ -8776,17 +9337,1124 @@
       }
     },
     {
-      "type": "CommentBlock",
-      "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
       "start": 1697,
-      "end": 2012,
+      "end": 1703,
       "loc": {
         "start": {
           "line": 59,
           "column": 0
         },
         "end": {
+          "line": 59,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "function",
+        "keyword": "function",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "function",
+      "start": 1704,
+      "end": 1712,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 7
+        },
+        "end": {
+          "line": 59,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "validateTreeEnabledState",
+      "start": 1713,
+      "end": 1737,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 16
+        },
+        "end": {
+          "line": 59,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1737,
+      "end": 1738,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 40
+        },
+        "end": {
+          "line": 59,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "tree",
+      "start": 1738,
+      "end": 1742,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 41
+        },
+        "end": {
+          "line": 59,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1742,
+      "end": 1743,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 45
+        },
+        "end": {
+          "line": 59,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1744,
+      "end": 1745,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 47
+        },
+        "end": {
+          "line": 59,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "console",
+      "start": 1748,
+      "end": 1755,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 2
+        },
+        "end": {
+          "line": 60,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1755,
+      "end": 1756,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 9
+        },
+        "end": {
+          "line": 60,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "log",
+      "start": 1756,
+      "end": 1759,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 10
+        },
+        "end": {
+          "line": 60,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1759,
+      "end": 1760,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 13
+        },
+        "end": {
+          "line": 60,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "string",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "validating enabled state of tree",
+      "start": 1760,
+      "end": 1794,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 14
+        },
+        "end": {
+          "line": 60,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1794,
+      "end": 1795,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 48
+        },
+        "end": {
+          "line": 60,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1795,
+      "end": 1796,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 49
+        },
+        "end": {
+          "line": 60,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "for",
+        "keyword": "for",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": true,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "for",
+      "start": 1799,
+      "end": 1802,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 2
+        },
+        "end": {
+          "line": 61,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1803,
+      "end": 1804,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 6
+        },
+        "end": {
+          "line": 61,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "let",
+        "keyword": "let",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "let",
+      "start": 1804,
+      "end": 1807,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 7
+        },
+        "end": {
+          "line": 61,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "i",
+      "start": 1808,
+      "end": 1809,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 11
+        },
+        "end": {
+          "line": 61,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 1810,
+      "end": 1811,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 13
+        },
+        "end": {
+          "line": 61,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "num",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": 0,
+      "start": 1812,
+      "end": 1813,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 15
+        },
+        "end": {
+          "line": 61,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1813,
+      "end": 1814,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 16
+        },
+        "end": {
+          "line": 61,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "i",
+      "start": 1815,
+      "end": 1816,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 18
+        },
+        "end": {
+          "line": 61,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "</>",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": 7,
+        "updateContext": null
+      },
+      "value": "<",
+      "start": 1817,
+      "end": 1818,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 20
+        },
+        "end": {
+          "line": 61,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "tree",
+      "start": 1819,
+      "end": 1823,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 22
+        },
+        "end": {
+          "line": 61,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1823,
+      "end": 1824,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 26
+        },
+        "end": {
+          "line": 61,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "length",
+      "start": 1824,
+      "end": 1830,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 27
+        },
+        "end": {
+          "line": 61,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1830,
+      "end": 1831,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 33
+        },
+        "end": {
+          "line": 61,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "i",
+      "start": 1832,
+      "end": 1833,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 35
+        },
+        "end": {
+          "line": 61,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "++/--",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": true,
+        "postfix": true,
+        "binop": null
+      },
+      "value": "++",
+      "start": 1833,
+      "end": 1835,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 36
+        },
+        "end": {
+          "line": 61,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1835,
+      "end": 1836,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 38
+        },
+        "end": {
+          "line": 61,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1837,
+      "end": 1838,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 40
+        },
+        "end": {
+          "line": 61,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "tree",
+      "start": 1843,
+      "end": 1847,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 4
+        },
+        "end": {
+          "line": 62,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "[",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1847,
+      "end": 1848,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 8
+        },
+        "end": {
+          "line": 62,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "i",
+      "start": 1848,
+      "end": 1849,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 9
+        },
+        "end": {
+          "line": 62,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "]",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1849,
+      "end": 1850,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 10
+        },
+        "end": {
+          "line": 62,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1850,
+      "end": 1851,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 11
+        },
+        "end": {
+          "line": 62,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "toggleEnabled",
+      "start": 1851,
+      "end": 1864,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 12
+        },
+        "end": {
+          "line": 62,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1864,
+      "end": 1865,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 25
+        },
+        "end": {
+          "line": 62,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1865,
+      "end": 1866,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 26
+        },
+        "end": {
+          "line": 62,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1866,
+      "end": 1867,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 27
+        },
+        "end": {
+          "line": 62,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " tree[i].toggleEnabled();",
+      "start": 1872,
+      "end": 1899,
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 4
+        },
+        "end": {
+          "line": 63,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1902,
+      "end": 1903,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 2
+        },
+        "end": {
+          "line": 64,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1904,
+      "end": 1905,
+      "loc": {
+        "start": {
           "line": 65,
+          "column": 0
+        },
+        "end": {
+          "line": 65,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Modifies (if necessary) the enabled state of layers in the tree according to the following rules:\n * 1. All the descendents of an enabled layer are also enabled.\n * 2. All the descendents of a disabled layer are also disabled.\n * @param  {[type]} tree [description]\n * @return {[type]}      [description]\n ",
+      "start": 1907,
+      "end": 2222,
+      "loc": {
+        "start": {
+          "line": 67,
+          "column": 0
+        },
+        "end": {
+          "line": 73,
           "column": 3
         }
       }
@@ -8794,15 +10462,15 @@
     {
       "type": "CommentLine",
       "value": " export function validateEnabledStates(tree) {",
-      "start": 2013,
-      "end": 2061,
+      "start": 2223,
+      "end": 2271,
       "loc": {
         "start": {
-          "line": 66,
+          "line": 74,
           "column": 0
         },
         "end": {
-          "line": 66,
+          "line": 74,
           "column": 48
         }
       }
@@ -8810,15 +10478,15 @@
     {
       "type": "CommentLine",
       "value": " }",
-      "start": 2063,
-      "end": 2067,
+      "start": 2273,
+      "end": 2277,
       "loc": {
         "start": {
-          "line": 68,
+          "line": 76,
           "column": 0
         },
         "end": {
-          "line": 68,
+          "line": 76,
           "column": 4
         }
       }
@@ -8836,15 +10504,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2068,
-      "end": 2068,
+      "start": 2278,
+      "end": 2278,
       "loc": {
         "start": {
-          "line": 69,
+          "line": 77,
           "column": 0
         },
         "end": {
-          "line": 69,
+          "line": 77,
           "column": 0
         }
       }

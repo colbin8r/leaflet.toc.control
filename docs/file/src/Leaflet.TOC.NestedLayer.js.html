@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -159,12 +160,11 @@ export default class NestedLayer {
     // the &quot;defaults&quot; also contains the initial state
     defaults(this._props, props, this.defaults);
     this._props.id = generateID();
-    this._isAttached = false;
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
     // built into the &apos;selected&apos; setter
-    if (this.selected) {
+    if (this._props.selected) {
       this.select();
     }
 
@@ -229,6 +229,9 @@ export default class NestedLayer {
   get parent() {
     return this._props.parent;
   }
+  set parent(val) {
+    this._props.parent = val;
+  }
 
   /**
    * Map symbology
@@ -245,6 +248,9 @@ export default class NestedLayer {
   get minZoom() {
     return this._props.minZoom;
   }
+  set minZoom(val) {
+    this._props.minZoom = val;
+  }
 
   /**
    * Maximum zoom level for this layer to be visible
@@ -252,6 +258,9 @@ export default class NestedLayer {
    */
   get maxZoom() {
     return this._props.maxZoom;
+  }
+  set maxZoom(val) {
+    this._props.maxZoom = val;
   }
 
   get rules() {
@@ -353,6 +362,22 @@ export default class NestedLayer {
     this.selected = !this.selected;
   }
 
+  /**
+   * Checks if the layer could be visible on the map
+   * @type {boolean}
+   */
+  get visible() {
+    return this.selected &amp;&amp; this._withinZoomRange();
+  }
+
+  /**
+   * Checks if is bound to the Leaflet map
+   * @type {boolean}
+   */
+  get isAttached() {
+    return this.map.hasLayer(this.layer);
+  }
+
   // true if the layer has children
   get hasChildren() {
     return this.children.length &gt; 0;
@@ -363,36 +388,43 @@ export default class NestedLayer {
     if (!(child instanceof NestedLayer)) {
       throw new TypeError(&apos;child is not a NestedLayer&apos;);
     }
+    child.parent = this;
     this._props.children.push(child);
   }
 
-  // _handleMapZoom = () =&gt; {
-  //   const zoom = this.map.getZoom();
-
-  //   if (zoom &lt; this.minZoom || zoom &gt; this.maxZoom) {
-  //     this._detach();
-  //   } else {
-  //     this._attach()
-  //   }
-  // }
+  // returns true if the layer could be visible at the current zoom level at the map
+  _withinZoomRange() {
+    // if no range specifies, assume that it is always valid
+    if (!this.minZoom || !this.maxZoom) {
+      return true;
+    }
+    // check if the layer is visible at the current zoom level
+    const currentZoomLevel = map.getZoom();
+    const aboveMinZoom = currentZoomLevel &gt;= this.minZoom;
+    const belowMaxZoom = currentZoomLevel &lt;= this.maxZoom
+    const withinZoomRange = aboveMinZoom &amp;&amp; belowMaxZoom;
+    // console.log(&apos;within zoom range?&apos;, withinZoomRange,
+                // &apos;min:&apos;, this.minZoom, &apos;&lt;=&apos;, currentZoomLevel, aboveMinZoom,
+                // &apos;max:&apos;, this.maxZoom, &apos;&gt;=&apos;, currentZoomLevel, belowMaxZoom);
+    return (currentZoomLevel &gt;= this.minZoom &amp;&amp; currentZoomLevel &lt;= this.maxZoom);
+  }
 
   // display on map
   _attach() {
-    if (!this._isAttached &amp;&amp; !this.map.hasLayer(this.layer)) {
+    if (!this.isAttached &amp;&amp; !this.map.hasLayer(this.layer)) {
       this.map.addLayer(this.layer);
       // this.layer.addTo(this.map);
     }
-    this._isAttached = true;
   }
 
   // remove from map
   _detach() {
-    if (this._isAttached &amp;&amp; this.map.hasLayer(this.layer)) {
+    if (this.isAttached &amp;&amp; this.map.hasLayer(this.layer)) {
       this.map.removeLayer(this.layer);
       // this.layer.removeFrom(this.map);
     }
-    this._isAttached = false;
   }
+
 }
 
 

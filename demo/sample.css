@@ -19,21 +19,36 @@ body {
   width: 75vw;
   padding-top: 0;
 }
-.branch {
+
+.branch, .symbology {
   list-style: none;
 }
+
 .leaf input[type=checkbox] {
   cursor: pointer;
   zoom: 1.25;
   vertical-align: top;
   margin-top: 2px;
 }
-.enabled .layer-name {
-  color: limegreen;
+
+/*.enabled .layer-name {
+  text-decoration: none;
 }
 .disabled .layer-name {
+  text-decoration: line-through;
+}*/
+.visible .layer-name {
+  color: limegreen;
+}
+.invisible .layer-name {
   color: gray;
 }
+
+.symbology .swatch {
+  vertical-align: text-top;
+  padding-right: .24rem;
+}
+
 .layer-type {
   padding-left: 1.5rem;
   font-size: .75rem;

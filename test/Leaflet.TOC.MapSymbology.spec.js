@@ -20,6 +20,10 @@ describe('MapSymbology', () => {
         expect(symbol).to.be.an.instanceof(MapSymbol);
       })
     })
+
+    it('should know if it only has one symbol', () => {
+      expect(fixture.isSingle).to.be.false;
+    })
   })
 
 })

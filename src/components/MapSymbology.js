@@ -21,6 +21,7 @@ export default class MapSymbology extends React.Component {
         {symbols}
       </ul>
     );
+
   }
 
 }

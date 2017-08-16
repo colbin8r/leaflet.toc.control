@@ -2,8 +2,7 @@ import NestedLayer from './Leaflet.TOC.NestedLayer';
 
 export default class NestedDynamicMapLayer extends NestedLayer {
   _attach() {
-    // console.log(this.layer.getLayers);
-    if (!this._isAttached) {
+    if (!this.isAttached) {
       // push the layerID into the list of layers to render
       // http://esri.github.io/esri-leaflet/api-reference/layers/dynamic-map-layer.html#methods
 
@@ -34,12 +33,10 @@ export default class NestedDynamicMapLayer extends NestedLayer {
         this.map.addLayer(this.layer);
       }
     }
-
-    this._isAttached = true;
   }
 
   _detach() {
-    if (this._isAttached) {
+    if (this.isAttached) {
       // remove the layerID from the list of layers to render
       // http://esri.github.io/esri-leaflet/api-reference/layers/dynamic-map-layer.html#methods
       let layers = this.layer.getLayers().filter((id) => {
@@ -52,7 +49,5 @@ export default class NestedDynamicMapLayer extends NestedLayer {
         this.map.removeLayer(this.layer);
       }
     }
-
-    this._isAttached = false;
   }
 }

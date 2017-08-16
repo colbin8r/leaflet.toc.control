@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -57,6 +58,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">test/Leaflet.TOC.NestedLayer.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*global describe, expect, it, beforeEach*/
 import NestedLayer, { generateID } from &apos;./../src/Leaflet.TOC.NestedLayer&apos;;
+import MapSymbology from &apos;./../src/Leaflet.TOC.MapSymbology&apos;;
 import fixtureGen from &apos;./fixtures/smalltree-custom&apos;;
 
 import L from &apos;leaflet-headless&apos;;
@@ -124,7 +126,7 @@ describe(&apos;NestedLayer&apos;, () =&gt; {
       // .eql tests deep equality
       // http://chaijs.com/api/bdd/#method_eql
       expect(l.children).to.eql(l.defaults.children);
-      expect(l.symbology).to.eql(l.defaults.symbology);
+      expect(l.symbology).to.be.an.instanceof(MapSymbology);
       expect(l.enabled).to.equal(l.defaults.enabled);
       expect(l.selected).to.equal(l.defaults.selected);
       expect(l.zoom).to.equal(l.defaults.zoom);
@@ -234,6 +236,13 @@ describe(&apos;NestedLayer&apos;, () =&gt; {
       l.addChild(child2);
       expect(l.children).to.contain(child1);
       expect(l.children).to.contain(child2);
+    })
+
+    it(&apos;should make itself the parent of children it adds&apos;, () =&gt; {
+      l.addChild(child1);
+      child1.addChild(child2);
+      expect(child1.parent).to.equal(l);
+      expect(child2.parent).to.equal(child1);
     })
 
     it(&apos;should only be able to add NestedLayers as children&apos;, () =&gt; {

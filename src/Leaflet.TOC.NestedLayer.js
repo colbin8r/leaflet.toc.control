@@ -102,12 +102,11 @@ export default class NestedLayer {
     // the "defaults" also contains the initial state
     defaults(this._props, props, this.defaults);
     this._props.id = generateID();
-    this._isAttached = false;
 
     // if this layer is starting off selected, attach to the map
     // calling this.select() ensures that we follow any other attachment rules
     // built into the 'selected' setter
-    if (this.selected) {
+    if (this._props.selected) {
       this.select();
     }
 
@@ -172,6 +171,9 @@ export default class NestedLayer {
   get parent() {
     return this._props.parent;
   }
+  set parent(val) {
+    this._props.parent = val;
+  }
 
   /**
    * Map symbology
@@ -188,6 +190,9 @@ export default class NestedLayer {
   get minZoom() {
     return this._props.minZoom;
   }
+  set minZoom(val) {
+    this._props.minZoom = val;
+  }
 
   /**
    * Maximum zoom level for this layer to be visible
@@ -195,6 +200,9 @@ export default class NestedLayer {
    */
   get maxZoom() {
     return this._props.maxZoom;
+  }
+  set maxZoom(val) {
+    this._props.maxZoom = val;
   }
 
   get rules() {
@@ -296,6 +304,22 @@ export default class NestedLayer {
     this.selected = !this.selected;
   }
 
+  /**
+   * Checks if the layer could be visible on the map
+   * @type {boolean}
+   */
+  get visible() {
+    return this.selected && this._withinZoomRange();
+  }
+
+  /**
+   * Checks if is bound to the Leaflet map
+   * @type {boolean}
+   */
+  get isAttached() {
+    return this.map.hasLayer(this.layer);
+  }
+
   // true if the layer has children
   get hasChildren() {
     return this.children.length > 0;
@@ -306,36 +330,43 @@ export default class NestedLayer {
     if (!(child instanceof NestedLayer)) {
       throw new TypeError('child is not a NestedLayer');
     }
+    child.parent = this;
     this._props.children.push(child);
   }
 
-  // _handleMapZoom = () => {
-  //   const zoom = this.map.getZoom();
-
-  //   if (zoom < this.minZoom || zoom > this.maxZoom) {
-  //     this._detach();
-  //   } else {
-  //     this._attach()
-  //   }
-  // }
+  // returns true if the layer could be visible at the current zoom level at the map
+  _withinZoomRange() {
+    // if no range specifies, assume that it is always valid
+    if (!this.minZoom || !this.maxZoom) {
+      return true;
+    }
+    // check if the layer is visible at the current zoom level
+    const currentZoomLevel = map.getZoom();
+    const aboveMinZoom = currentZoomLevel >= this.minZoom;
+    const belowMaxZoom = currentZoomLevel <= this.maxZoom
+    const withinZoomRange = aboveMinZoom && belowMaxZoom;
+    // console.log('within zoom range?', withinZoomRange,
+                // 'min:', this.minZoom, '<=', currentZoomLevel, aboveMinZoom,
+                // 'max:', this.maxZoom, '>=', currentZoomLevel, belowMaxZoom);
+    return (currentZoomLevel >= this.minZoom && currentZoomLevel <= this.maxZoom);
+  }
 
   // display on map
   _attach() {
-    if (!this._isAttached && !this.map.hasLayer(this.layer)) {
+    if (!this.isAttached && !this.map.hasLayer(this.layer)) {
       this.map.addLayer(this.layer);
       // this.layer.addTo(this.map);
     }
-    this._isAttached = true;
   }
 
   // remove from map
   _detach() {
-    if (this._isAttached && this.map.hasLayer(this.layer)) {
+    if (this.isAttached && this.map.hasLayer(this.layer)) {
       this.map.removeLayer(this.layer);
       // this.layer.removeFrom(this.map);
     }
-    this._isAttached = false;
   }
+
 }
 
 

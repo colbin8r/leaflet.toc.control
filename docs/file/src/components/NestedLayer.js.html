@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -59,6 +60,7 @@
 import PropTypes from &apos;prop-types&apos;;
 import classnames from &apos;classnames&apos;;
 
+import MapEventManager from &apos;../Leaflet.TOC.MapEventManager&apos;;
 import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
 import MapSymbology from &apos;./MapSymbology&apos;;
 
@@ -67,11 +69,81 @@ export default class NestedLayer extends React.Component {
   static propTypes = {
     layer: PropTypes.instanceOf(NL).isRequired,
     toggleSelected: PropTypes.func.isRequired,
-    // toggleEnabled: PropTypes.func.isRequired
+    visibilityChange: PropTypes.func.isRequired,
+    eventManager: PropTypes.instanceOf(MapEventManager).isRequired
   };
+
+  constructor(props) {
+    super(props);
+
+    this.eventManager = this.props.eventManager;
+    console.log(&apos;NestedLayer received event manager&apos;, this.eventManager);
+    let map = this.props.layer.map;
+    let layer = this.props.layer.layer;
+    console.log(&apos;NestedLayer asking event manager to bind layer&apos;, layer);
+    this.eventManager.bindLayerToMapChanges(map, layer, this._mapEventHandler);
+
+    // this.state = {
+    //   _mapEventListeners: {
+    //     &apos;zoomend&apos;: this._handleMapZoomChange,
+    //     &apos;layeradd&apos;: this._handleMapLayerChange,
+    //     &apos;layerremove&apos;: this._handleMapLayerChange
+    //   }
+    // };
+  }
+
+  _mapEventHandler = (e) =&gt; {
+    console.log(&apos;&lt;NestedLayer /&gt; map event handler&apos;, e);
+    this.props.visibilityChange();
+  }
+
+  // // add event listener(s) to map
+  // bindToMapEvents() {
+  //   console.log(&apos;binding to map events&apos;);
+
+  //   this.props.layer.map.on(this.state._mapEventListeners);
+  // }
+
+  // // remove event listener(s) from map
+  // unbindFromMapEvents() {
+  //   console.log(&apos;unbinding from map events&apos;);
+  //   this.props.layer.map.off(this.state._mapEventListeners);
+  // }
+
+  // // listens to zoomend
+  // // http://leafletjs.com/reference-1.2.0.html#map-zoomend
+  // _handleMapZoomChange = (e) =&gt; {
+  //   console.log(&apos;zoom level changed to&apos;, e.target.getZoom());
+  //   this.props.visibilityChange();
+  // }
+
+  // // listens to layeradd and layerremove
+  // // http://leafletjs.com/reference-1.2.0.html#map-layeradd
+  // // http://leafletjs.com/reference-1.2.0.html#map-layeradd
+  // _handleMapLayerChange = (e) =&gt; {
+  //   console.log(&apos;_handleMapLayerChange handles this layer?&apos;, e.layer._leaflet_id == this.props.layer.layer._leaflet_id);
+  //   // if the change was to this layer (i.e. they share IDs)
+  //   // this check helps throttle down React render() calls
+  //   if (e.layer._leaflet_id == this.props.layer.layer._leaflet_id) {
+  //     console.log(&apos;_handleMapLayerChange MATCH&apos;, e.layer, this.props.layer.layer);
+  //     this.props.visibilityChange();
+  //   }
+  // }
+
+  // componentDidMount() {
+  //   this.bindToMapEvents();
+  // }
+
+  // componentWillUnmount() {
+  //   this.unbindFromMapEvents();
+  // }
 
   toggleSelected = () =&gt; {
     this.props.toggleSelected(this.props.layer);
+  }
+
+  visibilityChange = () =&gt; {
+    this.props.visibilityChange();
   }
 
   friendlyLayerType = () =&gt; {
@@ -79,12 +151,15 @@ export default class NestedLayer extends React.Component {
   }
 
   render() {
+    const disabled = (this.props.layer.disabled ? &apos;disabled&apos; : &apos;&apos;);
     const classes = classnames({
       leaf: true,
       enabled: this.props.layer.enabled,
       disabled: this.props.layer.disabled,
       selected: this.props.layer.selected,
-      deselected: this.props.layer.deselected
+      deselected: this.props.layer.deselected,
+      visible: this.props.layer.visible,
+      invisible: !this.props.layer.visible
     });
 
     let children;
@@ -93,6 +168,8 @@ export default class NestedLayer extends React.Component {
       // each child layer turns into a NestedLayer
       children = this.props.layer.children.map((layer) =&gt; &lt;NestedLayer layer={layer}
                                                                        toggleSelected={this.props.toggleSelected}
+                                                                       visibilityChange={this.props.visibilityChange}
+                                                                       eventManager={this.eventManager}
                                                                        key={layer.id} /&gt;);
       // wrap the children with a &lt;ul&gt;
       children = (
@@ -104,10 +181,9 @@ export default class NestedLayer extends React.Component {
 
     return (
       &lt;li className={classes} &gt;
-        &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} onChange={this.toggleSelected} /&gt;
+        &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} disabled={disabled} onChange={this.toggleSelected} /&gt;
         &lt;span className=&quot;layer-name&quot;&gt;{this.props.layer.name}&lt;/span&gt;
         &lt;span className=&quot;layer-type&quot;&gt;{this.friendlyLayerType()}&lt;/span&gt;
-
         &lt;MapSymbology symbology={this.props.layer.symbology} /&gt;
 
         {children}

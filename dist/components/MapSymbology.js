@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import MapSymbol from './MapSymbol';
 import Symbology from '../Leaflet.TOC.MapSymbology';
+import { generateID } from '../Leaflet.TOC.NestedLayer';
 
 export default class MapSymbology extends React.Component {
 
@@ -13,15 +13,15 @@ export default class MapSymbology extends React.Component {
 
   render() {
     let symbols = this.props.symbology.symbols.map((symbol) => {
-      return <MapSymbol symbol={symbol} />
+      return <MapSymbol symbol={symbol} key={generateID()} />
     });
 
     return (
       <ul className="symbology">
-        <li>Symbology</li>
         {symbols}
       </ul>
     );
+
   }
 
 }

@@ -1,5 +1,6 @@
 /*global describe, expect, it, beforeEach*/
 import NestedLayer, { generateID } from './../src/Leaflet.TOC.NestedLayer';
+import MapSymbology from './../src/Leaflet.TOC.MapSymbology';
 import fixtureGen from './fixtures/smalltree-custom';
 
 import L from 'leaflet-headless';
@@ -67,7 +68,7 @@ describe('NestedLayer', () => {
       // .eql tests deep equality
       // http://chaijs.com/api/bdd/#method_eql
       expect(l.children).to.eql(l.defaults.children);
-      expect(l.symbology).to.eql(l.defaults.symbology);
+      expect(l.symbology).to.be.an.instanceof(MapSymbology);
       expect(l.enabled).to.equal(l.defaults.enabled);
       expect(l.selected).to.equal(l.defaults.selected);
       expect(l.zoom).to.equal(l.defaults.zoom);
@@ -177,6 +178,13 @@ describe('NestedLayer', () => {
       l.addChild(child2);
       expect(l.children).to.contain(child1);
       expect(l.children).to.contain(child2);
+    })
+
+    it('should make itself the parent of children it adds', () => {
+      l.addChild(child1);
+      child1.addChild(child2);
+      expect(child1.parent).to.equal(l);
+      expect(child2.parent).to.equal(child1);
     })
 
     it('should only be able to add NestedLayers as children', () => {

@@ -33,7 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.Control.js~Control.html">Control</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser-old.js~MapServerParser.html">MapServerParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapEventManager.js~MapEventManager.html">MapEventManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapServerParser.js~MapServerParser.html">MapServerParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Leaflet.TOC.MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -46,6 +46,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByID">getLayerByID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByLayerID">getLayerByLayerID</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLayerByUniqueProp">getLayerByUniqueProp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateTreeEnabledState">validateTreeEnabledState</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">components</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/LeafletTOC.js~LeafletTOC.html">LeafletTOC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbol.js~MapSymbol.html">MapSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/components/MapSymbology.js~MapSymbology.html">MapSymbology</a></span></span></li>
@@ -59,8 +60,10 @@
 import NL from &apos;../Leaflet.TOC.NestedLayer&apos;;
 // import NestedLayerTreeHelper from &apos;../Leaflet.TOC.NestedLayerTreeHelper&apos;;
 
+import MapEventManager from &apos;../Leaflet.TOC.MapEventManager&apos;;
 import React from &apos;react&apos;;
 import PropTypes from &apos;prop-types&apos;;
+import { debounce } from &apos;lodash&apos;;
 
 export default class LeafletTOC extends React.Component {
 
@@ -76,6 +79,10 @@ export default class LeafletTOC extends React.Component {
     this.state = {
       layers: props.layers
     };
+
+    this.eventManager = new MapEventManager();
+    window.em = this.eventManager; // FOR DEBUGGING
+    console.log(&apos;LeafletTOC created event manager&apos;, this.eventManager);
   }
 
   toggleSelected = (layer) =&gt; {
@@ -84,14 +91,30 @@ export default class LeafletTOC extends React.Component {
     this.setState({ layers: this.state.layers });
   }
 
+  visibilityChange = debounce(() =&gt; {
+    console.log(&apos;visibilityChange (debounced)&apos;);
+    this.setState({ layers: this.state.layers });
+  })
+
   // toggleEnabled = (layer) =&gt; {
   //   console.log(&apos;toggling enabled state of&apos;, layer);
   //   layer.toggleEnabled();
   //   this.setState({ layers: this.state.layers });
   // }
+  //
+
+  componentWillUpdate() {
+    console.log(&apos;LeafletTOC componentWillUpdate (state change)&apos;);
+  }
 
   render() {
-    let layers = this.state.layers.map((layer) =&gt; &lt;NestedLayer layer={layer} toggleSelected={this.toggleSelected} key={layer.id} /&gt;);
+    console.log(&apos;LeafletTOC rendering with event manager&apos;, this.eventManager);
+
+    let layers = this.state.layers.map((layer) =&gt; &lt;NestedLayer layer={layer}
+                                                               toggleSelected={this.toggleSelected}
+                                                               visibilityChange={this.visibilityChange}
+                                                               eventManager={this.eventManager}
+                                                               key={layer.id} /&gt;);
 
     return (
       &lt;div className=&quot;leaflet-toc-container&quot;&gt;
