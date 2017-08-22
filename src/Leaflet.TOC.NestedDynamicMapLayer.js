@@ -1,6 +1,11 @@
 import NestedLayer from './Leaflet.TOC.NestedLayer';
 
 export default class NestedDynamicMapLayer extends NestedLayer {
+  get isAttached() {
+    let layers = this.layer.getLayers() || [];
+    return (this.map.hasLayer(this.layer) && layers.includes(this.layerID));
+  }
+
   _attach() {
     if (!this.isAttached) {
       // push the layerID into the list of layers to render

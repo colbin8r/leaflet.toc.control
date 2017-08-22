@@ -1,40 +1,48 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getLayerByUniqueProp = getLayerByUniqueProp;
+exports.getLayerByID = getLayerByID;
+exports.getLayerByLayerID = getLayerByLayerID;
+exports.applyStateChangeToLayer = applyStateChangeToLayer;
+exports.applyStateChangeToTree = applyStateChangeToTree;
+exports.validateTreeEnabledState = validateTreeEnabledState;
 // import { assign } from 'lodash';
 
 // recursively traverses down the tree looking for the first matching NestedLayer
 // "tree" here is expected to be an array of NestedLayers
-export function getLayerByUniqueProp(tree, key, val) {
-  for (let i = 0; i < tree.length; i++) {
+function getLayerByUniqueProp(tree, key, val) {
+  for (var i = 0; i < tree.length; i++) {
 
     if (tree[i][key] === val) {
       // base case A: we found a matching element at the root of the tree
       return tree[i];
-
     } else if (tree[i].hasChildren) {
 
       // recursive step: search the element's tree
-      let result = getLayerByUniqueProp(tree[i].children, key, val);
+      var result = getLayerByUniqueProp(tree[i].children, key, val);
       if (result !== null) {
         // base case B: element found within a subtree
         return result;
       }
-
     }
-
   }
 
   // base case C: not found
   return null;
 }
 
-export function getLayerByID(tree, id) {
+function getLayerByID(tree, id) {
   return getLayerByUniqueProp(tree, 'id', id);
 }
 
-export function getLayerByLayerID(tree, id) {
+function getLayerByLayerID(tree, id) {
   return getLayerByUniqueProp(tree, 'layerID', id);
 }
 
-export function applyStateChangeToLayer(layer, change) {
+function applyStateChangeToLayer(layer, change) {
   // copies each key/value in "change" onto "layer"
   // triggers the getters/setters in NestedLayer
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
@@ -46,12 +54,23 @@ export function applyStateChangeToLayer(layer, change) {
  * @param  {NestedLayer[]} tree   Tree or subtree of NestedLayers
  * @param  {Object} change A key/value pair of state changes to apply to each layer in the tree
  */
-export function applyStateChangeToTree(tree, change) {
-  for (let i = 0; i < tree.length; i++) {
+function applyStateChangeToTree(tree, change) {
+  for (var i = 0; i < tree.length; i++) {
     applyStateChangeToLayer(tree[i], change);
 
     if (tree[i].hasChildren) {
       applyStateChangeToTree(tree[i].children, change);
+    }
+  }
+}
+
+function validateTreeEnabledState(tree) {
+  console.log('validating enabled state of tree', tree);
+  for (var i = 0; i < tree.length; i++) {
+    console.log('is tree[i] selected?', tree[i].selected);
+    if (tree[i].selected && tree[i].children.length > 0) {
+      applyStateChangeToTree(tree[i].children, { enabled: true });
+      validateTreeEnabledState(tree[i].children);
     }
   }
 }
@@ -66,3 +85,4 @@ export function applyStateChangeToTree(tree, change) {
 // export function validateEnabledStates(tree) {
 
 // }
+//# sourceMappingURL=Leaflet.TOC.NestedLayerTreeHelper.js.map

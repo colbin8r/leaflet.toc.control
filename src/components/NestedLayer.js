@@ -25,6 +25,10 @@ export default class NestedLayer extends React.Component {
     console.log('NestedLayer asking event manager to bind layer', layer);
     this.eventManager.bindLayerToMapChanges(map, layer, this._mapEventHandler);
 
+    this.state = {
+      collapsed: true
+    }
+
     // this.state = {
     //   _mapEventListeners: {
     //     'zoomend': this._handleMapZoomChange,
@@ -88,6 +92,13 @@ export default class NestedLayer extends React.Component {
     this.props.visibilityChange();
   }
 
+  toggleCollapsed = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+    console.log('<NestedLayer /> toggle collapse:', this.state);
+  }
+
   friendlyLayerType = () => {
     return this.props.layer.constructor.name.replace('Nested', '');
   }
@@ -101,7 +112,11 @@ export default class NestedLayer extends React.Component {
       selected: this.props.layer.selected,
       deselected: this.props.layer.deselected,
       visible: this.props.layer.visible,
-      invisible: !this.props.layer.visible
+      invisible: !this.props.layer.visible,
+      collapsed: this.state.collapsed,
+      expanded: !this.state.collapsed,
+      'has-children': this.props.layer.hasChildren,
+      'has-no-children': !this.props.layer.hasChildren
     });
 
     let children;
@@ -122,14 +137,18 @@ export default class NestedLayer extends React.Component {
     }
 
     return (
-      <li className={classes} >
+      <li className={classes}>
+        <div className="layer-collapse-toggle" onClick={this.toggleCollapsed}>
+          <i className="layer-collapse-icon-collapse">→</i>
+          <i className="layer-collapse-icon-expand">↓</i>
+        </div>
         <input type="checkbox" checked={this.props.layer.selected} disabled={disabled} onChange={this.toggleSelected} />
         <span className="layer-name">{this.props.layer.name}</span>
         <span className="layer-type">{this.friendlyLayerType()}</span>
         <MapSymbology symbology={this.props.layer.symbology} />
-
-        {children}
-
+        <span className="layer-collapse-content">
+          {children}
+        </span>
       </li>
     );
   }

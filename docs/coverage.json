@@ -1,6 +1,6 @@
 {
-  "coverage": "24.76%",
-  "expectCount": 105,
+  "coverage": "24.07%",
+  "expectCount": 108,
   "actualCount": 26,
   "files": {
     "src/Leaflet.TOC.MapServerParser.js": {
@@ -56,6 +56,15 @@
         6
       ]
     },
+    "src/components/MapSymbol.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        8,
+        12
+      ]
+    },
     "src/Leaflet.TOC.MapSymbol.js": {
       "expectCount": 10,
       "actualCount": 0,
@@ -70,15 +79,6 @@
         21,
         41,
         29
-      ]
-    },
-    "src/components/MapSymbol.js": {
-      "expectCount": 3,
-      "actualCount": 0,
-      "undocumentLines": [
-        6,
-        8,
-        12
       ]
     },
     "src/Leaflet.TOC.MapSymbology.js": {
@@ -102,10 +102,11 @@
       ]
     },
     "src/Leaflet.TOC.NestedDynamicMapLayer.js": {
-      "expectCount": 1,
+      "expectCount": 2,
       "actualCount": 0,
       "undocumentLines": [
-        3
+        3,
+        4
       ]
     },
     "src/Leaflet.TOC.NestedGroupLayer.js": {
@@ -130,23 +131,25 @@
         174,
         208,
         297,
-        269,
         276,
+        269,
         303
       ]
     },
     "src/components/NestedLayer.js": {
-      "expectCount": 8,
+      "expectCount": 10,
       "actualCount": 0,
       "undocumentLines": [
         9,
         18,
         21,
-        91,
+        102,
         11,
+        106,
+        28,
         95,
-        83,
-        87
+        87,
+        91
       ]
     },
     "src/Leaflet.TOC.NestedLayerTreeHelper.js": {

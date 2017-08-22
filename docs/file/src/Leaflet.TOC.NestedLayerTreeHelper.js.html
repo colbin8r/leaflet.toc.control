@@ -115,10 +115,13 @@ export function applyStateChangeToTree(tree, change) {
 }
 
 export function validateTreeEnabledState(tree) {
-  console.log(&apos;validating enabled state of tree&apos;);
+  console.log(&apos;validating enabled state of tree&apos;, tree);
   for (let i = 0; i &lt; tree.length; i++) {
-    tree[i].toggleEnabled();
-    // tree[i].toggleEnabled();
+    console.log(&apos;is tree[i] selected?&apos;, tree[i].selected);
+    if (tree[i].selected &amp;&amp; tree[i].children.length &gt; 0) {
+      applyStateChangeToTree(tree[i].children, { enabled: true });
+      validateTreeEnabledState(tree[i].children);
+    }
   }
 }
 

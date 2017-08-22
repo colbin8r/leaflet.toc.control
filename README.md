@@ -128,7 +128,7 @@ Gulp, the build system, can be configured in `gulpfile.babel.js`.
 
 Webpack, the bundler, can be configured in `webpack.config.js`.
 
-Babel, the transpiler used by both Gulp and Webpack, has duplicated configurations in `gulpfile.babel.js` and `webpack.config.js`.
+Babel, the transpiler used by both Gulp and Webpack, has duplicated configurations in `gulpfile.babel.js` and `webpack.config.js`. As of 7/24/2017 `.babelrc` is not in use, although it would be a good idea to move the common configuration to that file.
 
 ESLint, the linter, can be configured in `.eslintrc.json`.
 
@@ -141,7 +141,26 @@ Other, maybe obvious, configuration files:
 * `.gitignore`
 * `.gitattributes`
 * `.editorconfig`
-* Note that as of 7/24/2017 `.babelrc` is not in use
+
+### TODOS
+
+#### Features
+
+- Z-index management?
+- Parsing a MapServer into other layer types
+- Build system: add tree-shaking and uglifying
+
+#### Maintenance
+
+- Specify Python as a dependency somehow due to `node-gyp`
+- Add more inline ESDoc blocks
+- Move to a continuous integration system, which might be composed of some of these things:
+  - Run tests
+  - Lint code
+  - Transpile + bundle
+  - Check code coverage
+  - Produce a production build
+  - Push to test VM
 
 ## Author
 

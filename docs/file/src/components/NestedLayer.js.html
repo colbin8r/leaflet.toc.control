@@ -83,6 +83,10 @@ export default class NestedLayer extends React.Component {
     console.log(&apos;NestedLayer asking event manager to bind layer&apos;, layer);
     this.eventManager.bindLayerToMapChanges(map, layer, this._mapEventHandler);
 
+    this.state = {
+      collapsed: true
+    }
+
     // this.state = {
     //   _mapEventListeners: {
     //     &apos;zoomend&apos;: this._handleMapZoomChange,
@@ -146,6 +150,13 @@ export default class NestedLayer extends React.Component {
     this.props.visibilityChange();
   }
 
+  toggleCollapsed = () =&gt; {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+    console.log(&apos;&lt;NestedLayer /&gt; toggle collapse:&apos;, this.state);
+  }
+
   friendlyLayerType = () =&gt; {
     return this.props.layer.constructor.name.replace(&apos;Nested&apos;, &apos;&apos;);
   }
@@ -159,7 +170,11 @@ export default class NestedLayer extends React.Component {
       selected: this.props.layer.selected,
       deselected: this.props.layer.deselected,
       visible: this.props.layer.visible,
-      invisible: !this.props.layer.visible
+      invisible: !this.props.layer.visible,
+      collapsed: this.state.collapsed,
+      expanded: !this.state.collapsed,
+      &apos;has-children&apos;: this.props.layer.hasChildren,
+      &apos;has-no-children&apos;: !this.props.layer.hasChildren
     });
 
     let children;
@@ -180,14 +195,18 @@ export default class NestedLayer extends React.Component {
     }
 
     return (
-      &lt;li className={classes} &gt;
+      &lt;li className={classes}&gt;
+        &lt;div className=&quot;layer-collapse-toggle&quot; onClick={this.toggleCollapsed}&gt;
+          &lt;i className=&quot;layer-collapse-icon-collapse&quot;&gt;&#x2192;&lt;/i&gt;
+          &lt;i className=&quot;layer-collapse-icon-expand&quot;&gt;&#x2193;&lt;/i&gt;
+        &lt;/div&gt;
         &lt;input type=&quot;checkbox&quot; checked={this.props.layer.selected} disabled={disabled} onChange={this.toggleSelected} /&gt;
         &lt;span className=&quot;layer-name&quot;&gt;{this.props.layer.name}&lt;/span&gt;
         &lt;span className=&quot;layer-type&quot;&gt;{this.friendlyLayerType()}&lt;/span&gt;
         &lt;MapSymbology symbology={this.props.layer.symbology} /&gt;
-
-        {children}
-
+        &lt;span className=&quot;layer-collapse-content&quot;&gt;
+          {children}
+        &lt;/span&gt;
       &lt;/li&gt;
     );
   }

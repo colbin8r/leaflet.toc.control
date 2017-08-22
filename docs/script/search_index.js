@@ -1374,6 +1374,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/leaflet.toc.nesteddynamicmaplayer.js~nesteddynamicmaplayer#isattached",
+    "class/src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer.html#instance-get-isAttached",
+    "src/Leaflet.TOC.NestedDynamicMapLayer.js~NestedDynamicMapLayer#isAttached",
+    "member"
+  ],
+  [
     "src/leaflet.toc.nestedgrouplayer.js",
     "file/src/Leaflet.TOC.NestedGroupLayer.js.html",
     "src/Leaflet.TOC.NestedGroupLayer.js",
@@ -1441,13 +1447,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
   [
     "src/leaflet.toc.nestedlayer.js~nestedlayer#enabled",
-    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-get-enabled",
+    "class/src/Leaflet.TOC.NestedLayer.js~NestedLayer.html#instance-set-enabled",
     "src/Leaflet.TOC.NestedLayer.js~NestedLayer#enabled",
     "member"
   ],
@@ -1702,6 +1708,18 @@ window.esdocSearchIndex = [
     "class/src/components/NestedLayer.js~NestedLayer.html#instance-method-render",
     "src/components/NestedLayer.js~NestedLayer#render",
     "method"
+  ],
+  [
+    "src/components/nestedlayer.js~nestedlayer#state",
+    "class/src/components/NestedLayer.js~NestedLayer.html#instance-member-state",
+    "src/components/NestedLayer.js~NestedLayer#state",
+    "member"
+  ],
+  [
+    "src/components/nestedlayer.js~nestedlayer#togglecollapsed",
+    "class/src/components/NestedLayer.js~NestedLayer.html#instance-member-toggleCollapsed",
+    "src/components/NestedLayer.js~NestedLayer#toggleCollapsed",
+    "member"
   ],
   [
     "src/components/nestedlayer.js~nestedlayer#toggleselected",

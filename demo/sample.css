@@ -44,6 +44,25 @@ body {
   color: gray;
 }
 
+.collapsed > .layer-collapse-toggle .layer-collapse-icon-expand,
+.expanded > .layer-collapse-toggle .layer-collapse-icon-collapse,
+.has-no-children > .layer-collapse-toggle,
+.collapsed > .layer-collapse-content {
+  visibility: invisible;
+  display: none;
+}
+
+.layer-collapse-toggle {
+  display: inline-block;
+  width: 1em;
+  cursor: pointer;
+}
+
+.layer-collapse-icon-expand,
+.layer-collapse-icon-collapse {
+
+}
+
 .symbology .swatch {
   vertical-align: text-top;
   padding-right: .24rem;

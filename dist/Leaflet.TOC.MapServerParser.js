@@ -129,6 +129,21 @@ var MapServerParser = function () {
             }
           }
 
+          if (_this.options.parsingOptions.scale) {
+            // convert the 'scale' data returned by ArcGIS to 'zoom' data used by Leaflet
+            // if ArcGIS returns '0', set to Inifinity or -Infinity where appropriate
+            // http://leafletjs.com/reference-1.2.0.html#crs-zoom
+            // https://github.com/Leaflet/Leaflet/blob/master/src/map/Map.js#L39
+            var leafletMostZoomedInLevel = 19;
+            var leafletLeastZoomedInLevel = 1;
+            var max = node.maxScale !== 0 ? leafletLeastZoomedInLevel + _this.map.options.crs.zoom(node.maxScale) : Number.POSITIVE_INFINITY;
+            var min = node.minScale !== 0 ? leafletMostZoomedInLevel - _this.map.options.crs.zoom(node.minScale) : Number.NEGATIVE_INFINITY;
+            console.log('MapServerParser min', min, 'max', max);
+            // console.log('nodemax', node.maxScale, 'min', min, 'nodemin', node.minScale, 'max', max);
+            layer.minZoom = min;
+            layer.maxZoom = max;
+          }
+
           // add the layer into the proper subtree
           if (node.parentLayer !== null) {
             var parentID = node.parentLayer.id;
@@ -139,6 +154,8 @@ var MapServerParser = function () {
             tree.push(layer);
           }
         });
+
+        NestedLayerTreeHelper.validateTreeEnabledState(tree);
 
         return tree;
       });
